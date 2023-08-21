@@ -28,6 +28,8 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $user ->setIsAdmin(false);//permet de config par défaut le isAdmin a false
+        $user->setIsActif(false);//permet de config par défaut le isActif a false
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 

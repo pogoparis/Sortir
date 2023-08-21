@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        <li>
+            nom de la sortie : {{ sortie.nom }}
+        </li>
+        <li>
+            date du début : {{ sortie.dateHeureDebut |date('d-m-Y H:i')}}
+        </li>
+        <li>
+            date de fin : {{ sortie.dateHeureFin |date('d-m-Y H:i')}}
+        </li>
+        <li>
+            fin de l'inscription : {{ sortie.dateLimiteInscription |date('d-m-Y H:i')}}
+        </li>
+        <li>
+            nombre de participants max : {{ sortie.nbInscriptionsMax }}
+        </li>
+        <li>
+            description : {{ sortie.infosSortie }}
+        </li>
+    </ul>
+    <a id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
+        detail
+    </a>
+{% endblock %}
+

@@ -59,7 +59,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('ajouter', SubmitType::class);
+            ->add('ajouter', SubmitType::class)
+            ->add('modifier', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

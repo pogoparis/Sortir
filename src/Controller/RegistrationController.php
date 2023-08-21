@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $user ->setIsAdmin(false);//permet de config par défaut le isAdmin a false
-        $user->setIsActif(false);//permet de config par défaut le isActif a false
+        $user->setIsActif(true);//permet de config par défaut le isActif a false
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 

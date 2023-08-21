@@ -14,21 +14,21 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nomSite = null;
+    private ?string $nom = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomSite(): ?string
+    public function getNom(): ?string
     {
-        return $this->nomSite;
+        return $this->nom;
     }
 
-    public function setNomSite(string $nomSite): static
+    public function setNom(string $nom): static
     {
-        $this->nomSite = $nomSite;
+        $this->nom = $nom;
 
         return $this;
     }

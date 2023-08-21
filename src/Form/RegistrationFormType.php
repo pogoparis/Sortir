@@ -34,12 +34,13 @@ class RegistrationFormType extends AbstractType
         ->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
             'invalid_message' => 'Le mots de passe doit être le même.',
-            'options' => ['attr' => ['class' => 'password-field']],
+            'options' => ['attr' => ['class' => 'password-field input']],
             'required' => true,
             'first_options' => ['label' => 'Mots de passe '],
             'second_options' => ['label' => 'Répeter le mots de passe '],
             'mapped' => false,
-            'attr' => ['autocomplete' => 'new-password'],
+            'attr' => ['autocomplete' => 'new-password',
+            ],
             'constraints' => [
                 new NotBlank([
                     'message' => 'Merci d\'entrer le mots de passe',
@@ -51,14 +52,14 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
-            ->add('agreeTerms', CheckboxType::class, [
+            /*->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Merci d\'accepter les thermes.',
                     ]),
                 ],
-            ])
+            ])*/
             ->add('ajouter', SubmitType::class);
     }
 

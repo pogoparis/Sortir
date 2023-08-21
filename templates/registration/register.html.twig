@@ -7,21 +7,46 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Inscription</h1>
+
+
+    <h1>Enregistrement</h1>
 
     {{ form_errors(registrationForm) }}
-
     {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.pseudo) }}
-    {{ form_row(registrationForm.nom) }}
-    {{ form_row(registrationForm.prenom) }}
-    {{ form_row(registrationForm.telephone) }}
-    {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+
+<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    {{ form_label(registrationForm.pseudo) }}
+        {{ form_widget(registrationForm.pseudo, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+</div>
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    {{ form_label(registrationForm.nom) }}
+    {{ form_widget(registrationForm.nom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    {{ form_label(registrationForm.prenom) }}
+    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+</div>
+<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    {{ form_label(registrationForm.telephone) }}
+    {{ form_widget(registrationForm.telephone, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+</div>
+<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    {{ form_label(registrationForm.email) }}
+    {{ form_widget(registrationForm.email, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+</div>
+
+{#        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password',
+        }) }}#}
 
 
-    {{ form_end(registrationForm) }}
+<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+{{ form_label(registrationForm.plainPassword) }}
+    {{ form_widget(registrationForm.plainPassword) }}
+</div>
+
+{#        {{ form_row(registrationForm.agreeTerms) }}#}
+
+
+    {{ form_end(registrationForm, {render_rest: false}) }}
 {% endblock %}

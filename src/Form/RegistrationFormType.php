@@ -59,8 +59,14 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Merci d\'accepter les thermes.',
                     ]),
                 ],
+
+            ])
+            ->add('ajouter', SubmitType::class)
+            ->add('modifier', SubmitType::class);
+
             ])*/
             ->add('ajouter', SubmitType::class);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

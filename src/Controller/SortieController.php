@@ -22,17 +22,23 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
+
         //Nouvelle Sortie
+
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
+
+        $sortie->setOrganisateur($this->getUser());
+
         // Organisateur
         $sortie->setOrganisateur($this->getUser());
         // set siteEni
         $siteId = $this->getUser()->getSiteEni();
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId ));
         $sortie->setSite($siteUser);
+
 
         //TODO Mettre le lieu en formulaire
         //Lieu en dur

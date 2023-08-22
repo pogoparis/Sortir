@@ -6,6 +6,7 @@ use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
 class Ville
@@ -13,12 +14,15 @@ class Ville
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('wishes:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('wishes:read')]
     private ?string $nom = null;
 
     #[ORM\Column(length: 8)]
+    #[Groups('wishes:read')]
     private ?string $codePostal = null;
 
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Lieu::class, orphanRemoval: true)]
@@ -87,4 +91,21 @@ class Ville
 
         return $this;
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'id'=>$this->id,
+            'nom'=>$this->nom,
+            'codePostal'=>$this->codePostal,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id=$data['id'];
+        $this->nom=$data['nom'];
+        $this->codePostal=$data['codePostal'];
+    }
+
 }

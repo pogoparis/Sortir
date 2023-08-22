@@ -19,9 +19,11 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, EntityManagerInterface $entityManager
     ): Response
     {
+
         $sortie = new Sortie();
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
+        $sortie->setOrganisateur($this->getUser());
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);

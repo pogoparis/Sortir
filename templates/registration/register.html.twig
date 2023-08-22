@@ -45,7 +45,10 @@
             {#._token permet de valider le token de l'enregistrement du mdp#}
             {{ form_row(registrationForm._token) }}
         </div>
-
+        <label>
+            <input type="checkbox" name="_remember_me" checked>
+            Me garder connecter
+        </label>
 
 
         {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1'}}) }}

@@ -16,15 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfilController extends AbstractController
 {
-    /*    #[Route('/profil', name: 'profil_detail',requirements: ["user"=>"\d+"])]
-        public function detail(): Response
-        {
-            $user= $this->getUser();
-            return $this->render('profil/index.html.twig',
-                compact("user"));
-        }
-    }*/
-
     #[Route('/profil', name: 'profil_detail')]
     public function detail(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -44,7 +35,7 @@ class ProfilController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_login');
         }
-        return $this->render('profil/index.html.twig', [
+        return $this->render('profil/detail.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

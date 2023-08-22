@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Site{% endblock %}
+
+{% block body %}
+    <h1>Site</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ site.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ site.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-neutral m-1" href="{{ path('app_site_admin_index') }}">Retour</a>
+
+    <a class="btn btn-neutral m-1" href="{{ path('app_site_admin_edit', {'id': site.id}) }}">Modifier</a>
+
+    {{ include('site_admin/_delete_form.html.twig') }}
+{% endblock %}

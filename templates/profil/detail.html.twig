@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div>
+        <h1> Modification du profil </h1>
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.pseudo) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.prenom) }}
+        {{ form_row(registrationForm.telephone) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.siteEni) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {#._token permet de valider le token de l'enregistrement du mdp#}
+        {{ form_row(registrationForm._token) }}
+        {#if qui va permettre d'afficher le bon bouton selon la page#}
+        {% if app.user %}
+            {{ form_widget(registrationForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+        {% else %}
+            {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+        {% endif %}
+
+
+        {#(render_rest: false) permet de ne pas afficher le reste du formulaire#}
+        {{ form_end(registrationForm, {render_rest: false}) }}
+
+    </div>
+{% endblock %}

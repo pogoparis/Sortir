@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
+use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,15 +19,33 @@ class SortieController extends AbstractController
 {
     #[Route('/creation', name: 'sortie_creation')]
     public function creation(
-        Request $requete, EtatRepository $etatRepository, EntityManagerInterface $entityManager
+        Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
 
+        //Nouvelle Sortie
+
         $sortie = new Sortie();
+        //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
+
         $sortie->setOrganisateur($this->getUser());
 
+        // Organisateur
+        $sortie->setOrganisateur($this->getUser());
+        // set siteEni
+        $siteId = $this->getUser()->getSiteEni();
+        $siteUser = $siteRepository->findOneBy(array('id' => $siteId ));
+        $sortie->setSite($siteUser);
+
+
+        //TODO Mettre le lieu en formulaire
+        //Lieu en dur
+        $lieu = $lieuRepository->findOneBy(array('id'=> 1));
+        $sortie->setLieu($lieu);
+
+        // création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
 

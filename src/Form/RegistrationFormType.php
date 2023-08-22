@@ -52,7 +52,7 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
-            /*->add('agreeTerms', CheckboxType::class, [
+            ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -61,10 +61,10 @@ class RegistrationFormType extends AbstractType
                 ],
 
             ])
-            ->add('ajouter', SubmitType::class)
-            ->add('modifier', SubmitType::class);
 
-            ])*/
+
+
+            ->add('modifier', SubmitType::class)
             ->add('ajouter', SubmitType::class);
 
     }

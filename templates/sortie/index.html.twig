@@ -7,8 +7,15 @@
         {{ form(sortieForm) }}
     </div>
     <p id="latitude"></p>
-
     <p id="longitude"></p>
 
+    <select id="selectVille" onclick="window.afficherLieu"> Ville
+        <option value="0">Choisir une ville</option>
+    </select>
+    <select id="selectLieux" >
+        <option value="0">Choisir un lieu</option>
+    </select>
+
     <div id="map"></div>
+
 {% endblock %}

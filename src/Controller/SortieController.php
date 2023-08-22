@@ -27,7 +27,7 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
-        $etat = $etatRepository->findOneBy(array('id' => 1));
+        $etat = $etatRepository->findOneBy(array('id' => 4));
         $sortie->setEtat($etat);
 
         $sortie->setOrganisateur($this->getUser());
@@ -42,7 +42,7 @@ class SortieController extends AbstractController
 
         //TODO Mettre le lieu en formulaire
         //Lieu en dur
-        $lieu = $lieuRepository->findOneBy(array('id'=> 1));
+        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
         $sortie->setLieu($lieu);
 
         // création du formulaire

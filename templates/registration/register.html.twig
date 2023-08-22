@@ -42,6 +42,8 @@
         <br>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_widget(registrationForm.plainPassword) }}
+            {#._token permet de valider le token de l'enregistrement du mdp#}
+            {{ form_row(registrationForm._token) }}
         </div>
 
 

@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -21,7 +22,21 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo',null,["label"=>"Pseudo : "])
+            /*->add('pseudo',null,["label"=>"Pseudo : "])*/
+            ->add('pseudo',TextType::class,["label" => "Pseudo : ",
+                'constraints'=> [
+                    new NotBlank([
+                        'message'=> 'Pseudo manquant.'
+                    ]),
+                    new Length([
+                        'min'=> 3,
+                        'minMessage' => 'Le pseudo doit faire au moins {{ limit }} caractères.',
+                        'max' => 30,
+                        'maxMessage' => 'Le pseudo ne doit pas dépasser {{ limit }} caractères.'
+                    ]),
+
+                ],
+            ])
             ->add('nom',null,["label"=>"Nom : "])
             ->add('prenom',null,["label"=>"Prénom : "])
             ->add('telephone',null,["label"=>"Téléphone : "])

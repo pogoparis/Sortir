@@ -26,9 +26,9 @@ console.log($id);
                     if (+$idVille == $id){
                         console.log('ça marche')
                         document.getElementById("selectLieux").hidden = false;
-                        i = js["id"];
-                        $lieu =  document.getElementById("selectLieux").selectedIndex = i;
-                        $lieu.setAttribute("hidden");
+                        $i = js["id"];
+                        $lieu =  document.getElementById("selectLieux").options[$i];
+                        $lieu.hidden = true;
                     }
 
                 }

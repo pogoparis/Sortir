@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Site{% endblock %}
+
+{% block body %}
+    <h1>Création Site</h1>
+
+    {{ include('site_admin/_form.html.twig') }}
+
+    <a class="btn btn-neutral m-1" href="{{ path('app_site_admin_index') }}">Retour</a>
+{% endblock %}

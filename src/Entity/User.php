@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -53,6 +55,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class, orphanRemoval: true)]
+    private Collection $sortiesOrganisateur;
+
+    #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'participants')]
+    private Collection $sortiesParticipants;
+
+    public function __construct()
+    {
+        $this->sortiesOrganisateur = new ArrayCollection();
+        $this->sortiesParticipants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -216,6 +230,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSortiesOrganisateur(): Collection
+    {
+        return $this->sortiesOrganisateur;
+    }
+
+    public function addSorty(Sortie $sorty): static
+    {
+        if (!$this->sortiesOrganisateur->contains($sorty)) {
+            $this->sortiesOrganisateur->add($sorty);
+            $sorty->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sortie $sorty): static
+    {
+        if ($this->sortiesOrganisateur->removeElement($sorty)) {
+            // set the owning side to null (unless already changed)
+            if ($sorty->getOrganisateur() === $this) {
+                $sorty->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSortiesParticipants(): Collection
+    {
+        return $this->sortiesParticipants;
+    }
+
+    public function addSortiesParticipant(Sortie $sortiesParticipant): static
+    {
+        if (!$this->sortiesParticipants->contains($sortiesParticipant)) {
+            $this->sortiesParticipants->add($sortiesParticipant);
+            $sortiesParticipant->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesParticipant(Sortie $sortiesParticipant): static
+    {
+        if ($this->sortiesParticipants->removeElement($sortiesParticipant)) {
+            $sortiesParticipant->removeParticipant($this);
+        }
 
         return $this;
     }

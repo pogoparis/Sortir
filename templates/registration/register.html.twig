@@ -30,21 +30,15 @@
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.telephone) }}
-            {{ form_errors(registrationForm.telephone) }}
+            {{ form_errors(registrationForm.telephone) }}{#le form_errors permet d'afficher les messages d'erreurs après saise#}
             {{ form_widget(registrationForm.telephone) }}
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.email) }}
             {{ form_errors(registrationForm.email) }}
             {{ form_widget(registrationForm.email) }}
-
-            {{ form_widget(registrationForm.telephone) }}
         </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.email) }}
-            {{ form_widget(registrationForm.email) }}
 
-        </div>
         <br>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.siteEni) }}
@@ -62,7 +56,7 @@
         </label>
 
 
-        {{ form_widget(registrationForm.Valider, {'attr': {'class': 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'}}) }}
+        {{ form_widget(registrationForm.Valider) }}
 
         {{ form_end(registrationForm, {render_rest: false}) }}
     </div>

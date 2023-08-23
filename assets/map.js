@@ -42,7 +42,7 @@ function allLieux() {
     $id = document.getElementById("selectVille").value;
     let select = document.getElementById("selectLieux");
         select.innerText = '';
-    let nouvelElement = document.createElement("option");
+
     // nouvelElement.setAttribute("value", '0');
     // nouvelElement.innerText = 'choisir un lieu';
     // select.appendChild(nouvelElement);
@@ -53,7 +53,7 @@ function allLieux() {
             json => {
 
                 for (const js of json){
-
+                    let nouvelElement = document.createElement("option");
                     nouvelElement.setAttribute("value", js['id'])
                     nouvelElement.innerText = js['nom'];
                     select.appendChild(nouvelElement);

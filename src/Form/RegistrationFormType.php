@@ -24,6 +24,7 @@ class RegistrationFormType extends AbstractType
         $builder
             /*->add('pseudo',null,["label"=>"Pseudo : "])*/
             ->add('pseudo',TextType::class,["label" => "Pseudo : ",
+                'invalid_message' => 'Le mots de passe doit être le même.',
                 'constraints'=> [
                     new NotBlank([
                         'message'=> 'Pseudo manquant.'
@@ -39,7 +40,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('nom',null,["label"=>"Nom : "])
             ->add('prenom',null,["label"=>"Prénom : "])
-            ->add('telephone',null,["label"=>"Téléphone : "])
+            ->add('telephone',null,["label"=>"Téléphone (0) : "])
             ->add('email',null,["label"=>"Email : "])
             ->add('siteEni', EntityType::class,
             ['class' => Site::class,

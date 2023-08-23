@@ -5,33 +5,28 @@
     <div>
         <h1> Modification du profil </h1>
 
-        {{ form_errors(registrationForm) }}
+        {{ form_errors(profilForm) }}
 
-        {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.pseudo) }}
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.telephone) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.siteEni) }}
+        {{ form_start(profilForm) }}
+        {{ form_row(profilForm.pseudo) }}
+        {{ form_errors(profilForm.pseudo) }}
 
-        {#._token permet de valider le token de l'enregistrement du mdp#}
-        {{ form_row(registrationForm._token) }}
+        {{ form_row(profilForm.nom) }}
+        {{ form_row(profilForm.prenom) }}
+
+        {{ form_row(profilForm.telephone) }}
+        {{ form_errors(profilForm.telephone) }}
+
+        {{ form_row(profilForm.email) }}
+        {{ form_row(profilForm.siteEni) }}
+        {{ form_row(profilForm._token) }}
+
         <a href="{{ path('app_forgot_password_request')}}">
             Changer de mots de passe ?
         </a>
 
+            {{ form_widget(profilForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
 
-        {#if qui va permettre d'afficher le bon bouton selon la page#}
-        {% if app.user %}
-            {{ form_widget(registrationForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
-        {% else %}
-            {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
-        {% endif %}
-
-
-        {#(render_rest: false) permet de ne pas afficher le reste du formulaire#}
-        {{ form_end(registrationForm, {render_rest: false}) }}
 
     </div>
 {% endblock %}

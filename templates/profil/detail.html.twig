@@ -17,7 +17,9 @@
 
         {#._token permet de valider le token de l'enregistrement du mdp#}
         {{ form_row(registrationForm._token) }}
-
+        <a href="{{ path('app_forgot_password_request')}}">
+            Changer de mots de passe ?
+        </a>
 
 
         {#if qui va permettre d'afficher le bon bouton selon la page#}

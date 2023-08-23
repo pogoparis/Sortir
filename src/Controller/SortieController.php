@@ -47,14 +47,18 @@ class SortieController extends AbstractController
 
         //TODO Mettre le lieu en formulaire
         //Lieu en dur
-        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
-        $sortie->setLieu($lieu);
+//        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
+//        $sortie->setLieu($lieu);
 
         // création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
 
-        if ($sortieForm -> isSubmitted() && $sortieForm->isValid()){
+
+
+         if ($sortieForm -> isSubmitted() ){
+             $test = $requete->query->get('sortie[lieu]');
+
             $entityManager->persist($sortie);
             $entityManager->flush();
             return $this->redirectToRoute('main_index');

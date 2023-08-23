@@ -14,11 +14,12 @@
         {{ form_row(registrationForm.telephone) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.siteEni) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
+
         {#._token permet de valider le token de l'enregistrement du mdp#}
         {{ form_row(registrationForm._token) }}
+
+
+
         {#if qui va permettre d'afficher le bon bouton selon la page#}
         {% if app.user %}
             {{ form_widget(registrationForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}

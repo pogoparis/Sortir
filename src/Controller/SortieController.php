@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use DateTime;
 
 class SortieController extends AbstractController
 {
@@ -71,17 +72,25 @@ class SortieController extends AbstractController
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
         $sorties = $sortieRepository->findSearch($filtre);
+
+
         return $this->render('sortie/listeSorties.html.twig',
             [
                 'sorties' => $sorties,
-                'form' => $form
+                'form' => $form,
             ]);
     }
 
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
-    public function detail(Sortie $sortie, SortieRepository $sortieRepository): Response
+    public function detail(Sortie $sortie): Response
     {
-        return $this->render('sortie/detail.html.twig', compact('sortie'));
+        $now = new DateTime();
+        $minNow = date_timestamp_get($now);
+
+        $limite = $sortie->getDateLimiteInscription();
+        $minLimite = date_timestamp_get($limite);
+        $difference = ($minLimite - $minNow);
+        return $this->render('sortie/detail.html.twig', compact('sortie', 'difference'));
     }
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
 public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response

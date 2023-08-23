@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Lieu;
+use App\Entity\Filtre;
 use App\Entity\Sortie;
+use App\Form\FiltreFormType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
-use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +33,6 @@ class SortieController extends AbstractController
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 4));
         $sortie->setEtat($etat);
-
         $sortie->setOrganisateur($this->getUser());
 
         // Organisateur
@@ -62,10 +60,18 @@ class SortieController extends AbstractController
         return $this->render('sortie/index.html.twig', compact("sortieForm"));
     }
     #[Route('/sorties', name: 'sortie_affichage')]
-    public function affichage(SortieRepository $sortieRepository): Response
+    public function affichage(SortieRepository $sortieRepository, Request $request
+    ): Response
     {
-        $sorties = $sortieRepository->findAll();
-        return $this->render('sortie/listeSorties.html.twig', compact('sorties'));
+        $filtre = new Filtre();
+        $form = $this->createForm(FiltreFormType::class, $filtre);
+        $form->handleRequest($request);
+        $sorties = $sortieRepository->findSearch($filtre);
+        return $this->render('sortie/listeSorties.html.twig',
+            [
+                'sorties' => $sorties,
+                'form' => $form
+            ]);
     }
 
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]

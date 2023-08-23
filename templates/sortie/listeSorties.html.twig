@@ -27,7 +27,9 @@
     <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
        detail
     </a>
-
+    <a class="btn btn-neutral m-1" id="lien" href="{{ path('participation_inscription', {'id' : event.id}) }}">
+        participer
+    </a>
 </div>
 {% endfor %}
 {% endblock %}

@@ -12,6 +12,7 @@ use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,12 +102,11 @@ class SortieController extends AbstractController
             [],
             true);
     }
-    #[Route('/apiLieux', name: 'api_lieux')]
+    #[Route('/apiLieux/{id}', name: 'api_lieux', requirements: ["id" => "\d+"])]
     public function apiLieux(
-        LieuRepository $lieuRepository, SerializerInterface $serializer): Response
+        LieuRepository $lieuRepository, SerializerInterface $serializer, string $id): Response
     {
-        $lieu = $lieuRepository->findAll();
-
+        $lieu = $lieuRepository->findBy(array('id'=> $id));
         return new JsonResponse(
             $serializer->serialize(
                 $lieu,

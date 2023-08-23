@@ -3,6 +3,7 @@
 
 {% block body %}
 
+
     <h1 class="text-2xl text-center">Creation</h1>
 
 
@@ -60,6 +61,10 @@
         {{ form_widget(sortieForm.ajouter, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
 
         {{ form_end(sortieForm, {render_rest: false}) }}
+
+    <div class="container">
+        {{ form(sortieForm) }}
+
     </div>
 
 

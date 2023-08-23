@@ -9,11 +9,16 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
+use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class SortieController extends AbstractController
 {
@@ -80,5 +85,35 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_affichage');
         }
         return $this->render('sortie/modifier.html.twig', compact('sortieForm'));
+    }
+
+    #[Route('/api', name: 'api_villes')]
+    public function apiVille(
+        VilleRepository $villeRepository, SerializerInterface $serializer): Response
+    {
+        $villes = $villeRepository->findAll();
+
+        return new JsonResponse(
+            $serializer->serialize(
+                $villes,
+                'json',
+                ['groups'=>'wishes:read']),
+            200,
+            [],
+            true);
+    }
+    #[Route('/apiLieux/{id}', name: 'api_lieux', requirements: ["id" => "\d+"])]
+    public function apiLieux(
+        LieuRepository $lieuRepository, SerializerInterface $serializer, string $id): Response
+    {
+        $lieu = $lieuRepository->findBy(array('id'=> $id));
+        return new JsonResponse(
+            $serializer->serialize(
+                $lieu,
+                'json',
+                ['groups'=>'wishes:read']),
+            200,
+            [],
+            true);
     }
 }

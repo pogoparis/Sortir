@@ -8,19 +8,22 @@ use DateTimeInterface;
 class Filtre
 {
     /**
-    * @var string
+    * @var string|null
     */
-    public string $nom ="";
+    public ?string $nom ="";
 
     /**
-     * @var dateTime
+     * @var dateTimeInterface | null
      */
-    public DateTimeInterface $dateMin;
+    public ?DateTimeInterface $dateMin = null;
 
     /**
-     * @var dateTime
+     * @var dateTimeInterface | null
      */
-    public dateTime $dateMax;
+    public ?DateTimeInterface $dateMax = null;
 
-
+    /**
+     * @var bool|null
+     */
+    public ?bool $organisateur = null;
 }

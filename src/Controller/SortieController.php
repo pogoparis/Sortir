@@ -32,7 +32,7 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
-        $etat = $etatRepository->findOneBy(array('id' => 4));
+        $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($this->getUser());
 
@@ -69,15 +69,20 @@ class SortieController extends AbstractController
     ): Response
     {
         $filtre = new Filtre();
+        $user = $this->getUser();
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
-        $sorties = $sortieRepository->findSearch($filtre);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sorties = $sortieRepository->findSearch($filtre);
+        } else {
+            $sorties = $sortieRepository->findAll();
+        }
 
 
         return $this->render('sortie/listeSorties.html.twig',
             [
                 'sorties' => $sorties,
-                'form' => $form,
+                'form' => $form->createView(),
             ]);
     }
 

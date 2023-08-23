@@ -23,6 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern:"/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/", message:"Format de l'email non valide")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -32,7 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-
     private ?string $password = null;
 
     #[ORM\Column(length: 40)]
@@ -49,6 +49,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 8, max: 20, minMessage: "8 chiffres mini", maxMessage: "20 chiffres max")]
+    #[Assert\Regex(pattern:"/^(\(0\))?[0-9]{9}$/", message:"Doit commencer par (0) et avoir 10 chiffres")]
     private ?int $telephone = null;
 
     #[ORM\Column]

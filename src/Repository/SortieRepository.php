@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Filtre;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,20 @@ class SortieRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
+    }
+
+
+    public function findSearch(Filtre $filtre): array
+    {
+        $query = $this
+            ->createQueryBuilder('p');
+
+        if (!empty($filtre->nom)) {
+            $query = $query
+                ->andWhere('p.nom LIKE :nom')
+                ->setParameter('nom', "%{$filtre->nom}%");
+        }
+        return $query->getQuery()->getResult();
     }
 
 //    /**

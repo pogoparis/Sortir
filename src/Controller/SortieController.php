@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Lieu;
+use App\Entity\Filtre;
 use App\Entity\Sortie;
+use App\Form\FiltreFormType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
-use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +33,6 @@ class SortieController extends AbstractController
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 4));
         $sortie->setEtat($etat);
-
         $sortie->setOrganisateur($this->getUser());
 
         // Organisateur
@@ -47,14 +45,18 @@ class SortieController extends AbstractController
 
         //TODO Mettre le lieu en formulaire
         //Lieu en dur
-        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
-        $sortie->setLieu($lieu);
+//        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
+//        $sortie->setLieu($lieu);
 
         // création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
 
-        if ($sortieForm -> isSubmitted() && $sortieForm->isValid()){
+
+
+         if ($sortieForm -> isSubmitted() ){
+             $test = $requete->query->get('sortie[lieu]');
+
             $entityManager->persist($sortie);
             $entityManager->flush();
             return $this->redirectToRoute('main_index');
@@ -62,10 +64,18 @@ class SortieController extends AbstractController
         return $this->render('sortie/index.html.twig', compact("sortieForm"));
     }
     #[Route('/sorties', name: 'sortie_affichage')]
-    public function affichage(SortieRepository $sortieRepository): Response
+    public function affichage(SortieRepository $sortieRepository, Request $request
+    ): Response
     {
-        $sorties = $sortieRepository->findAll();
-        return $this->render('sortie/listeSorties.html.twig', compact('sorties'));
+        $filtre = new Filtre();
+        $form = $this->createForm(FiltreFormType::class, $filtre);
+        $form->handleRequest($request);
+        $sorties = $sortieRepository->findSearch($filtre);
+        return $this->render('sortie/listeSorties.html.twig',
+            [
+                'sorties' => $sorties,
+                'form' => $form
+            ]);
     }
 
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
@@ -73,6 +83,15 @@ class SortieController extends AbstractController
     {
         return $this->render('sortie/detail.html.twig', compact('sortie'));
     }
+    #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
+public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+{
+    $etat = $etatRepository->findOneBy(array('id'=> 6));
+    $sortie->setEtat($etat);
+    $entityManager->persist($sortie);
+    $entityManager->flush();
+    return $this->redirectToRoute('sortie_affichage');
+}
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
     public function modifier(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -106,7 +125,7 @@ class SortieController extends AbstractController
     public function apiLieux(
         LieuRepository $lieuRepository, SerializerInterface $serializer, string $id): Response
     {
-        $lieu = $lieuRepository->findBy(array('id'=> $id));
+        $lieu = $lieuRepository->findBy(array('ville'=> $id));
         return new JsonResponse(
             $serializer->serialize(
                 $lieu,

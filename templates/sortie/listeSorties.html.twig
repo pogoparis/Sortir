@@ -1,34 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% for event in sorties %}
-<div>
-<ul>
 
-    <li>
-        nom de la sortie : {{ event.nom }}
-    </li>
-    <li>
-        date du début : {{ event.dateHeureDebut |date('d-m-Y H:i')}}
-    </li>
-    <li>
-        date de fin : {{ event.dateHeureFin |date('d-m-Y H:i')}}
-    </li>
-    <li>
-        fin de l'inscription : {{ event.dateLimiteInscription |date('d-m-Y H:i')}}
-    </li>
-    <li>
-        nombre de participants max : {{ event.nbInscriptionsMax }}
-    </li>
-    <li>
-        description : {{ event.infosSortie }}
-    </li>
-</ul>
-    <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
-       detail
-    </a>
+
+
+
+<div class="FormSearch m-2">
+    {{ form_start(form) }}
+    {{ form_widget(form.nom) }}
+
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Filtrer</button>
+    {{ form_end(form) }}
 
 </div>
-{% endfor %}
+
+
+    {% for event in sorties %}
+        <div>
+            <ul>
+                <li>
+                    nom de la sortie : {{ event.nom }}
+                </li>
+                <li>
+                    date du début : {{ event.dateHeureDebut |date('d-m-Y') }}
+                </li>
+                <li>
+                    nombre de participants max : {{ event.nbInscriptionsMax }}
+                </li>
+                <li>
+                    description : {{ event.infosSortie }}
+                </li>
+            </ul>
+            <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
+                detail
+            </a>
+<a class="btn btn-neutral m-1" id="lien" href="{{ path('participation_inscription', {'id' : event.id}) }}">
+        participer
+    </a>
+        </div>
+    {% endfor %}
 {% endblock %}
 

@@ -2,12 +2,16 @@
 
 {% block body %}
 
+
+
+
 <div class="FormSearch m-2">
     {{ form_start(form) }}
     {{ form_widget(form.nom) }}
 
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Filtrer</button>
     {{ form_end(form) }}
+
 </div>
 
 
@@ -30,7 +34,9 @@
             <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                 detail
             </a>
-
+<a class="btn btn-neutral m-1" id="lien" href="{{ path('participation_inscription', {'id' : event.id}) }}">
+        participer
+    </a>
         </div>
     {% endfor %}
 {% endblock %}

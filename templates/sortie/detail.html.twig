@@ -22,7 +22,10 @@
         </li>
     </ul>
     <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
-        detail
+        modifier
+    </a>
+    <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
+        Annuler
     </a>
 {% endblock %}
 

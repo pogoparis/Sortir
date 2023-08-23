@@ -3,19 +3,70 @@
 
 {% block body %}
 
-    <div class="container">
-        {{ form(sortieForm) }}
+    <h1 class="text-2xl text-center">Creation</h1>
+
+
+
+    <div class="w-full max-w-xl">
+        {{ form_start(sortieForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4'}}) }}
+
+
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.nom) }}
+            {{ form_widget(sortieForm.nom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.dateHeureDebut) }}
+            {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.dateHeureFin) }}
+            {{ form_widget(sortieForm.dateHeureFin, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.dateLimiteInscription) }}
+            {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <br>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.nbInscriptionsMax) }}
+            {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_label(sortieForm.infosSortie) }}
+            {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+        </div>
+        <br>
+            <select id="selectVille" onclick="window.afficherLieu"> Ville
+                <option value="0">Choisir une ville</option>
+            </select>
+        <br>
+{#        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">#}
+{#            {{ form_label(sortieForm.lieu) }}#}
+{#            {{ form_widget(sortieForm.lieu) }}#}
+{#        </div>#}
+        <br>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <select name="{{ field_name(sortieForm.lieu) }}" class="form-control" id="selectLieux">
+                <option value="">{{ field_label(sortieForm.lieu) }}</option>
+
+                {% for id, nom in field_choices(sortieForm.lieu) %}
+                    <option value="{{ id }}">{{ nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+
+        {{ form_widget(sortieForm.ajouter, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+
+        {{ form_end(sortieForm, {render_rest: false}) }}
     </div>
+
+
     <p id="latitude"></p>
     <p id="longitude"></p>
-
+    <div id="map"></div>
     <select id="selectVille" onclick="window.afficherLieu"> Ville
         <option value="0">Choisir une ville</option>
     </select>
-    <select id="selectLieux" >
-        <option value="0">Choisir un lieu</option>
-    </select>
-
-    <div id="map"></div>
-
 {% endblock %}

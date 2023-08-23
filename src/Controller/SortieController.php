@@ -73,6 +73,15 @@ class SortieController extends AbstractController
     {
         return $this->render('sortie/detail.html.twig', compact('sortie'));
     }
+    #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
+public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+{
+    $etat = $etatRepository->findOneBy(array('id'=> 6));
+    $sortie->setEtat($etat);
+    $entityManager->persist($sortie);
+    $entityManager->flush();
+    return $this->redirectToRoute('sortie_affichage');
+}
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
     public function modifier(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -106,7 +115,7 @@ class SortieController extends AbstractController
     public function apiLieux(
         LieuRepository $lieuRepository, SerializerInterface $serializer, string $id): Response
     {
-        $lieu = $lieuRepository->findBy(array('id'=> $id));
+        $lieu = $lieuRepository->findBy(array('ville'=> $id));
         return new JsonResponse(
             $serializer->serialize(
                 $lieu,

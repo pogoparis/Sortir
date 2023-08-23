@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Filtre;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,8 +22,8 @@ class FiltreFormType extends AbstractType
                         'placeholder' => 'Rechercher'
                     ]]
             )
-            ->add('dateMin')
-            ->add('dateMax');
+            ->add('dateMin', DateTimeType::class)
+            ->add('dateMax', DateTimeType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

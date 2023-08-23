@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use DateTimeInterface;
 
 class Filtre
 {
@@ -14,7 +15,7 @@ class Filtre
     /**
      * @var dateTime
      */
-    public dateTime $dateMin;
+    public DateTimeInterface $dateMin;
 
     /**
      * @var dateTime

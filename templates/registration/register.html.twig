@@ -30,7 +30,7 @@
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.telephone) }}
-            {{ form_errors(registrationForm.telephone) }}
+            {{ form_errors(registrationForm.telephone) }}{#le form_errors permet d'afficher les messages d'erreurs après saise#}
             {{ form_widget(registrationForm.telephone) }}
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

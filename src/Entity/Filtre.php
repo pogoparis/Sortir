@@ -18,9 +18,10 @@ class Filtre
     public ?DateTimeInterface $dateMin = null;
 
     /**
-     * @var dateTimeInterface | null
+     * @var DateTimeInterface|null
      */
     public ?DateTimeInterface $dateMax = null;
+
 
     /**
      * @var bool|null

@@ -25,6 +25,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "flowbite": "^1.8.1",
         "leaflet": "^1.9.4"
     }
 }

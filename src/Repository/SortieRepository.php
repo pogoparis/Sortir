@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Filtre;
 use App\Entity\Sortie;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -33,6 +34,25 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere('p.nom LIKE :nom')
                 ->setParameter('nom', "%{$filtre->nom}%");
         }
+
+        if ($filtre->dateMin !== null) {
+            $query = $query
+                ->andWhere('p.dateHeureDebut >= :dateMin')
+                ->setParameter('dateMin', $filtre->dateMin);
+        }
+
+        if ($filtre->dateMax !== null) {
+            $query = $query
+                ->andWhere('p.dateHeureDebut <= :dateMax')
+                ->setParameter('dateMax', $filtre->dateMax);
+        }
+
+//        if ($filtre->organisateur !== null) {
+//            $query = $query
+//                ->andWhere('p.organisateur = :user')
+//                ->setParameter('user', $user);
+//        }
+
         return $query->getQuery()->getResult();
     }
 

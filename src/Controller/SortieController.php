@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use DateTime;
 
 class SortieController extends AbstractController
 {
@@ -31,7 +32,7 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
-        $etat = $etatRepository->findOneBy(array('id' => 4));
+        $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($this->getUser());
 
@@ -68,20 +69,33 @@ class SortieController extends AbstractController
     ): Response
     {
         $filtre = new Filtre();
+        $user = $this->getUser();
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
-        $sorties = $sortieRepository->findSearch($filtre);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sorties = $sortieRepository->findSearch($filtre);
+        } else {
+            $sorties = $sortieRepository->findAll();
+        }
+
+
         return $this->render('sortie/listeSorties.html.twig',
             [
                 'sorties' => $sorties,
-                'form' => $form
+                'form' => $form->createView(),
             ]);
     }
 
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
-    public function detail(Sortie $sortie, SortieRepository $sortieRepository): Response
+    public function detail(Sortie $sortie): Response
     {
-        return $this->render('sortie/detail.html.twig', compact('sortie'));
+        $now = new DateTime();
+        $minNow = date_timestamp_get($now);
+
+        $limite = $sortie->getDateLimiteInscription();
+        $minLimite = date_timestamp_get($limite);
+        $difference = ($minLimite - $minNow);
+        return $this->render('sortie/detail.html.twig', compact('sortie', 'difference'));
     }
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
 public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response

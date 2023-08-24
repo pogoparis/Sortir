@@ -13,7 +13,7 @@ class Filtre
     public ?string $nom ="";
 
     /**
-     * @var DateTimeInterface |null
+     * @var dateTimeInterface | null
      */
     public ?DateTimeInterface $dateMin = null;
 
@@ -23,4 +23,8 @@ class Filtre
     public ?DateTimeInterface $dateMax = null;
 
 
+    /**
+     * @var bool|null
+     */
+    public ?bool $organisateur = null;
 }

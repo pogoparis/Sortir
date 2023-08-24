@@ -22,16 +22,63 @@ use DateTime;
 
 class SortieController extends AbstractController
 {
+    /**
+     * @throws \Exception
+     */
+//    #[Route('/creation', name: 'sortie_creation')]
+//    public function creation(
+//        Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
+//    ): Response
+//    {
+//
+//        //Nouvelle Sortie
+//
+//        $sortie = new Sortie();
+//        //Etat de la sortie -> "créée" par défaut
+//        $etat = $etatRepository->findOneBy(array('id' => 4));
+//        $sortie->setEtat($etat);
+//        $sortie->setOrganisateur($this->getUser());
+//
+//        // Organisateur
+//        $sortie->setOrganisateur($this->getUser());
+//        // set siteEni
+//        $siteId = $this->getUser()->getSiteEni();
+//        $siteUser = $siteRepository->findOneBy(array('id' => $siteId ));
+//        $sortie->setSite($siteUser);
+//
+//
+//        //TODO Mettre le lieu en formulaire
+//        //Lieu en dur
+////        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
+////        $sortie->setLieu($lieu);
+//
+//        // création du formulaire
+//        $sortieForm = $this->createForm(SortieType::class, $sortie);
+//        $sortieForm->handleRequest($requete);
+//
+//        $dateHeureDebut = $requete->request->get('dateHeureDebut');
+//        if ($dateHeureDebut !== null) {
+//            $dateHeureDebut = new \DateTime($dateHeureDebut);
+//        }
+//
+//        if ($sortieForm -> isSubmitted() ){
+//             $test = $requete->query->get('sortie[lieu]');
+//             $sortie->setDateHeureDebut($dateHeureDebut);
+//            $entityManager->persist($sortie);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('main_index');
+//        }
+//        return $this->render('sortie/index.html.twig', compact("sortieForm"));
+//    }
     #[Route('/creation', name: 'sortie_creation')]
     public function creation(
         Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
 
-        //Nouvelle Sortie
-
+        // Nouvelle Sortie
         $sortie = new Sortie();
-        //Etat de la sortie -> "créée" par défaut
+        // ... autres initialisations ...
         $etat = $etatRepository->findOneBy(array('id' => 4));
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($this->getUser());
@@ -42,28 +89,27 @@ class SortieController extends AbstractController
         $siteId = $this->getUser()->getSiteEni();
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId ));
         $sortie->setSite($siteUser);
-
-
-        //TODO Mettre le lieu en formulaire
-        //Lieu en dur
-//        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
-//        $sortie->setLieu($lieu);
-
-        // création du formulaire
+        // Création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
 
+        // Si le formulaire est soumis et valide
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            // Récupérer la dateHeureDebut du formulaire
+            $dateHeureDebut = $sortieForm->get('dateHeureDebut')->getData();
+            // Attribuer la dateHeureDebut à la sortie
+            $sortie->setDateHeureDebut($dateHeureDebut);
 
-
-         if ($sortieForm -> isSubmitted() ){
-             $test = $requete->query->get('sortie[lieu]');
-
+            // Enregistrer en base de données
             $entityManager->persist($sortie);
             $entityManager->flush();
+
             return $this->redirectToRoute('main_index');
         }
+
         return $this->render('sortie/index.html.twig', compact("sortieForm"));
     }
+
     #[Route('/sorties', name: 'sortie_affichage')]
     public function affichage(SortieRepository $sortieRepository, Request $request
     ): Response

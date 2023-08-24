@@ -1,10 +1,5 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-
-
-
-
 
     <div class="FormSearch m-2">
         {{ form_start(form) }}
@@ -32,9 +27,12 @@
         <tr>
             <th>Nom de la sortie</th>
             <th>Date de début</th>
+            <th>Date de fin</th>
             <th>Nombre de participants</th>
+            <th>inscrit</th>
             <th>Description</th>
             <th>Organisateur</th>
+
         </tr>
         </thead>
         <tbody>
@@ -42,7 +40,13 @@
             <tr>
                 <td>{{ event.nom }}</td>
                 <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
+                <td>{{ event.dateHeureFin |date('d-m-Y') }}</td>
                 <td>{{ event.nbInscriptionsMax }}</td>
+               <td>
+                   {% if event in user.sortiesParticipants %}
+                       ✅
+                   {% endif %}
+               </td>
                 <td>{{ event.infosSortie }}</td>
                 <td>{{ event.organisateur.pseudo }}</td>
                 <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">

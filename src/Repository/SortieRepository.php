@@ -128,6 +128,14 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findSortiesOlderThan(\DateTimeInterface $date): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.dateHeureFin < :date')
+            ->setParameter('date', $date);
+
+        return $qb->getQuery()->getResult();
+    }
 
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\SortiesArchivees;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,12 +21,14 @@ class ArchiveCommand extends Command
 {
 
     private EntityManagerInterface $entityManager;
+    private SortieRepository $sortieRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SortieRepository $sortieRepository)
     {
-        $this->entityManager = $entityManager;
 
         parent::__construct();
+        $this->entityManager = $entityManager;
+        $this->sortieRepository = $sortieRepository;
     }
     protected function configure(): void
     {
@@ -34,13 +38,31 @@ class ArchiveCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $arg1 = $input->getArgument('arg1');
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $oneMonthAgo = new \DateTime('-1 month');
+        $oldSorties = $this->sortieRepository->findSortiesOlderThan($oneMonthAgo);
+
+        foreach ($oldSorties as $sortie) {
+            $archivedSortie = new SortiesArchivees();
+            $archivedSortie->setNom($sortie->getNom());
+            $archivedSortie->setDateHeureDebut($sortie->getDateHeureDebut());
+            $archivedSortie->setDateHeureFin($sortie->getDateHeureFin());
+            $archivedSortie->setNbInscriptionsMax($sortie->getNbInscriptionsMax());
+            $archivedSortie->setDateLimiteInscription($sortie->getDateLimiteInscription());
+            $archivedSortie->setInfosSortie($sortie->getInfosSortie());
+            $archivedSortie->setOrganisateurId($sortie->getOrganisateur());
+            $archivedSortie->setSiteId($sortie->getSite());
+            $archivedSortie->setLieuId($sortie->getLieu());
+            $archivedSortie->setEtatId($sortie->getEtat());
+
+
+            $this->entityManager->persist($archivedSortie);
+            $this->entityManager->remove($sortie);
         }
-        if ($input->getOption('option1')) {
-            // ...
-        }
+
+        $this->entityManager->flush();
+
+
+
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
 

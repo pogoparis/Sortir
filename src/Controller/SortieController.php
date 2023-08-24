@@ -13,7 +13,6 @@ use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,12 +70,9 @@ class SortieController extends AbstractController
     {
         $filtre = new Filtre();
         $now= new DateTime();
-    $user = $this->getUser();
         //TODO
         // mettre le User en attribut de Filtre
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
-//        $now = new \DateTime('now');
-//        $filtre->setDateMin($now);
 
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
@@ -111,7 +107,6 @@ class SortieController extends AbstractController
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
     public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
-
         $etat = $etatRepository->findOneBy(array('id' => 6));
         $sortie->setEtat($etat);
         $entityManager->persist($sortie);

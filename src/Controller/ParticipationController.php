@@ -40,3 +40,5 @@ class ParticipationController extends AbstractController
         return $this->redirectToRoute('sortie_affichage');
     }
 }
+
+

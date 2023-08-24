@@ -32,7 +32,7 @@ class SiteAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($site);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Nouveau site ajouté');
             return $this->redirectToRoute('app_site_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,7 +58,7 @@ class SiteAdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Modification enregistrée');
             return $this->redirectToRoute('app_site_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,6 +74,7 @@ class SiteAdminController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->request->get('_token'))) {
             $entityManager->remove($site);
             $entityManager->flush();
+            $this->addFlash('success', 'Site supprimé');
         }
 
         return $this->redirectToRoute('app_site_admin_index', [], Response::HTTP_SEE_OTHER);

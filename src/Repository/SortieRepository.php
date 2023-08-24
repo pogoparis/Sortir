@@ -6,6 +6,7 @@ use App\Entity\Filtre;
 use App\Entity\Sortie;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,6 +54,14 @@ class SortieRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('p.organisateur = :user')
                 ->setParameter('user', $user);
+        }
+
+        // Filtre pour les sorties auxquelles l'utilisateur est inscrit
+        if ($filtre->getInscrit() !== false) {
+            $query = $query
+                ->leftJoin('p.participants', 'u', Join::WITH, 'u = :user')
+                ->setParameter('user', $user)
+                ->andWhere('u = :user');
         }
 
         return $query->getQuery()->getResult();

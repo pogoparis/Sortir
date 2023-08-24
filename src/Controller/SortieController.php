@@ -72,11 +72,9 @@ class SortieController extends AbstractController
     {
         $filtre = new Filtre();
 
-        //TODO
+        //@TODO
         // mettre le User en attribut de Filtre
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
-//        $now = new \DateTime('now');
-//        $filtre->setDateMin($now);
 
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
@@ -86,9 +84,9 @@ class SortieController extends AbstractController
             $sorties = $sortieRepository->findAll();
         }
 
-
         return $this->render('sortie/listeSorties.html.twig',
             [
+                'user' => $user,
                 'sorties' => $sorties,
                 'form' => $form->createView(),
             ]);

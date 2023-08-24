@@ -29,6 +29,11 @@ class Filtre
     private ?bool $organisateur = null;
 
     /**
+     * @var bool|null
+     */
+    private ?bool $inscrit = null;
+
+    /**
      * @return string|null
      */
     public function getNom(): ?string
@@ -90,6 +95,22 @@ class Filtre
     public function setOrganisateur(?bool $organisateur): void
     {
         $this->organisateur = $organisateur;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getInscrit(): ?bool
+    {
+        return $this->inscrit;
+    }
+
+    /**
+     * @param bool|null $inscrit
+     */
+    public function setInscrit(?bool $inscrit): void
+    {
+        $this->inscrit = $inscrit;
     }
 
 

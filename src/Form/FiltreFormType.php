@@ -39,6 +39,11 @@ class FiltreFormType extends AbstractType
                 'label' => "Sorties dont je suis l'organisateur",
                 'required' => false,
             ])
+            // Checkbox Inscrit
+            ->add('inscrit', CheckboxType::class, [
+                'label' => "Sorties auxquelles je suis inscrit",
+                'required' => false,
+            ])
             ;
     }
 

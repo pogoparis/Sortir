@@ -22,10 +22,8 @@ console.log($id);
                     for (const js of json){
                         $idVille = js["ville"]["id"];
                         $idVilleInt = parseInt($idVille);
-                       console.log('idville' + typeof $idVille);
-                        console.log('idvilleint' + typeof $idVilleInt);
+
                         if ($idVille !== $idVilleInt){
-                            console.log('ça marche')
                             document.getElementById("selectLieux").hidden = false;
                          $i = js["id"];
                          $lieu =  document.getElementById("selectLieux").options[$i];

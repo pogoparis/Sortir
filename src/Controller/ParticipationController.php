@@ -24,4 +24,19 @@ class ParticipationController extends AbstractController
         $this->addFlash('success', 'Votre participation a bien été prise en compte');
         return $this->redirectToRoute('sortie_affichage');
     }
+    #[Route('/annulerParticipation/{id}', name: 'participation_annuler', requirements: ["id" => "\d+"])]
+    public function annulerParticipation(Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $participants = $sortie->getParticipants();
+        foreach ($participants as $item){
+            if($item === $user){
+                $sortie->removeParticipant($user);
+            }
+        }
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+        return $this->redirectToRoute('sortie_affichage');
+    }
 }

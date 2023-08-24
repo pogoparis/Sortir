@@ -13,6 +13,7 @@ use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,8 +49,6 @@ class SortieController extends AbstractController
 
         //TODO Mettre le lieu en formulaire
         //Lieu en dur
-//        $lieu = $lieuRepository->findOneBy(array('id'=> 5));
-//        $sortie->setLieu($lieu);
 
         // création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -71,7 +70,8 @@ class SortieController extends AbstractController
     ): Response
     {
         $filtre = new Filtre();
-
+        $now= new DateTime();
+    $user = $this->getUser();
         //TODO
         // mettre le User en attribut de Filtre
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
@@ -91,6 +91,8 @@ class SortieController extends AbstractController
             [
                 'sorties' => $sorties,
                 'form' => $form->createView(),
+                'now' => $now,
+                'user' => $user
             ]);
     }
 
@@ -109,6 +111,7 @@ class SortieController extends AbstractController
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
     public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
+
         $etat = $etatRepository->findOneBy(array('id' => 6));
         $sortie->setEtat($etat);
         $entityManager->persist($sortie);

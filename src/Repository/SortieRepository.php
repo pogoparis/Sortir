@@ -19,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
@@ -68,7 +69,38 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
+    public function findPassedSorties()
+    {
+        $now = new \DateTime();
 
+        return $this->createQueryBuilder('s')
+            ->where('s.dateHeureFin < :now')
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findCloturedSorties()
+    {
+        $now = new \DateTime();
+
+        return $this->createQueryBuilder('s')
+            ->where('s.dateLimiteInscription < :now')
+            ->setParameter('now',$now)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findEncoursSorties()
+    {
+        $now = new \DateTime();
+        return $this->createQueryBuilder('s')
+            ->where('s.dateHeureDebut <= :now'  )
+            ->andWhere('s.dateHeureFin >:now')
+            ->setParameter('now',$now)
+            ->getQuery()
+            ->getResult();
+    }
 
 
 
@@ -96,4 +128,6 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
 }

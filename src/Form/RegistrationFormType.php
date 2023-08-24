@@ -22,7 +22,6 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            /*->add('pseudo',null,["label"=>"Pseudo : "])*/
             ->add('pseudo',TextType::class,["label" => "Pseudo : ",
                 'invalid_message' => 'Le mots de passe doit être le même.',
                 'constraints'=> [
@@ -68,7 +67,7 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
-        ->add('Modifier', SubmitType::class)
+
         ->add('Valider', SubmitType::class);
 
     }

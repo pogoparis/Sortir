@@ -24,10 +24,11 @@
     <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
         modifier
     </a>
-
+{% if sortie.dateHeureDebut > now %}
     <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
         Annuler
     </a>
+    {% endif %}
     {% if difference > 0 %}
         <a class="btn btn-neutral m-1" id="lien" href="{{ path('participation_inscription', {'id' : sortie.id}) }}">
             participer

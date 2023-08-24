@@ -101,7 +101,7 @@ class SortieController extends AbstractController
         $limite = $sortie->getDateLimiteInscription();
         $minLimite = date_timestamp_get($limite);
         $difference = ($minLimite - $minNow);
-        return $this->render('sortie/detail.html.twig', compact('sortie', 'difference'));
+        return $this->render('sortie/detail.html.twig', compact('sortie', 'difference', 'now'));
     }
 
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]

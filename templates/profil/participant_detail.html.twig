@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1> Info Organisateur </h1>
+    <br>
+    <div>
+    <ul>
+        <li>Prénom : {{user.prenom}}</li>
+        <li>Nom : {{user.nom}}</li>
+        <li>Téléphone : {{user.telephone  }}</li>
+        <li>Email : {{ user.email }}</li>
+        <li>Site de rattachement : {{ user.siteEni.nom }}</li>
+    </ul>
+    </div>
+
+
+{% endblock %}

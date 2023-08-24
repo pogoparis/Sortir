@@ -44,7 +44,8 @@
                 <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
                 <td>{{ event.nbInscriptionsMax }}</td>
                 <td>{{ event.infosSortie }}</td>
-                <td>{{ event.organisateur.pseudo }}</td>
+                <td><a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a></td>
+
                 <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                         detail
                     </a></td>

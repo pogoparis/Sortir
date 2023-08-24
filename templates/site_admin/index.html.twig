@@ -19,7 +19,7 @@
                 <td>{{ site.id }}</td>
                 <td>{{ site.nom }}</td>
                 <td>
-                    <a class="btn btn-neutral m-1" href="{{ path('app_site_admin_edit', {'id': site.id}) }}">Modifier</a>
+                    <a class="btn btn-sm m-1" href="{{ path('app_site_admin_edit', {'id': site.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -30,5 +30,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-neutral m-1" href="{{ path('app_site_admin_new') }}">Créer un nouveau Site</a>
+    <a class="btn btn-sm m-1" href="{{ path('app_site_admin_new') }}">Créer un nouveau Site</a>
 {% endblock %}

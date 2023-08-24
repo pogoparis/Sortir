@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ville index{% endblock %}
+
+{% block body %}
+    <h1>Ville Admin</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>CodePostal</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ville in villes %}
+            <tr>
+                <td>{{ ville.id }}</td>
+                <td>{{ ville.nom }}</td>
+                <td>{{ ville.codePostal }}</td>
+                <td>
+                    <a class="btn btn-sm m-1" href="{{ path('app_ville_admin_edit', {'id': ville.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-sm m-1" href="{{ path('app_ville_admin_new') }}">Create new</a>
+{% endblock %}

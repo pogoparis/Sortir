@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ProfilFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+//#[Route('/info',name:'/profil')]
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'profil_detail')]
@@ -32,4 +33,17 @@ class ProfilController extends AbstractController
             'profilForm' => $form->createView(),
         ]);
     }
+
+    #[Route('/profil/{id}', name: 'profil_participant_detail',requirements: ["user"=>"\d+"])]
+    public function participant_detail(
+        int $id,
+        UserRepository $userRepository
+    ):Response
+    {
+        $user= $userRepository->findOneBy(["id"=>$id]);
+        return $this->render('profil/participant_detail.html.twig',
+        compact("user"));
+
+    }
+
 }

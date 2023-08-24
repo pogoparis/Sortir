@@ -24,13 +24,9 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $this->addFlash('success', 'Votre profil a été mis à jour');
-
-
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Votre profil a été mis à jour');
         }
         return $this->render('profil/detail.html.twig', [
             'profilForm' => $form->createView(),

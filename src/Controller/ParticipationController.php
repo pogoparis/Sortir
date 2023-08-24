@@ -21,6 +21,7 @@ class ParticipationController extends AbstractController
         $sortie->addParticipant($userCo);
         $entityManager->persist($sortie);
         $entityManager->flush();
+        $this->addFlash('success', 'Votre participation a bien été prise en compte');
         return $this->redirectToRoute('sortie_affichage');
     }
 }

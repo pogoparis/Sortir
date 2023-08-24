@@ -8,12 +8,23 @@
 
     <div class="FormSearch m-2">
         {{ form_start(form) }}
-        {{ form_widget(form.nom) }}
-
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Filtrer
-        </button>
+        <div class="grid grid-cols-4 gap-4">
+            <div>
+                {{ form_widget(form.nom) }}
+            </div>
+            <div>
+                {{ form_row(form.dateMin) }}
+            </div>
+            <div>
+                {{ form_row(form.dateMax) }}
+            </div>
+            <div>
+                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
+                    Filtrer
+                </button>
+            </div>
+        </div>
         {{ form_end(form) }}
-
     </div>
 
     <table class="table">
@@ -23,6 +34,7 @@
             <th>Date de début</th>
             <th>Nombre de participants</th>
             <th>Description</th>
+            <th>Organisateur</th>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +44,7 @@
                 <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
                 <td>{{ event.nbInscriptionsMax }}</td>
                 <td>{{ event.infosSortie }}</td>
+                <td>{{ event.organisateur.pseudo }}</td>
                 <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                         detail
                     </a></td>

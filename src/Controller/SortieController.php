@@ -10,6 +10,7 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
+use App\Repository\UserRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
+use function Symfony\Component\Clock\now;
 
 class SortieController extends AbstractController
 {
@@ -40,7 +42,7 @@ class SortieController extends AbstractController
         $sortie->setOrganisateur($this->getUser());
         // set siteEni
         $siteId = $this->getUser()->getSiteEni();
-        $siteUser = $siteRepository->findOneBy(array('id' => $siteId ));
+        $siteUser = $siteRepository->findOneBy(array('id' => $siteId));
         $sortie->setSite($siteUser);
 
 
@@ -54,9 +56,8 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($requete);
 
 
-
-         if ($sortieForm -> isSubmitted() ){
-             $test = $requete->query->get('sortie[lieu]');
+        if ($sortieForm->isSubmitted()) {
+            $test = $requete->query->get('sortie[lieu]');
 
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -64,16 +65,23 @@ class SortieController extends AbstractController
         }
         return $this->render('sortie/index.html.twig', compact("sortieForm"));
     }
+
     #[Route('/sorties', name: 'sortie_affichage')]
-    public function affichage(SortieRepository $sortieRepository, Request $request
+    public function affichage(SortieRepository $sortieRepository, UserRepository $userRepository, Request $request
     ): Response
     {
         $filtre = new Filtre();
-        $user = $this->getUser();
+
+        //TODO
+        // mettre le User en attribut de Filtre
+        $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
+//        $now = new \DateTime('now');
+//        $filtre->setDateMin($now);
+
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $sorties = $sortieRepository->findSearch($filtre);
+            $sorties = $sortieRepository->findSearch($filtre, $user);
         } else {
             $sorties = $sortieRepository->findAll();
         }
@@ -97,22 +105,24 @@ class SortieController extends AbstractController
         $difference = ($minLimite - $minNow);
         return $this->render('sortie/detail.html.twig', compact('sortie', 'difference'));
     }
+
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
-public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
-{
-    $etat = $etatRepository->findOneBy(array('id'=> 6));
-    $sortie->setEtat($etat);
-    $entityManager->persist($sortie);
-    $entityManager->flush();
-    return $this->redirectToRoute('sortie_affichage');
-}
+    public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    {
+        $etat = $etatRepository->findOneBy(array('id' => 6));
+        $sortie->setEtat($etat);
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+        return $this->redirectToRoute('sortie_affichage');
+    }
+
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
     public function modifier(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm -> isSubmitted() && $sortieForm->isValid()){
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $entityManager->persist($sortie);
             $entityManager->flush();
             return $this->redirectToRoute('sortie_affichage');
@@ -130,21 +140,22 @@ public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityMa
             $serializer->serialize(
                 $villes,
                 'json',
-                ['groups'=>'wishes:read']),
+                ['groups' => 'wishes:read']),
             200,
             [],
             true);
     }
+
     #[Route('/apiLieux/{id}', name: 'api_lieux', requirements: ["id" => "\d+"])]
     public function apiLieux(
         LieuRepository $lieuRepository, SerializerInterface $serializer, string $id): Response
     {
-        $lieu = $lieuRepository->findBy(array('ville'=> $id));
+        $lieu = $lieuRepository->findBy(array('ville' => $id));
         return new JsonResponse(
             $serializer->serialize(
                 $lieu,
                 'json',
-                ['groups'=>'wishes:read']),
+                ['groups' => 'wishes:read']),
             200,
             [],
             true);

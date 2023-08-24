@@ -24,37 +24,44 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-    public function findSearch(Filtre $filtre): array
+    public function findSearch(Filtre $filtre, User $user): array
     {
         $query = $this
             ->createQueryBuilder('p');
 
-        if (!empty($filtre->nom)) {
+        if (!empty($filtre->getNom())) {
             $query = $query
                 ->andWhere('p.nom LIKE :nom')
-                ->setParameter('nom', "%{$filtre->nom}%");
+                ->setParameter('nom', "%{$filtre->getNom()}%");
         }
 
-        if ($filtre->dateMin !== null) {
+        if ($filtre->getDateMin() !== null) {
+
             $query = $query
                 ->andWhere('p.dateHeureDebut >= :dateMin')
-                ->setParameter('dateMin', $filtre->dateMin);
+                ->setParameter('dateMin', $filtre->getDateMin());
         }
 
-        if ($filtre->dateMax !== null) {
+        if ($filtre->getDateMax() !== null) {
             $query = $query
                 ->andWhere('p.dateHeureDebut <= :dateMax')
-                ->setParameter('dateMax', $filtre->dateMax);
+                ->setParameter('dateMax', $filtre->getDateMax());
         }
 
-//        if ($filtre->organisateur !== null) {
-//            $query = $query
-//                ->andWhere('p.organisateur = :user')
-//                ->setParameter('user', $user);
-//        }
+        // Requete filtre par organisateur
+        if ($filtre->getOrganisateur() !== false) {
+            $query = $query
+                ->andWhere('p.organisateur = :user')
+                ->setParameter('user', $user);
+        }
 
         return $query->getQuery()->getResult();
     }
+
+
+
+
+
 
 //    /**
 //     * @return Sortie[] Returns an array of Sortie objects

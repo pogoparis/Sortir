@@ -23,13 +23,23 @@ class FiltreFormType extends AbstractType
                         'placeholder' => 'Rechercher'
                     ]]
             )
-            ->add('dateMin', DateTimeType::class)
-            ->add('dateMax', DateTimeType::class)
-//            ->add('organisateur', CheckboxType::class, [
-//                'label' => "Afficher les sorties dont je suis l'organisateur",
-//                'required' => false,
-//            ]);
-;
+            // Recherche par Date
+            ->add('dateMin', DateTimeType::class,
+            [
+                'widget' => 'single_text',
+                'required'   => false,
+            ])
+            ->add('dateMax', DateTimeType::class,
+            [
+                'widget' => 'single_text',
+                'required'   => false,
+            ])
+            // Checkbox Organisateur
+            ->add('organisateur', CheckboxType::class, [
+                'label' => "Sorties dont je suis l'organisateur",
+                'required' => false,
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -41,10 +51,10 @@ class FiltreFormType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
-    {
-        return '';
-    }
+        public function getBlockPrefix()
+        {
+            return '';
+        }
 
 
 }

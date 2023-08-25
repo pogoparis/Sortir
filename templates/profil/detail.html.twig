@@ -4,7 +4,7 @@
 {% block body %}
     <div>
         <h1> Modification du profil </h1>
-        <img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil">
+        {#<img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil">#}
         {{ form_errors(profilForm) }}
 
         {{ form_start(profilForm) }}
@@ -20,7 +20,9 @@
         {{ form_row(profilForm.email) }}
         {{ form_row(profilForm.siteEni) }}
         {{ form_row(profilForm._token) }}
-        
+
+        {{ form_widget(profilForm.imageFile) }}
+
         <a href="{{ path('app_forgot_password_request')}}">
             Changer de mots de passe ?
         </a>

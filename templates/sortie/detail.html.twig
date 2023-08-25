@@ -34,5 +34,33 @@
             participer
         </a>
     {% endif %}
+{#  ************* AFFICHAGE DU BOUTON PUBLIER TODO: VERIFIER LES CONDITIONS  **************** #}
+    {% if sortie.etat.id == 1 and sortie.organisateur == app.user %}
+        <a class="btn btn-sm m-1" href="{{ path('participation_publier', {'id' : sortie.id})  }}">
+            Publier
+        </a>
+    {% endif %}
+{#          *****************************************************************               #}
+
+    <h2>Participants</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participant in sortie.participants %}
+            <tr>
+                <td>{{ participant.nom }}</td>
+                <td>{{ participant.prenom }}</td>
+                <td>{{ participant.email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
 

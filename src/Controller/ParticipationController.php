@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,6 +38,25 @@ class ParticipationController extends AbstractController
 
         $entityManager->persist($sortie);
         $entityManager->flush();
+        return $this->redirectToRoute('sortie_affichage');
+    }
+
+
+    #[Route('/publier/{id}', name: 'participation_publier', requirements: ["id" => "\d+"])]
+    public function publier(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager,
+        EtatRepository $etatRepository,
+    ): Response
+    {
+        $etatCreee = $etatRepository->findOneBy(['libelle' => 'Créée']);
+        $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+
+        // si l'état actuel de la sortie est "créée" alors on le passe à "ouverte"
+        if ($sortie->getEtat() === $etatCreee) {
+            $sortie->setEtat($etatOuverte);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('sortie_affichage');
     }
 }

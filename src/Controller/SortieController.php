@@ -27,46 +27,38 @@ use function Symfony\Component\Clock\now;
 
 class SortieController extends AbstractController
 {
+//    ****************************** CREATION *****************************
     #[Route('/creation', name: 'sortie_creation')]
     public function creation(
         Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
-
         //Nouvelle Sortie
-
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($this->getUser());
-
         // Organisateur
         $sortie->setOrganisateur($this->getUser());
         // set siteEni
         $siteId = $this->getUser()->getSiteEni();
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId));
         $sortie->setSite($siteUser);
-
-
-        //TODO Mettre le lieu en formulaire
-        //Lieu en dur
-
         // création du formulaire
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
-
-
         if ($sortieForm->isSubmitted()) {
             $test = $requete->query->get('sortie[lieu]');
-
             $entityManager->persist($sortie);
             $entityManager->flush();
-            return $this->redirectToRoute('main_index');
+            $this->addFlash('success', 'Sortie créée , Publiez la si les informations sont correctes');
+            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
         return $this->render('sortie/index.html.twig', compact("sortieForm"));
     }
 
+//    ********************************* LISTE SORTIES ****************************************
     #[Route('/sorties', name: 'sortie_affichage')]
     public function affichage(SortieRepository $sortieRepository, UserRepository $userRepository, Request $request
     ): Response
@@ -84,7 +76,6 @@ class SortieController extends AbstractController
         } else {
             $sorties = $sortieRepository->findAll();
         }
-
 
         return $this->render('sortie/listeSorties.html.twig',
             [

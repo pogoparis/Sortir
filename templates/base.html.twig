@@ -30,8 +30,8 @@
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a href="{{ path('sortie_affichage') }}">Afficher les Événements</a></li>
                 {% if app.user %}
+                    <li><a href="{{ path('sortie_affichage') }}">Afficher les Événements</a></li>
                     <li><a href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a></li>
                     <li><a href="{{ path('sortie_creation') }}">Créer un Événement </a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>

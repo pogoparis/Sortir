@@ -73,8 +73,6 @@ class RegistrationFormType extends AbstractType
         ->add('imageFile', VichImageType::class,[
             'label' => 'Image de profil',
             'required' => false,
-            'allow_delete' => true,
-            'delete_label' => 'Supprimer l\'image',
             'download_label' => true,
             'constraints' => [
                 new File ([
@@ -85,8 +83,6 @@ class RegistrationFormType extends AbstractType
                 ],
                     'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG)',
                 ])
-
-
             ]
         ])
         ->add('Valider', SubmitType::class);

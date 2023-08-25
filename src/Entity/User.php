@@ -272,7 +272,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setImageFile(?File $imageFile): void
     {
+
         $this->imageFile = $imageFile;
+        if(null !== $imageFile){
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
     /**
@@ -367,4 +371,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'id'=>$this->id,
+            'siteEni'=>$this->siteEni,
+            'email'=>$this->email,
+            'roles'=>$this->roles,
+            'password'=>$this->password,
+            'pseudo'=>$this->pseudo,
+            'nom'=>$this->nom,
+            'prenom'=>$this->prenom,
+            'telephone'=>$this->telephone,
+            'isAdmin'=>$this->isAdmin,
+            'isActif'=>$this->isActif,
+            'isVerified'=>$this->isVerified,
+            'imageName'=>$this->imageName,
+            'imageSize'=>$this->imageSize,
+            'updatedAt'=>$this->updatedAt,
+
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+
+        $this->updatedAt = $data['updatedAt'];
+        $this->imageSize = $data['imageSize'];
+        $this->imageName = $data['imageName'];
+        $this->isVerified = $data['isVerified'];
+        $this->isActif = $data['isActif'];
+        $this->isAdmin = $data['isAdmin'];
+        $this->telephone = $data['telephone'];
+        $this->prenom = $data['prenom'];
+        $this->nom = $data['nom'];
+        $this->pseudo = $data['pseudo'];
+        $this->password = $data['password'];
+        $this->email = $data['email'];
+        $this->roles = $data['roles'];
+        $this->siteEni = $data['siteEni'];
+        $this->id = $data['id'];
+    }
+
+
 }

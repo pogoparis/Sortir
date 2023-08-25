@@ -20,18 +20,21 @@ class ProfilController extends AbstractController
     #[Route('/profil', name: 'profil_detail')]
     public function detail(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        $user = $this->getUser();
+        $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
+
         $form = $this->createForm(ProfilFormType::class, $user);
         $form->handleRequest($request);
-        $userEntity=$userRepository->findOneBy(array ('id'=>$user));
+        //$userEntity=$userRepository->findOneBy(array ('id'=>$user));
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Votre profil a été mis à jour');
+           return $this->redirectToRoute('main_index');
         }
         return $this->render('profil/detail.html.twig', [
             'profilForm' => $form->createView(),
-            'user'=> $userEntity
+            //'user'=> $userEntity
         ]);
     }
 

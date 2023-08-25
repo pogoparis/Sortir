@@ -30,13 +30,13 @@
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.telephone) }}
-            {{ form_errors(registrationForm.telephone) }}{#le form_errors permet d'afficher les messages d'erreurs après saise#}
             {{ form_widget(registrationForm.telephone) }}
+            {{ form_errors(registrationForm.telephone) }}{#le form_errors permet d'afficher les messages d'erreurs après saise#}
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.email) }}
-            {{ form_errors(registrationForm.email) }}
             {{ form_widget(registrationForm.email) }}
+            {{ form_errors(registrationForm.email) }}
         </div>
 
         <br>
@@ -49,6 +49,9 @@
             {{ form_widget(registrationForm.plainPassword) }}
             {#._token permet de valider le token de l'enregistrement du mdp#}
             {{ form_row(registrationForm._token) }}
+        </div>
+        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            {{ form_widget(registrationForm.imageFile) }}
         </div>
         <label>
             <input type="checkbox" name="_remember_me" checked>

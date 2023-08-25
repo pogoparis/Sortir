@@ -8,6 +8,7 @@ function init() {
         attribution: '© OpenStreetMap'
     }).addTo(map);
     affichageVille();
+    afficherLocalisation();
 }
 function afficherLieu(){
      $id = document.getElementById("selectVille").value;
@@ -78,20 +79,49 @@ function affichageVille() {
             }
         )
 }
-function coordonnee() {
-    fetch('http://api.open-notify.org/iss-now.json')
+function afficherLocalisation() {
+    fetch('http://127.0.0.1:8000/apiLocalisation')
         .then(res => res.json())
         .then(
             json => {
-                let iss = document.getElementById("map");
-                        let latitude1 = document.getElementById("latitude");
-                        let longitude1 = document.getElementById("longitude");
-                        let longitude = json['iss_position']['longitude'];
-                        let latitude = json['iss_position']['latitude'];
-                        latitude1.innerText = 'latitude  : ' + latitude ;
-                        longitude1.innerText = 'longitude : ' + longitude;
-                        map.flyTo([latitude, longitude], 3);
+                let select = document.getElementById("selectLocalisation");
+
+                for (const js of json){
+
+                    let nouvelElement = document.createElement("option");
+
+                    nouvelElement.setAttribute("value", js['id'])
+                    nouvelElement.innerText = js['nom'];
+                    select.appendChild(nouvelElement);
+                    document.getElementById("selectLocalisation").addEventListener("click", coordonnee);
+                }
             }
         )
+}
 
+function coordonnee() {
+
+    $id = document.getElementById("selectLocalisation").value;
+    console.log($id);
+    fetch('http://127.0.0.1:8000/apiLocalisation')
+        .then(res => res.json())
+        .then(
+            json => {
+                console.log(json[0]);
+
+                for (const js of json){
+                    $idVilleInt = parseInt($id);
+                    $idSelect = parseInt(js['id']);
+
+                    if($idSelect === $idVilleInt){
+
+                let longitude = js['longitude'];
+                let latitude = js['latitude'];
+
+                map.flyTo([latitude, longitude], 16);
+            }
+                }
+            }
+        )
+    window.coordonnee = coordonnee;
 }

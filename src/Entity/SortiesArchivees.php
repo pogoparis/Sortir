@@ -50,6 +50,9 @@ class SortiesArchivees
     #[ORM\JoinColumn(nullable: false)]
     private ?Lieu $lieuId = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    private Collection $userId;
+
     public function __construct()
     {
         $this->userId = new ArrayCollection();
@@ -176,6 +179,30 @@ class SortiesArchivees
     public function setLieuId(?Lieu $lieuId): static
     {
         $this->lieuId = $lieuId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUserId(): Collection
+    {
+        return $this->userId;
+    }
+
+    public function addUserId(User $userId): static
+    {
+        if (!$this->userId->contains($userId)) {
+            $this->userId->add($userId);
+        }
+
+        return $this;
+    }
+
+    public function removeUserId(User $userId): static
+    {
+        $this->userId->removeElement($userId);
 
         return $this;
     }

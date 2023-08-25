@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/ville/admin')]
+#[Route('/admin/ville')]
 class VilleAdminController extends AbstractController
 {
     #[Route('/', name: 'app_ville_admin_index', methods: ['GET'])]

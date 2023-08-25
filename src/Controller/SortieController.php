@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Filtre;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Form\FiltreFormType;
+use App\Form\LieuType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
@@ -159,6 +161,7 @@ class SortieController extends AbstractController
             [],
             true);
     }
+
     #[Route('/apiLocalisation', name: 'api_Localisation')]
     public function apiVilleLocalisation(
         VilleLocalisationRepository $villeLocalisationRepository, SerializerInterface $serializer): Response
@@ -173,5 +176,18 @@ class SortieController extends AbstractController
             [],
             true);
     }
+    #[Route('/creationLocalisation/{latitude}{longitude}', name: 'sortie_creationLocalisation', requirements: ["latitude" => "-?\d+\.\d+", "longitude" => "-?\d+\.\d+"])]
+    public function creationLieu( EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $lieu = new Lieu();
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $lieuForm->handleRequest($request);
 
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+            return $this->redirectToRoute('sortie_creation');
+        }
+        return $this->redirectToRoute('sortie_creationLocalisation', compact('lieuForm'));
+    }
 }

@@ -7,6 +7,15 @@ function init() {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(map);
+    let blackIcon = L.icon({
+        iconUrl: 'pointeur.png',
+        shadowUrl: 'leaf-shadow.png',
+
+        iconSize: [30, 70], // size of the icon
+        iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+    marker = L.marker([51.505, -0.09], {icon: blackIcon}).addTo(map);
     affichageVille();
     afficherLocalisation();
 }
@@ -117,11 +126,26 @@ function coordonnee() {
 
                 let longitude = js['longitude'];
                 let latitude = js['latitude'];
-
+                        let latitude1 = document.getElementById("latitude");
+                        let longitude1 = document.getElementById("longitude");
+                        latitude1.innerText = 'latitude  : ' + latitude ;
+                        longitude1.innerText = 'longitude : ' + longitude;
                 map.flyTo([latitude, longitude], 16);
+                marker.setLatLng([latitude, longitude]);
             }
                 }
             }
         )
     window.coordonnee = coordonnee;
+    let popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("longitude + latitude :  " + e.latlng.toString())
+            .openOn(map);
+
+    }
+
+    map.on('click', onMapClick);
 }

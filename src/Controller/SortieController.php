@@ -30,7 +30,7 @@ class SortieController extends AbstractController
 //    ****************************** CREATION *****************************
     #[Route('/creation', name: 'sortie_creation')]
     public function creation(
-        Request $requete, EtatRepository $etatRepository, LieuRepository $lieuRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
+        Request $requete, EtatRepository $etatRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
         //Nouvelle Sortie
@@ -167,18 +167,25 @@ class SortieController extends AbstractController
             [],
             true);
     }
-    #[Route('/creationLocalisation/{latitude}{longitude}', name: 'sortie_creationLocalisation', requirements: ["latitude" => "-?\d+\.\d+", "longitude" => "-?\d+\.\d+"])]
-    public function creationLieu( EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/creationLocalisation/{latitude}/{longitude}', name: 'sortie_creationLocalisation', requirements: ["latitude" => "-?\d+\.\d+", "longitude" => "-?\d+\.\d+"])]
+    public function creationLieu(VilleRepository $villeRepository, EntityManagerInterface $entityManager, Request $request, string $latitude, string $longitude): Response
     {
         $lieu = new Lieu();
+       $ville =  $villeRepository->findOneBy(array('id' => 1));
+//        $ville =  $villeRepository->findAll();
+        $latitudeInt = (float)$latitude;
+        $longitudeInt = (float)$longitude;
+        $lieu->setLatitude($latitudeInt);
+        $lieu->setLongitude($longitudeInt);
+        $lieu->setVille($ville);
         $lieuForm = $this->createForm(LieuType::class, $lieu);
         $lieuForm->handleRequest($request);
 
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
             $entityManager->persist($lieu);
             $entityManager->flush();
-            return $this->redirectToRoute('sortie_creation');
+            return $this->redirectToRoute('sortie_affichage');
         }
-        return $this->redirectToRoute('sortie_creationLocalisation', compact('lieuForm'));
+        return $this->render('sortie/creationLocalisation.html.twig', compact('lieuForm', 'ville'));
     }
 }

@@ -59,7 +59,6 @@ class EtatSortieCommand extends Command
             $sortie->setEtat($etatPassee);
         }
 
-
         $this->entityManager->flush();
 
         $io->success('L\Etat des sorties est mis à jour');

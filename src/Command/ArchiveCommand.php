@@ -54,6 +54,11 @@ class ArchiveCommand extends Command
             $archivedSortie->setLieuId($sortie->getLieu());
             $archivedSortie->setEtatId($sortie->getEtat());
 
+            $particpantSortieCollection = $sortie->getParticipants();
+                foreach ($particpantSortieCollection as $participant){
+                    $archivedSortie->addUserId($participant);
+                }
+
 
             $this->entityManager->persist($archivedSortie);
             $this->entityManager->remove($sortie);
@@ -61,9 +66,7 @@ class ArchiveCommand extends Command
 
         $this->entityManager->flush();
 
-
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Sorties Archivées avec succès');
 
 
         return Command::SUCCESS;

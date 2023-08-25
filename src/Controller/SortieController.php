@@ -11,6 +11,7 @@ use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
+use App\Repository\VilleLocalisationRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -158,4 +159,19 @@ class SortieController extends AbstractController
             [],
             true);
     }
+    #[Route('/apiLocalisation', name: 'api_Localisation')]
+    public function apiVilleLocalisation(
+        VilleLocalisationRepository $villeLocalisationRepository, SerializerInterface $serializer): Response
+    {
+        $villes = $villeLocalisationRepository->findAll();
+        return new JsonResponse(
+            $serializer->serialize(
+                $villes,
+                'json',
+                ['groups' => 'local:read']),
+            200,
+            [],
+            true);
+    }
+
 }

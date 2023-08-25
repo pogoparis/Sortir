@@ -2,10 +2,7 @@
 
 {% block body %}
 
-
-
-
-
+{#/*********************** FORMULAIRE DE RECHERCHE *******************************/#}
     <div class="FormSearch m-2">
         {{ form_start(form) }}
         <div class="grid grid-cols-4 gap-4">
@@ -88,10 +85,11 @@
                     {% endif %}
                 {% endfor %}
             </tr>
-
         {% endfor %}
         </tbody>
     </table>
+
+
 
 {% endblock %}
 

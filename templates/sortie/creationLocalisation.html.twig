@@ -1,5 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form (sortieForm) }}
+    {{ form_start(lieuForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4'}}) }}
+
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        {{ form_label(lieuForm.nom) }}
+        {{ form_widget(lieuForm.nom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        {{ form_label(lieuForm.rue) }}
+        {{ form_widget(lieuForm.rue, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        {{ form_label(lieuForm.latitude) }}
+        {{ form_widget(lieuForm.latitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        {{ form_label(lieuForm.longitude) }}
+        {{ form_widget(lieuForm.longitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        {{ form_label(lieuForm.ville) }}
+        {{ form_widget(lieuForm.ville, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
+    </div>
+{#    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">#}
+{#        <select name="{{ field_name(lieuForm.ville) }}" class="form-control" id="selectVille">#}
+{#            <option value="">{{ field_label(lieuForm.ville) }}</option>#}
+
+{#            {% for id, nom in field_choices(ville) %}#}
+{#                <option value="{{ id }}">{{ nom }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#    </div>#}
+
+    {{ form_widget(lieuForm.ajouter, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+    {{ form_row(lieuForm._token) }}
+    {{ form_end(lieuForm, {render_rest: false}) }}
 {% endblock %}

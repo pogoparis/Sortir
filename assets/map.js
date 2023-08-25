@@ -19,6 +19,7 @@ function init() {
     affichageVille();
     afficherLocalisation();
 }
+
 function afficherLieu(){
      $id = document.getElementById("selectVille").value;
 
@@ -75,7 +76,7 @@ function affichageVille() {
         .then(
             json => {
                 let select = document.getElementById("selectVille");
-
+                let select2 = document.getElementById("selectVille2");
                 for (const js of json){
 
                     let nouvelElement = document.createElement("option");
@@ -83,6 +84,7 @@ function affichageVille() {
                     nouvelElement.setAttribute("value", js['id'])
                     nouvelElement.innerText = js['nom'];
                     select.appendChild(nouvelElement);
+                    select2.appendChild(nouvelElement);
                     document.getElementById("selectVille").addEventListener("click", allLieux);
                 }
             }
@@ -124,8 +126,8 @@ function coordonnee() {
 
                     if($idSelect === $idVilleInt){
 
-                let longitude = js['longitude'];
-                let latitude = js['latitude'];
+                 let longitude = js['longitude'];
+                 let latitude = js['latitude'];
                         let latitude1 = document.getElementById("latitude");
                         let longitude1 = document.getElementById("longitude");
                         latitude1.innerText = 'latitude  : ' + latitude ;
@@ -136,16 +138,44 @@ function coordonnee() {
                 }
             }
         )
-    window.coordonnee = coordonnee;
+}
+    // window.coordonnee = coordonnee;
     let popup = L.popup();
 
     function onMapClick(e) {
+        let str = "Cliquer pour créer le lieu"
+        let latitude = e.latlng.lat;
+        let longitude = e.latlng.lng;
+        let lien = `http://127.0.0.1:8000/creationLocalisation/${latitude}/${longitude}`;
+        let balise  = document.createElement("a");
+        balise.setAttribute('href', lien);
+        var createAText = document.createTextNode(str);
+        balise.appendChild(createAText);
         popup
+
             .setLatLng(e.latlng)
-            .setContent("longitude + latitude :  " + e.latlng.toString())
-            .openOn(map);
+            .setContent(balise)
+            .openOn(map)
+
 
     }
+    function localisationLieu() {
+        var adresse = document.getElementById("adresse").value;
+        for(const mot of adresse){
 
-    map.on('click', onMapClick);
-}
+        }
+        let adresseFinal = adresse.replaceAll(" ", "+");
+        fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
+            .then(res => res.json())
+            .then(
+                json => {
+
+                    let coordonnees = json['features'][0]['geometry']['coordinates'];
+                            let longitude =  coordonnees[0];
+                            let latitude =  coordonnees[1];
+                            map.flyTo([latitude, longitude], 16);
+                } )
+        map.on('click', onMapClick);
+    }
+    window.localisationLieu = localisationLieu;
+

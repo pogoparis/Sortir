@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'profil_detail')]
-    public function detail(Request $request, EntityManagerInterface $entityManager): Response
+    public function detail(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ProfilFormType::class, $user);
         $form->handleRequest($request);
-
+        $userEntity=$userRepository->findOneBy(array ('id'=>$user));
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
@@ -31,6 +31,7 @@ class ProfilController extends AbstractController
         }
         return $this->render('profil/detail.html.twig', [
             'profilForm' => $form->createView(),
+            'user'=> $userEntity
         ]);
     }
 

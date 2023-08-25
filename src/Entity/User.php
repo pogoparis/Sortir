@@ -7,11 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[Vich\Uploadable]
 #[UniqueEntity(fields: ['email'], message: 'Cette email est déjà utilisé')]
 #[UniqueEntity(fields: ['pseudo'], message: 'Il y a déjà un utilisateur avec le même pseudo')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -71,6 +74,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'participants')]
     private Collection $sortiesParticipants;
+
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName= null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
 
     public function __construct()
     {
@@ -245,6 +268,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @param File|null $imageFile
+     */
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    /**
      * @return Collection<int, Sortie>
      */
     public function getSortiesOrganisateur(): Collection
@@ -297,6 +328,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->sortiesParticipants->removeElement($sortiesParticipant)) {
             $sortiesParticipant->removeParticipant($this);
         }
+
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+    public function setImageSize(?int $imageSize): static
+    {
+        $this->imageSize = $imageSize;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

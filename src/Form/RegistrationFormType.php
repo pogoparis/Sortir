@@ -13,9 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
+
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -67,7 +70,25 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
+        ->add('imageFile', VichImageType::class,[
+            'label' => 'Image de profil',
+            'required' => false,
+            'allow_delete' => true,
+            'delete_label' => 'Supprimer l\'image',
+            'download_label' => true,
+            'constraints' => [
+                new File ([
+                    'maxSize' => '2M',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                ],
+                    'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG)',
+                ])
 
+
+            ]
+        ])
         ->add('Valider', SubmitType::class);
 
     }

@@ -20,9 +20,9 @@
         {{ form_row(profilForm.email) }}
         {{ form_row(profilForm.siteEni) }}
         {{ form_row(profilForm._token) }}
-
+        <div class="imageProfil">
         {{ form_widget(profilForm.imageFile) }}
-
+        </div>
         <a href="{{ path('app_forgot_password_request')}}">
             Changer de mots de passe ?
         </a>

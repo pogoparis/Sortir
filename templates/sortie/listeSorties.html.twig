@@ -54,7 +54,23 @@
                 <td>{{ event.infosSortie }}</td>
                 <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
                 <td>{{ event.etat.libelle }}</td>
-                <td><a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a></td>
+
+
+                <td>
+                    <div class="flex items-center space-x-3">
+                        <div class="avatar">
+                            <div class="mask mask-squircle w-12 h-12">
+                                <img src="{{ asset(user.imageName) }}" alt="avatar" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold"><a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a></div>
+
+                        </div>
+                    </div>
+                </td>
+
+
 
                 <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                         detail

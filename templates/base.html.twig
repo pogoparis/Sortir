@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html >
+{#<html data-theme="dark">#}
+<html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -44,6 +45,25 @@
         </div>
     </div>
     </header>
+
+{#    <!-- Navbar avec image de fond -->
+    <nav class="relative h-48 bg-dark bg-opacity-50 py-4" style="background-image: url('/images/banderole.png'); background-size: cover;">
+        <div class="container mx-auto flex items-start justify-end">
+            <div class="flex space-x-6 my-20 mr-48">
+                {% if app.user %}
+                <a class="text-blue-500 hover:text-blue-700" href="{{ path('sortie_affichage') }}">Afficher les Événements</a>
+                <a class="text-blue-500 hover:text-blue-700" href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a>
+                <a class="text-blue-500 hover:text-blue-700" href="{{ path('sortie_creation') }}">Créer un Événement </a>
+                <a class="text-blue-500 hover:text-blue-700" href="{{ path('app_logout') }}">Logout</a>
+            {% endif %}
+                {% if not app.user %}
+                    <a class="text-blue-500 hover:text-blue-700" href="{{ path('app_register') }}">Inscription</a>
+                    <a class="text-blue-500 hover:text-blue-700" href="{{ path('app_login') }}">Se connecter</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>#}
+
 
     {% for label, messages in app.flashes %}
         {% for message in messages %}

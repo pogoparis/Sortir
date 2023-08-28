@@ -1,7 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
-PAGE d'accueil principale
+
+    {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
+    <div class="FormSearch m-2">
+        {{ form_start(form) }}
+        <div class="grid grid-cols-4 gap-4">
+            <div>
+                {{ form_widget(form.nom) }}
+            </div>
+            <div>
+                {{ form_row(form.dateMin) }}
+            </div>
+            <div>
+                {{ form_row(form.dateMax) }}
+            </div>
+            <div>
+                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
+                    Filtrer
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Nombre de participants</th>
+            <th>Description</th>
+            <th>Limite Inscription</th>
+            <th>Etat</th>
+            <th>Organisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in sorties %}
+            {% if event.etat.id != 1 %}
+                <tr>
+                    <td>{{ event.nom }}</td>
+                    <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
+                    <td>{{ event.dateHeureFin |date('d-m-Y') }}</td>
+                    <td>{{ event.nbInscriptionsMax }}</td>
+                    <td>{{ event.infosSortie }}</td>
+                    <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
+                    <td>{{ event.etat.libelle }}</td>
+                    <td>
+                        <a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
+                    </td>
+                    <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">detail</a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

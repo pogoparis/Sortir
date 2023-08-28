@@ -8,6 +8,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -20,13 +21,15 @@ use Doctrine\Persistence\ManagerRegistry;
 class SortieRepository extends ServiceEntityRepository
 {
 
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Sortie::class);
+        $this->security = $security;
     }
 
 
-    public function findSearch(Filtre $filtre, User $user): array
+    public function findSearch(Filtre $filtre): array
     {
         $query = $this
             ->createQueryBuilder('p');
@@ -52,6 +55,7 @@ class SortieRepository extends ServiceEntityRepository
 
         // Requete filtre par organisateur
         if ($filtre->getOrganisateur() !== false) {
+            $user = $this->security->getUser();
             $query = $query
                 ->andWhere('p.organisateur = :user')
                 ->setParameter('user', $user);
@@ -59,6 +63,7 @@ class SortieRepository extends ServiceEntityRepository
 
         // Filtre pour les sorties auxquelles l'utilisateur est inscrit
         if ($filtre->getInscrit() !== false) {
+            $user = $this->security->getUser();
             $query = $query
                 ->leftJoin('p.participants', 'u', Join::WITH, 'u = :user')
                 ->setParameter('user', $user)

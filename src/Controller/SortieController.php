@@ -60,19 +60,19 @@ class SortieController extends AbstractController
 
 //    ********************************* LISTE SORTIES ****************************************
     #[Route('/sorties', name: 'sortie_affichage')]
-    public function affichage(SortieRepository $sortieRepository, UserRepository $userRepository, Request $request
+    public function affichage(
+        SortieRepository $sortieRepository,
+        UserRepository $userRepository,
+        Request $request
     ): Response
     {
         $filtre = new Filtre();
         $now = new DateTime();
-        //TODO
-        // mettre le User en attribut de Filtre
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
-
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $sorties = $sortieRepository->findSearch($filtre, $user);
+            $sorties = $sortieRepository->findSearch($filtre);
         } else {
             $sorties = $sortieRepository->findAll();
         }
@@ -91,10 +91,10 @@ class SortieController extends AbstractController
     public function detail(Sortie $sortie): Response
     {
         $now = new DateTime();
- /*      $minNow = date_timestamp_get($now);
-        $limite = $sortie->getDateLimiteInscription();
-        $minLimite = date_timestamp_get($limite);
-        $difference = ($minLimite - $minNow);*/
+        /*      $minNow = date_timestamp_get($now);
+               $limite = $sortie->getDateLimiteInscription();
+               $minLimite = date_timestamp_get($limite);
+               $difference = ($minLimite - $minNow);*/
         return $this->render('sortie/detail.html.twig', compact('sortie', 'now'));
     }
 

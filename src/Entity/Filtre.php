@@ -8,6 +8,12 @@ use DateTimeInterface;
 class Filtre
 {
     /**
+     * @var User|null
+     */
+    private ?User $user = null;
+
+
+    /**
     * @var string|null
     */
     private ?string $nom ="";
@@ -111,6 +117,22 @@ class Filtre
     public function setInscrit(?bool $inscrit): void
     {
         $this->inscrit = $inscrit;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
     }
 
 

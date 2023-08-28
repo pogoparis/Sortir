@@ -37,6 +37,7 @@
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% endif %}
                 {% if not app.user %}
+                    <li><a href="{{ path('main_index') }}">Afficher les Événements</a></li>
                     <li><a href="{{ path('app_register') }}">Inscription</a></li>
                     <li><a href="{{ path('app_login') }}">Se connecter</a></li>
                 {% endif %}

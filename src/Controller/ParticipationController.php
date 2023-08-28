@@ -51,9 +51,10 @@ class ParticipationController extends AbstractController
     {
         $etatCreee = $etatRepository->findOneBy(['libelle' => 'Créée']);
         $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+        $etatAnnulee = $etatRepository->findOneBy(['libelle' => 'Annulée']);
 
         // si l'état actuel de la sortie est "créée" alors on le passe à "ouverte"
-        if ($sortie->getEtat() === $etatCreee) {
+        if ($sortie->getEtat() === $etatCreee || $sortie->getEtat() === $etatAnnulee) {
             $sortie->setEtat($etatOuverte);
             $entityManager->flush();
         }

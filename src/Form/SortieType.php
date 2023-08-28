@@ -31,8 +31,12 @@ class SortieType extends AbstractType
                         'class' => Lieu::class,
                         'choice_label' => 'nom'
                     ])
-            ->add('ajouter', SubmitType::class)
-        ;
+            ->add('ajouter', SubmitType::class, [
+                    'attr' => [
+                        'class' => 'btn btn-neutral m-1',
+                    ],
+                    ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

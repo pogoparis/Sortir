@@ -16,16 +16,19 @@
 
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.pseudo) }}
+            {{ form_errors(registrationForm.pseudo) }}
             {{ form_widget(registrationForm.pseudo) }}
 
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.nom) }}
+            {{ form_errors(registrationForm.nom) }}
             {{ form_widget(registrationForm.nom) }}
         </div>
        
        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_label(registrationForm.prenom) }}
+           {{ form_errors(registrationForm.prenom) }}
             {{ form_widget(registrationForm.prenom) }}
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -47,6 +50,7 @@
         <br>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {{ form_widget(registrationForm.plainPassword) }}
+            {{ form_errors(registrationForm.plainPassword) }}
             {#._token permet de valider le token de l'enregistrement du mdp#}
             {{ form_row(registrationForm._token) }}
         </div>

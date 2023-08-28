@@ -36,25 +36,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotCompromisedPassword()]
     private ?string $password = null;
 
     #[ORM\Column(length: 40)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9_.@$&%-]+$/")]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern: "/^(?:[^\d\W][\-\s\']{0,1}){2,50}$/i")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern: "/^(?:[^\d\W][\-\s\']{0,1}){2,50}$/i")]
     private ?string $prenom = null;
-
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 8, max: 20, minMessage: "8 chiffres mini", maxMessage: "20 chiffres max")]
-    #[Assert\Regex(pattern:"/^(\(0\))?[0-9]{9}$/", message:"Doit commencer par (0) et avoir 10 chiffres")]
-    private ?int $telephone = null;
 
     #[ORM\Column]
     private ?bool $isAdmin = null;
@@ -86,6 +84,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 9, max: 10, minMessage: "9 chiffres mini sans le premier (0) ", maxMessage: "10 chiffres max")]
+    #[Assert\Regex(pattern:"/^(\(0\))?[0-9]{9}$/", message:"Doit commencer par (0) et avoir 10 chiffres")]
+    private ?string $telephone = null;
 
     /**
      * @return File|null
@@ -207,17 +211,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTelephone(): ?int
-    {
-        return $this->telephone;
-    }
 
-    public function setTelephone(int $telephone): static
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
 
     public function isIsAdmin(): ?bool
     {
@@ -412,6 +406,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $data['roles'];
         $this->siteEni = $data['siteEni'];
         $this->id = $data['id'];
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): static
+    {
+        $this->telephone = $telephone;
+
+        return $this;
     }
 
 

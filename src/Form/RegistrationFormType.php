@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('pseudo',TextType::class,["label" => "Pseudo : ",
-                'invalid_message' => 'Le mots de passe doit être le même.',
+                'invalid_message' => 'Ne peut contenir que des lettres.',
                 'constraints'=> [
                     new NotBlank([
                         'message'=> 'Pseudo manquant.'

@@ -35,6 +35,7 @@
             <th>Nombre de participants</th>
             <th>Description</th>
             <th>Limite Inscription</th>
+            <th>Site</th>
             <th>Etat</th>
             <th>Organisateur</th>
         </tr>
@@ -49,6 +50,7 @@
                     <td>{{ event.nbInscriptionsMax }}</td>
                     <td>{{ event.infosSortie }}</td>
                     <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
+                    <td>{{ event.site.nom }}</td>
                     <td>{{ event.etat.libelle }}</td>
                     <td>
                         <a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>

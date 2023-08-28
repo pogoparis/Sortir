@@ -12,6 +12,10 @@ class Filtre
      */
     private ?User $user = null;
 
+    /**
+     * @var Site|null
+     */
+    private ?Site $site = null;
 
     /**
     * @var string|null
@@ -133,6 +137,22 @@ class Filtre
     public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return Site|null
+     */
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param Site|null $site
+     */
+    public function setSite(?Site $site): void
+    {
+        $this->site = $site;
     }
 
 

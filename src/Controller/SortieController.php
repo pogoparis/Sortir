@@ -88,14 +88,18 @@ class SortieController extends AbstractController
 
 //*********************************** DETAILS **************************************
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
-    public function detail(Sortie $sortie): Response
+    public function detail(
+        Sortie $sortie,
+        UserRepository $userRepository
+    ): Response
     {
         $now = new DateTime();
+        $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
         /*      $minNow = date_timestamp_get($now);
                $limite = $sortie->getDateLimiteInscription();
                $minLimite = date_timestamp_get($limite);
                $difference = ($minLimite - $minNow);*/
-        return $this->render('sortie/detail.html.twig', compact('sortie', 'now'));
+        return $this->render('sortie/detail.html.twig', compact('sortie', 'now', 'user'));
     }
 
     // ************************************* ANNULER ******************************************

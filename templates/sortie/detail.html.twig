@@ -16,9 +16,8 @@
         </div>
         <div class="flex justify-center mt-4">
         {% if app.user %}
-            {#            ************************* BOUTON ANNULER/MODIFIER *********************************** #}
-
-            {% if sortie.dateHeureDebut > now %}
+            {#       ************************* BOUTON ANNULER/MODIFIER *********************************** #}
+            {% if sortie.dateHeureDebut > now and sortie.organisateur == app.user %}
                 <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
                     Annuler
                 </a>

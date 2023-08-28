@@ -64,7 +64,7 @@ class SortieController extends AbstractController
     ): Response
     {
         $filtre = new Filtre();
-        $now= new DateTime();
+        $now = new DateTime();
         //TODO
         // mettre le User en attribut de Filtre
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
@@ -86,18 +86,19 @@ class SortieController extends AbstractController
             ]);
     }
 
+//*********************************** DETAILS **************************************
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
     public function detail(Sortie $sortie): Response
     {
         $now = new DateTime();
-        $minNow = date_timestamp_get($now);
-
+ /*      $minNow = date_timestamp_get($now);
         $limite = $sortie->getDateLimiteInscription();
         $minLimite = date_timestamp_get($limite);
-        $difference = ($minLimite - $minNow);
-        return $this->render('sortie/detail.html.twig', compact('sortie', 'difference', 'now'));
+        $difference = ($minLimite - $minNow);*/
+        return $this->render('sortie/detail.html.twig', compact('sortie', 'now'));
     }
 
+    // ************************************* ANNULER ******************************************
     #[Route('/annuler/{id}', name: 'sortie_annuler', requirements: ["id" => "\d+"])]
     public function annuler(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
@@ -167,11 +168,12 @@ class SortieController extends AbstractController
             [],
             true);
     }
+
     #[Route('/creationLocalisation/{latitude}/{longitude}', name: 'sortie_creationLocalisation', requirements: ["latitude" => "-?\d+\.\d+", "longitude" => "-?\d+\.\d+"])]
     public function creationLieu(VilleRepository $villeRepository, EntityManagerInterface $entityManager, Request $request, string $latitude, string $longitude): Response
     {
         $lieu = new Lieu();
-       $ville =  $villeRepository->findOneBy(array('id' => 1));
+        $ville = $villeRepository->findOneBy(array('id' => 1));
 //        $ville =  $villeRepository->findAll();
         $latitudeInt = (float)$latitude;
         $longitudeInt = (float)$longitude;

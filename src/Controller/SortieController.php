@@ -113,8 +113,9 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('sortie_affichage');
     }
 
+    // *********************************** MODIFICATION *************************************************
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
-    public function modifier(Sortie $sortie, SortieRepository $sortieRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function modifier(Sortie $sortie, Request $request, EntityManagerInterface $entityManager): Response
     {
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);

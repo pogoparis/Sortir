@@ -30,7 +30,7 @@
             <th>Nom de la sortie</th>
             <th>Date de début</th>
             <th>Date de fin</th>
-            <th>Nombre de participants</th>
+            <th>Participants Max</th>
             <th>inscrit</th>
             <th>Description</th>
             <th>Limite Inscription</th>
@@ -88,29 +88,29 @@
                     {% endfor %}
                 </tr>
             {% else %}
-                {%  if event.organisateur == user %}
-            <tr>
-                <td>{{ event.nom }}</td>
-                <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
-                <td>{{ event.dateHeureFin |date('d-m-Y') }}</td>
-                <td>{{ event.nbInscriptionsMax }}</td>
-                <td>
-                    {% if event in user.sortiesParticipants %}
-                        ✅
-                    {% endif %}
-                </td>
-                <td>{{ event.infosSortie }}</td>
-                <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
-                <td>{{ event.etat.libelle }}</td>
-                <td>
-                    <a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
-                </td>
-                <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
-                        detail
-                    </a></td>
-            </tr>
-                    {% endif %}
+                {% if event.organisateur == user %}
+                    <tr>
+                        <td>{{ event.nom }}</td>
+                        <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
+                        <td>{{ event.dateHeureFin |date('d-m-Y') }}</td>
+                        <td>{{ event.nbInscriptionsMax }}</td>
+                        <td>
+                            {% if event in user.sortiesParticipants %}
+                                ✅
+                            {% endif %}
+                        </td>
+                        <td>{{ event.infosSortie }}</td>
+                        <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
+                        <td>{{ event.etat.libelle }}</td>
+                        <td>
+                            <a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
+                        </td>
+                        <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
+                                detail
+                            </a></td>
+                    </tr>
                 {% endif %}
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

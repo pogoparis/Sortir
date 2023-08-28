@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html >
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
 
-    <header>
-        <div class="navbar bg-neutral text-neutral-content">
+<header>
+    <div class="navbar bg-neutral text-neutral-content">
         <div class="navbar-start">
             <div class="dropdown">
                 <label tabindex="0" class="btn btn-ghost lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h8m-8 6h16"/>
+                    </svg>
                 </label>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
-                    <li><a>Item 1</a></li>
-                    <li><a>Item 2</a></li>
-                    <li><a>Item 3</a></li>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
+                    {% if app.user %}
+                        <li><a href="{{ path('sortie_affichage') }}">Afficher les Événements</a></li>
+                        <li><a href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a></li>
+                        <li><a href="{{ path('sortie_creation') }}">Créer un Événement </a></li>
+                        <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                    {% endif %}
+                    {% if not app.user %}
+                        <li><a href="{{ path('main_index') }}">Afficher les Événements</a></li>
+                        <li><a href="{{ path('app_register') }}">Inscription</a></li>
+                        <li><a href="{{ path('app_login') }}">Se connecter</a></li>
+                    {% endif %}
                 </ul>
             </div>
-            <a href="{{ path('main_index') }}   " class="btn btn-ghost normal-case text-xl">Sortir.org</a>
+            {% if app.user %}
+                <a href="{{ path('sortie_affichage') }}   " class="btn btn-ghost normal-case text-xl">Sortir.org</a>
+            {% else %}
+                <a href="{{ path('main_index') }}   " class="btn btn-ghost normal-case text-xl">Sortir.org</a>
+            {% endif %}
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
@@ -44,26 +62,22 @@
             </ul>
         </div>
     </div>
-    </header>
+</header>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div>
             <div>
-                <div>
-                    <div class="alert" style="background-color:green; padding:20px; text-align: center">
-                        {{ message }}
-                    </div>
+                <div class="alert" style="background-color:green; padding:20px; text-align: center">
+                    {{ message }}
                 </div>
             </div>
-        {% endfor %}
+        </div>
     {% endfor %}
-    {% block body %}
+{% endfor %}
+{% block body %}
 
 
-        {% endblock %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/themes/airbnb.min.css">
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
-    </body>
+{% endblock %}
+</body>
 </html>

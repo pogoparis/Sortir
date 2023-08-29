@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
+use Symfony\Component\Validator\Constraints\Date;
 use function Symfony\Component\Clock\now;
 
 class SortieController extends AbstractController
@@ -33,53 +34,72 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
-        //Nouvelle Sortie
+
+        $now = new DateTime();
+        //Nouvelle Sortie / Lieu
+        $lieu = new Lieu();
+
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
-        $sortie->setOrganisateur($this->getUser());
         // Organisateur
         $sortie->setOrganisateur($this->getUser());
         // set siteEni
         $siteId = $this->getUser()->getSiteEni();
+        $sortie->setDateHeureDebut($now);
+        $sortie->setDateHeureFin($now);
+        $sortie->setDateLimiteInscription($now);
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId));
         $sortie->setSite($siteUser);
         // création du formulaire
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
-        if ($sortieForm->isSubmitted()) {
+        $lieuForm->handleRequest($requete);
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+        }
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $test = $requete->query->get('sortie[lieu]');
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('success', 'Sortie créée , Publiez la si les informations sont correctes');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
-        return $this->render('sortie/index.html.twig', compact("sortieForm"));
+        return $this->render('sortie/index.html.twig', compact("sortieForm", 'lieuForm'));
     }
 
 //    ********************************* LISTE SORTIES ****************************************
     #[Route('/sorties', name: 'sortie_affichage')]
     public function affichage(
         SortieRepository $sortieRepository,
-        UserRepository $userRepository,
-        Request $request
+        UserRepository   $userRepository,
+        Request          $request
     ): Response
     {
+
         $filtre = new Filtre();
         $now = new DateTime();
+
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
+        $compteurParticipants = [];
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findSearch($filtre);
         } else {
             $sorties = $sortieRepository->findAll();
         }
-
+        foreach ($sorties as $sortie) {
+            $nbParticipants = $sortieRepository->countParticipants($sortie);
+            $compteurParticipants[$sortie->getId()] = $nbParticipants;
+        }
         return $this->render('sortie/listeSorties.html.twig',
             [
                 'sorties' => $sorties,
+                'nbParticipants' => $compteurParticipants,
                 'form' => $form->createView(),
                 'now' => $now,
                 'user' => $user
@@ -89,7 +109,7 @@ class SortieController extends AbstractController
 //*********************************** DETAILS **************************************
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
     public function detail(
-        Sortie $sortie,
+        Sortie         $sortie,
         UserRepository $userRepository
     ): Response
     {
@@ -194,5 +214,26 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_affichage');
         }
         return $this->render('sortie/creationLocalisation.html.twig', compact('lieuForm', 'ville'));
+    }
+
+    #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods: ['POST'])]
+    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $req = $request->toArray();
+        $lieu = (new Lieu())
+            ->setNom($req['nom'])
+            ->setRue($req['rue'])
+            ->setLatitude($req['latitude'])
+            ->setLongitude($req['longitude'])
+            ->setVille($villeRepository->find($req["ville"]));
+        $entityManager->persist($lieu);
+        $entityManager->flush();
+
+        return $this->json(
+            $villeRepository->findBy([], ['nom' => 'ASC']),
+            201,
+            [],
+            ['groups' => 'listeLieux']
+        );
     }
 }

@@ -46,13 +46,13 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-$user= $token->getUser();
+/*$user= $token->getUser();
 
 /*    if($user instanceof User && $user->isVerified()===false ){
         $session = $request->getSession();
         $session->set('isNotVerified', 'Confiration de l\'email a faire');
 
-        return new RedirectResponse($this->urlGenerator->generate('app_logout'));
+        return new RedirectResponse($this->urlGenerator->generate('main_index'));
     }*/
 
 

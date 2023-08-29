@@ -48,9 +48,9 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     {
 /*$user= $token->getUser();
 
-    if($user instanceof User && $user->isVerified() === false ){
+/*    if($user instanceof User && $user->isVerified()===false ){
         $session = $request->getSession();
-        $session->set('isVerified', 'Verification de l\'email a faire');
+        $session->set('isNotVerified', 'Confiration de l\'email a faire');
 
         return new RedirectResponse($this->urlGenerator->generate('main_index'));
     }*/

@@ -8,6 +8,10 @@
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
+    {% if is_verified_error %}
+    <div class="alert alert-danger">{{ is_verified_error }}</div>
+    {% endif %}
+    
     {% if app.user %}
         <div class="mb-3">
             Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>

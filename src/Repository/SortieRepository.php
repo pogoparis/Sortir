@@ -53,6 +53,13 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('dateMax', $filtre->getDateMax());
         }
 
+        // Filtrer par site
+        if ($filtre->getSite() !== null) {
+            $query = $query
+                ->andWhere('p.site = :site ')
+                ->setParameter('site', $filtre->getSite());
+        }
+
         // Requete filtre par organisateur
         if ($filtre->getOrganisateur() !== false) {
             $user = $this->security->getUser();
@@ -108,31 +115,6 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
     public function findSortiesOlderThan(\DateTimeInterface $date): array
     {
         $qb = $this->createQueryBuilder('s')

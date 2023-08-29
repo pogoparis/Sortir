@@ -2,80 +2,27 @@ window.onload = init;
 
 let marker;
 function init() {
-    map = L.map('map').setView([51.505, -0.09], 13);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}\'', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
-    let blackIcon = L.icon({
-        iconUrl: 'pointeur.png',
-        shadowUrl: 'leaf-shadow.png',
-
-        iconSize: [30, 70], // size of the icon
-        iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-    marker = L.marker([51.505, -0.09], {icon: blackIcon}).addTo(map);
     affichageVille();
     afficherLocalisation();
+    map = L.map('map').setView([48.85889, 2.320041], 12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
+    }).addTo(map);
+    // L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}\'', {
+    //     maxZoom: 19,
+    //     attribution: '© OpenStreetMap'
+    // }).addTo(map);
+    map.on('click', onMapClick);
+
 }
 
-function afficherLieu(){
-     $id = document.getElementById("selectVille").value;
-
-console.log($id);
-    if($id !== 0){
-
-        fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
-            .then(res => res.json())
-            .then(
-             json => {
-                    for (const js of json){
-                        $idVille = js["ville"]["id"];
-                        $idVilleInt = parseInt($idVille);
-
-                        if ($idVille !== $idVilleInt){
-                            document.getElementById("selectLieux").hidden = false;
-                         $i = js["id"];
-                         $lieu =  document.getElementById("selectLieux").options[$i];
-                         $lieu.hidden = true;
-                        }
-
-                    }
-             }
-        )}
-}
-window.afficherLieu = afficherLieu;
-function allLieux() {
-
-    $id = document.getElementById("selectVille").value;
-    let select = document.getElementById("selectLieux");
-        select.innerText = '';
-
-    // nouvelElement.setAttribute("value", '0');
-    // nouvelElement.innerText = 'choisir un lieu';
-    // select.appendChild(nouvelElement);
-    if($id !== 0){
-        fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
-        .then(res => res.json())
-        .then(
-            json => {
-
-                for (const js of json){
-                    let nouvelElement = document.createElement("option");
-                    nouvelElement.setAttribute("value", js['id'])
-                    nouvelElement.innerText = js['nom'];
-                    select.appendChild(nouvelElement);
-                }
-            }
-        )}
-}
 function affichageVille() {
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
         .then(
             json => {
-                let select = document.getElementById("selectVille");
+                let select = document.getElementById("villeListe");
                 let select2 = document.getElementById("selectVille2");
                 for (const js of json){
 
@@ -84,12 +31,38 @@ function affichageVille() {
                     nouvelElement.setAttribute("value", js['id'])
                     nouvelElement.innerText = js['nom'];
                     select.appendChild(nouvelElement);
-                    select2.appendChild(nouvelElement);
-                    document.getElementById("selectVille").addEventListener("click", allLieux);
+                    // select2.appendChild(nouvelElement);
+                    document.getElementById("villeListe").addEventListener("click", allLieux);
                 }
             }
         )
 }
+function afficherLieu(){
+    $id = document.getElementById("selectVille").value;
+
+    console.log($id);
+    if($id !== 0){
+
+        fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
+            .then(res => res.json())
+            .then(
+                json => {
+                    for (const js of json){
+                        $idVille = js["ville"]["id"];
+                        $idVilleInt = parseInt($idVille);
+
+                        if ($idVille !== $idVilleInt){
+                            document.getElementById("selectLieux").hidden = false;
+                            $i = js["id"];
+                            $lieu =  document.getElementById("selectLieux").options[$i];
+                            $lieu.hidden = true;
+                        }
+
+                    }
+                }
+            )}
+}
+window.afficherLieu = afficherLieu;
 function afficherLocalisation() {
     fetch('http://127.0.0.1:8000/apiLocalisation')
         .then(res => res.json())
@@ -110,6 +83,27 @@ function afficherLocalisation() {
         )
 }
 
+function allLieux() {
+
+    $id = document.getElementById("villeListe").value;
+    let select = document.getElementById("selectLieux");
+        select.innerText = '';
+
+    if($id !== 0){
+        fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
+        .then(res => res.json())
+        .then(
+            json => {
+
+                for (const js of json){
+                    let nouvelElement = document.createElement("option");
+                    nouvelElement.setAttribute("value", js['id'])
+                    nouvelElement.innerText = js['nom'];
+                    select.appendChild(nouvelElement);
+                }
+            }
+        )}
+}
 function coordonnee() {
 
     $id = document.getElementById("selectLocalisation").value;
@@ -128,12 +122,8 @@ function coordonnee() {
 
                  let longitude = js['longitude'];
                  let latitude = js['latitude'];
-                        let latitude1 = document.getElementById("latitude");
-                        let longitude1 = document.getElementById("longitude");
-                        latitude1.innerText = 'latitude  : ' + latitude ;
-                        longitude1.innerText = 'longitude : ' + longitude;
+
                 map.flyTo([latitude, longitude], 16);
-                marker.setLatLng([latitude, longitude]);
             }
                 }
             }
@@ -175,7 +165,6 @@ function coordonnee() {
                             let latitude =  coordonnees[1];
                             map.flyTo([latitude, longitude], 16);
                 } )
-        map.on('click', onMapClick);
     }
     window.localisationLieu = localisationLieu;
 

@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-#map { height: 500px;
+#map { height: 350px;
     width: 500px;
-    border-radius: 100%;
-    border: 3px solid green;
+    border-radius: 10%;
+    border: 3px solid;
     margin-left: auto;
     margin-right: auto;
 }

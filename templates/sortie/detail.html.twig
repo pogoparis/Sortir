@@ -15,35 +15,47 @@
             </ul>
         </div>
         <div class="flex justify-center mt-4">
-        {% if app.user %}
-            {#            ************************* BOUTON ANNULER/MODIFIER *********************************** #}
+            {% if app.user %}
+                {#       ************************* BOUTON ANNULER/MODIFIER *********************************** #}
+                {% if sortie.dateHeureDebut > now and sortie.organisateur == app.user and sortie.etat.id != 6 %}
 
-            {% if sortie.dateHeureDebut > now %}
-                <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
-                    Annuler
-                </a>
-                <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
-                    modifier
-                </a>
+                    <a class="btn btn-neutral m-1" id="lien"
+                       href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
+                        Annuler
+                    </a>
+
+                    <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
+                        modifier
+                    </a>
+                {% endif %}
+                {#    /****************** CONDITIONS AFFICHAGE BOUTON PARTICIPER ***************************/ #}
+                {% if sortie.etat.id == 2
+                    and sortie.dateLimiteInscription > now
+                    and sortie.participants.count < sortie.nbInscriptionsMax
+                    and now < sortie.dateHeureDebut
+                    and user != sortie.organisateur
+                    and user not in sortie.participants %}
+                    <a class="btn btn-neutral m-1" id="lien"
+                       href="{{ path('participation_inscription', {'id' : sortie.id}) }}">
+                        participer
+                    </a>
+                {% endif %}
+                {#  ************* AFFICHAGE DU BOUTON PUBLIER **************** #}
+                {% if (sortie.etat.id == 1 or sortie.etat.id == 6) and sortie.organisateur == app.user %}
+                    <a class="btn btn-sm m-1" href="{{ path('participation_publier', {'id' : sortie.id}) }}">
+                        Publier
+                    </a>
+                {% endif %}
+{#                ******************* AFFICHAGE BOUTON ANNULER PARTICIPATION ******************#}
+                {% for personne in sortie.participants %}
+                    {% if personne == user and sortie.dateHeureDebut > now %}
+                        <td><a class="btn btn-sm m-1" id="lien"
+                               href="{{ path('participation_annuler', {'id' : sortie.id}) }}">
+                                Annuler la participation
+                            </a></td>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
-            {#    /****************** CONDITIONS AFFICHAGE BOUTON PARTICIPER ***************************/ #}
-            {% if sortie.etat.id == 2
-                and sortie.dateLimiteInscription > now
-                and sortie.participants.count < sortie.nbInscriptionsMax
-                and now < sortie.dateHeureDebut
-                and user != sortie.organisateur %}
-                <a class="btn btn-neutral m-1" id="lien"
-                   href="{{ path('participation_inscription', {'id' : sortie.id}) }}">
-                    participer
-                </a>
-            {% endif %}
-            {#  ************* AFFICHAGE DU BOUTON PUBLIER **************** #}
-            {% if sortie.etat.id == 1 and sortie.organisateur == app.user %}
-                <a class="btn btn-sm m-1" href="{{ path('participation_publier', {'id' : sortie.id}) }}">
-                    Publier
-                </a>
-            {% endif %}
-        {% endif %}
         </div>
     </div>
 

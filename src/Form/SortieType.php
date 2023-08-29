@@ -17,14 +17,22 @@ class SortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $currentDateTime = new \DateTime();
+
         $builder
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class, array(
-                'widget' => 'single_text',))
+                'widget' => 'single_text',
+                'attr' => ['min' => $currentDateTime->format('Y-m-d\TH:i')],
+                ))
             ->add('dateHeureFin', DateTimeType::class, array(
-                'widget' => 'single_text',))
+                'widget' => 'single_text',
+                'attr' => ['min' => $currentDateTime->format('Y-m-d\TH:i')],
+                ))
             ->add('dateLimiteInscription', DateTimeType::class, array(
-                'widget' => 'single_text',))
+                'widget' => 'single_text',
+                'attr' => ['min' => $currentDateTime->format('Y-m-d\TH:i')],
+                ))
             ->add('nbInscriptionsMax')
             ->add('infosSortie')
             ->add('lieu', EntityType::class, [

@@ -155,9 +155,7 @@ function coordonnee() {
     }
     function localisationLieu() {
         var adresse = document.getElementById("adresse").value;
-        for(const mot of adresse){
 
-        }
         let adresseFinal = adresse.replaceAll(" ", "+");
         fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
             .then(res => res.json())

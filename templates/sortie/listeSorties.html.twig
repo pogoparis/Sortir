@@ -3,6 +3,7 @@
 {% block body %}
 
     {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
+
     <div class="container ">
         {{ form_start(form) }}
         <div class="flex justify-center">
@@ -46,10 +47,25 @@
     </div>
 
 
+{#<div class="w-1/4">
+    <div class="card card-side bg-base-100 shadow-xl">
+        <figure><img src="{{ asset('images/amis2.jpg') }}" alt="Movie"/></figure>
+        <div class="card-body">
+            <h2 class="card-title">New movie is released!</h2>
+            <p>Click the button to watch on Jetflix app.</p>
+            <div class="card-actions justify-end">
+                <button class="btn btn-primary">Watch</button>
+            </div>
+        </div>
+    </div>
+    </div>#}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
         {% for event in sorties %}
             <div class="card card-side bg-base-100 shadow-xl">
+                <figure><img src="{{ asset('images/amis2.jpg') }}" alt="Movie"/></figure>
                 <div class="card-body">
                     {% if event.etat.id != 1 %}
                         <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
@@ -59,12 +75,8 @@
 
                         <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
                             : {{ event.dateHeureFin |date('d-m-Y') }}</p>
-                        <p>
-                            <a class="link link-success"
-                               href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
-                        </p>
                         <p> {{ nbParticipants[event.id] }} / {{ event.nbInscriptionsMax }} Participants</p>
-                        <p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p>
+                        {#<p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p>#}
                         <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                                 detail
                             </a></td>
@@ -77,7 +89,7 @@
                                 and user != event.organisateur %}
 
                                 {% if  event not in user.sortiesParticipants %}
-                                    <a class="btn btn-neutral m-1" id="lien"
+                                    <a class="btn btn-sm bg-blue-900 text-white m-1" id="lien"
                                        href="{{ path('participation_inscription', {'id' : event.id}) }}">
                                         participer
                                     </a>
@@ -92,11 +104,15 @@
                                     </a></td>
                             {% endif %}
                         {% endfor %}
-                        {% if event.etat.id == 5 or event.etat.id == 6 or event.etat.id == 3 %}
+                       {# {% if event.etat.id == 5 or event.etat.id == 6 or event.etat.id == 3 %}
                             <div class="text-red-500">{{ event.etat.libelle }}</div>
                         {% else %}
                             <div class="text-green-500">{{ event.etat.libelle }}</div>
-                        {% endif %}
+                        {% endif %}#}
+
+{#                            <a class="link link-success"#}
+{#                               href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>#}
+
                     {% endif %}
                 </div>
             </div>

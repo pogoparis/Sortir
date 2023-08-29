@@ -31,6 +31,8 @@
                         <li><a href="{{ path('sortie_affichage') }}">Afficher les Événements</a></li>
                         <li><a href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a></li>
                         <li><a href="{{ path('sortie_creation') }}">Créer un Événement </a></li>
+                        <li><a href="{{ path('app_site_admin_index') }}">Site</a></li>
+                        <li><a href="{{ path('app_ville_admin_index') }}">Ville</a></li>
                         <li><a href="{{ path('app_logout') }}">Logout</a></li>
                     {% endif %}
                     {% if not app.user %}
@@ -52,6 +54,8 @@
                     <li><a href="{{ path('sortie_affichage') }}">Afficher les Événements</a></li>
                     <li><a href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a></li>
                     <li><a href="{{ path('sortie_creation') }}">Créer un Événement </a></li>
+                    <li><a href="{{ path('app_site_admin_index') }}">Site</a></li>
+                    <li><a href="{{ path('app_ville_admin_index') }}">Ville</a></li>
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 {% endif %}
                 {% if not app.user %}

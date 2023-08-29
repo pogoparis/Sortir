@@ -49,13 +49,13 @@
                 </div>
                 <br>
                 <label for="villeListe">Choisir une ville : </label>
-                <select id="villeListe" onclick="window.afficherLieu"> Ville
+                <select required id="villeListe" onclick="window.afficherLieu"> Ville
                     <option value="0">Choisir une ville</option>
                 </select>
                 <br>
                 <div class="flex items-center mt-2">
                     <label for="selectLieux" class="mr-2">Choisir un lieu:</label>
-                    <select name="{{ field_name(sortieForm.lieu) }}" class="form-control" id="selectLieux">
+                    <select required name="{{ field_name(sortieForm.lieu) }}" class="form-control" id="selectLieux">
                         <option value="">{{ field_label(sortieForm.lieu) }}</option>
 
                         {% for id, nom in field_choices(sortieForm.lieu) %}

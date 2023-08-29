@@ -18,12 +18,10 @@
             {% if app.user %}
                 {#       ************************* BOUTON ANNULER/MODIFIER *********************************** #}
                 {% if sortie.dateHeureDebut > now and sortie.organisateur == app.user and sortie.etat.id != 6 %}
-
                     <a class="btn btn-neutral m-1" id="lien"
                        href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
                         Annuler
                     </a>
-
                     <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
                         modifier
                     </a>

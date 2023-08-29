@@ -2,24 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/*@layer components {
-
-    .form-row {
-        @apply mb-2 flex gap-4;
-    }
-
-    .form-label {
-        @apply font-semibold w-1/4;
-    }
-
-    .form-field {
-        @apply rounded border-2 border-gray-200 flex-grow;
-    }
-
-    .form-checkbox {
-        @apply rounded border-2 border-gray-200;
-    }
+/*body {
+    height: 100vh;
+    width: 100%;
+    display: block;
+    background-image: url("/public/images/fond.jpg");
+    background-size: cover;
 }*/
+
 
 #map { height: 350px;
     width: 500px;
@@ -29,7 +19,7 @@
     margin-right: auto;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
     @apply input rounded input-bordered input-sm w-full max-w-xs m-1;
 }
 

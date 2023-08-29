@@ -3,35 +3,43 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-    {% if is_verified_error %}
-    <div class="alert alert-danger">{{ is_verified_error }}</div>
-    {% endif %}
-    
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+        {% if is_verified_error %}
+            <div class="alert alert-danger">{{ is_verified_error }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        {% endif %}
+        <div class="flex justify-center">
+            <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
+                <div class="w-full m-2">
+                    <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
+                    <label for="inputEmail">Email : </label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                           class="form-control input input-bordered input-xs w-full max-w-xs" autocomplete="email"
+                           required autofocus>
+                    <label for="inputPassword">Mots de passe : </label>
+                    <input type="password" name="password" id="inputPassword"
+                           class="form-control input input-bordered input-xs w-full max-w-xs"
+                           autocomplete="current-password" required>
+                    <a href="{{ path('app_forgot_password_request') }}">
+                        Mots de passe oublié ?
+                    </a>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}">
+                </div>
+            </div>
         </div>
-    {% endif %}
+        <button class="btn btn-neutral mt-2" type="submit">
+            Connexion
+        </button>
 
-    <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
-    <label for="inputEmail">Email : </label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input input-bordered input-xs w-full max-w-xs" autocomplete="email" required autofocus>
-    <label for="inputPassword">Mots de passe : </label>
-    <input type="password" name="password" id="inputPassword" class="form-control input input-bordered input-xs w-full max-w-xs" autocomplete="current-password" required>
-    <a href="{{ path('app_forgot_password_request')}}">
-        Mots de passe oublié ?
-    </a>
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}">
-
-    <button class="btn btn-neutral mt-2" type="submit">
-        Connexion
-    </button>
-
-</form>
+    </form>
 {% endblock %}

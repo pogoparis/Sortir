@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PhpParser\Node\Stmt\Expression;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,15 +22,20 @@ class Sortie
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\LessThan(propertyPath:"dateHeureFin", message:"La date de début doit être antérieure à la date de fin.")]
+    #[Assert\GreaterThan("now", message:"La date/heure de début doit être ultèrieure à la date/heure actuelle")]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath:"dateHeureDebut", message:"La date de fin doit être supèrieure à la date de début.")]
     private ?\DateTimeInterface $dateHeureFin = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\LessThan(propertyPath:"dateHeureDebut", message:"La date limite d'inscription doit être antérieure à la date de début.")]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?int $nbInscriptionsMax = null;
 
     #[ORM\Column(length: 255)]

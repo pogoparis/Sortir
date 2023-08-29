@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
+use Symfony\Component\Validator\Constraints\Date;
 use function Symfony\Component\Clock\now;
 
 class SortieController extends AbstractController
@@ -33,16 +34,19 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
+        $now = new DateTime();
         //Nouvelle Sortie
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
-        $sortie->setOrganisateur($this->getUser());
         // Organisateur
         $sortie->setOrganisateur($this->getUser());
         // set siteEni
         $siteId = $this->getUser()->getSiteEni();
+        $sortie->setDateHeureDebut($now);
+        $sortie->setDateHeureFin($now);
+        $sortie->setDateLimiteInscription($now);
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId));
         $sortie->setSite($siteUser);
         // création du formulaire

@@ -61,7 +61,7 @@ class SortieController extends AbstractController
             $entityManager->persist($lieu);
             $entityManager->flush();
         }
-        if ($sortieForm->isSubmitted()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $test = $requete->query->get('sortie[lieu]');
             $entityManager->persist($sortie);
             $entityManager->flush();

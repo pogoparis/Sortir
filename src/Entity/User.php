@@ -87,8 +87,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 10)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 9, max: 10, minMessage: "9 chiffres mini sans le premier (0) ", maxMessage: "10 chiffres max")]
-    #[Assert\Regex(pattern:"/^(\(0\))?[0-9]{9}$/", message:"Doit commencer par (0) et avoir 10 chiffres")]
+    #[Assert\Length(min: 8, max: 10, minMessage: "9 chiffres mini sans le premier (0) ", maxMessage: "10 chiffres max")]
+    #[Assert\Regex(pattern:"/^(\(0\))?[0-9]{10}$/", message:"Doit commencer par (0) et avoir 10 chiffres")]
     private ?string $telephone = null;
 
     /**

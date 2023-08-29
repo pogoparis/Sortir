@@ -34,8 +34,11 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
+
         $now = new DateTime();
-        //Nouvelle Sortie
+        //Nouvelle Sortie / Lieu
+        $lieu = new Lieu();
+
         $sortie = new Sortie();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
@@ -50,8 +53,14 @@ class SortieController extends AbstractController
         $siteUser = $siteRepository->findOneBy(array('id' => $siteId));
         $sortie->setSite($siteUser);
         // création du formulaire
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($requete);
+        $lieuForm->handleRequest($requete);
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+        }
         if ($sortieForm->isSubmitted()) {
             $test = $requete->query->get('sortie[lieu]');
             $entityManager->persist($sortie);
@@ -59,7 +68,7 @@ class SortieController extends AbstractController
             $this->addFlash('success', 'Sortie créée , Publiez la si les informations sont correctes');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
-        return $this->render('sortie/index.html.twig', compact("sortieForm"));
+        return $this->render('sortie/index.html.twig', compact("sortieForm", 'lieuForm'));
     }
 
 //    ********************************* LISTE SORTIES ****************************************
@@ -198,5 +207,25 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_affichage');
         }
         return $this->render('sortie/creationLocalisation.html.twig', compact('lieuForm', 'ville'));
+    }
+    #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods : ['POST'])]
+    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $req = $request->toArray();
+        $lieu = (new Lieu())
+            ->setNom($req['nom'])
+            ->setRue($req['rue'])
+            ->setLatitude($req['latitude'])
+            ->setLongitude($req['longitude'])
+            ->setVille($villeRepository->find($req["ville"]));
+        $entityManager->persist($lieu);
+        $entityManager->flush();
+
+        return $this->json(
+            $villeRepository->findBy([], ['nom'=> 'ASC']),
+            201,
+            [],
+            ['groups' => 'listeLieux']
+        );
     }
 }

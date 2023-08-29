@@ -14,7 +14,10 @@ function init() {
     //     attribution: '© OpenStreetMap'
     // }).addTo(map);
     map.on('click', onMapClick);
-
+    document.getElementById("boutonLieu").addEventListener("click", function(event){
+        event.preventDefault()
+    });
+    document.getElementById("boutonLieu").addEventListener("click", envoieFormulaire);
 }
 
 function affichageVille() {
@@ -136,10 +139,9 @@ function coordonnee() {
         let str = "Cliquer pour créer le lieu"
         let latitude = e.latlng.lat;
         let longitude = e.latlng.lng;
-        let lien = `http://127.0.0.1:8000/creationLocalisation/${latitude}/${longitude}`;
         let balise  = document.createElement("a");
-        balise.setAttribute('href', lien);
-        var createAText = document.createTextNode(str);
+        balise.setAttribute("id", 'boutonCreaMap');
+        let createAText = document.createTextNode(str);
         balise.appendChild(createAText);
         popup
 
@@ -147,7 +149,13 @@ function coordonnee() {
             .setContent(balise)
             .openOn(map)
 
-
+        document.getElementById('boutonCreaMap').addEventListener('click', function() {
+            showModal(latitude, longitude);
+        });
+        let longitudeText = document.getElementById('lieu_longitude');
+        longitudeText.value = longitude;
+        let latitudeText =document.getElementById('lieu_latitude')
+        latitudeText.value = latitude;
     }
     function localisationLieu() {
         var adresse = document.getElementById("adresse").value;
@@ -168,3 +176,41 @@ function coordonnee() {
     }
     window.localisationLieu = localisationLieu;
 
+function showModal() {
+    var modal = document.getElementById('modal');
+    modal.style.display = 'flex';
+}
+window.showModal = showModal;
+function hideModal() {
+    var modal = document.getElementById('modal');
+    modal.style.display = 'none';
+}
+window.hideModal = hideModal;
+function envoieFormulaire(event){
+
+    event.preventDefault();
+
+    const nom = document.getElementById("lieu_nom").value;
+    const rue = document.getElementById("lieu_rue").value;
+    const latitude = document.getElementById("lieu_latitude").value;
+    const longitude = document.getElementById("lieu_longitude").value;
+    const ville = document.getElementById("lieu_ville").options[document.getElementById("lieu_ville").selectedIndex].value;
+
+    let data = {
+        nom: nom,
+        rue: rue,
+        latitude: latitude,
+        longitude: longitude,
+        ville : ville
+    }
+    console.log(data);
+    fetch('http://127.0.0.1:8000/creationLieuVide', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },body: JSON.stringify(data)
+    }).then(reponse => reponse.json())
+
+    hideModal();
+}

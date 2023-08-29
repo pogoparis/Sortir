@@ -135,7 +135,7 @@ function coordonnee() {
     let popup = L.popup();
 
     function onMapClick(e) {
-        let str = "Cliquer pour créer le lieu"
+        let str = "Lieu sélectionné"
         let latitude = e.latlng.lat;
         let longitude = e.latlng.lng;
         let balise  = document.createElement("a");
@@ -148,9 +148,6 @@ function coordonnee() {
             .setContent(balise)
             .openOn(map)
 
-        document.getElementById('boutonCreaMap').addEventListener('click', function() {
-            showModal(latitude, longitude);
-        });
         let longitudeText = document.getElementById('lieu_longitude');
         longitudeText.value = longitude;
         let latitudeText =document.getElementById('lieu_latitude')

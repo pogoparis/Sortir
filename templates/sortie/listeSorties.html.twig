@@ -3,26 +3,32 @@
 {% block body %}
 
     {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-    <div class="FormSearch m-2">
+    <div class="content-center">
         {{ form_start(form) }}
-        <div class="grid grid-cols-4 gap-4">
+        <div>
             <div>
                 {{ form_widget(form.nom) }}
             </div>
             <div>
                 {{ form_row(form.dateMin) }}
-            </div>
-            <div>
                 {{ form_row(form.dateMax) }}
             </div>
-            <div>
-                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
-                    Filtrer
-                </button>
-            </div>
+        </div>
+        <div>
+            {{ form_row(form.site) }}
+            {{ form_row(form.organisateur) }}
+            {{ form_row(form.inscrit) }}
+        </div>
+        <div>
+            <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
+                Filtrer
+            </button>
         </div>
         {{ form_end(form) }}
     </div>
+
+
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {% for event in sorties %}
             <div class="card card-side bg-base-100 shadow-xl">

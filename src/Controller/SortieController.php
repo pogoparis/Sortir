@@ -79,10 +79,8 @@ class SortieController extends AbstractController
         Request          $request
     ): Response
     {
-
         $filtre = new Filtre();
         $now = new DateTime();
-
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
@@ -90,7 +88,7 @@ class SortieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findSearch($filtre);
         } else {
-            $sorties = $sortieRepository->findAll();
+            $sorties = $sortieRepository->findAllPerso();
         }
         foreach ($sorties as $sortie) {
             $nbParticipants = $sortieRepository->countParticipants($sortie);
@@ -115,10 +113,6 @@ class SortieController extends AbstractController
     {
         $now = new DateTime();
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
-        /*      $minNow = date_timestamp_get($now);
-               $limite = $sortie->getDateLimiteInscription();
-               $minLimite = date_timestamp_get($limite);
-               $difference = ($minLimite - $minNow);*/
         return $this->render('sortie/detail.html.twig', compact('sortie', 'now', 'user'));
     }
 

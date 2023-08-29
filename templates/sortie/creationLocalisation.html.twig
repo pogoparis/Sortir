@@ -23,15 +23,6 @@
         {{ form_label(lieuForm.ville) }}
         {{ form_widget(lieuForm.ville, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1'}}) }}
     </div>
-{#    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">#}
-{#        <select name="{{ field_name(lieuForm.ville) }}" class="form-control" id="selectVille">#}
-{#            <option value="">{{ field_label(lieuForm.ville) }}</option>#}
-
-{#            {% for id, nom in field_choices(ville) %}#}
-{#                <option value="{{ id }}">{{ nom }}</option>#}
-{#            {% endfor %}#}
-{#        </select>#}
-{#    </div>#}
 
     {{ form_widget(lieuForm.ajouter, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
     {{ form_row(lieuForm._token) }}

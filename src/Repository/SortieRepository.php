@@ -124,5 +124,9 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function countParticipants(Sortie $sortie): int
+    {
+        return count($sortie->getParticipants());
+    }
 
 }

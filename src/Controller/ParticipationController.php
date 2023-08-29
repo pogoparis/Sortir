@@ -14,8 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipationController extends AbstractController
 {
     #[Route('/inscription/{id}', name: 'participation_inscription', requirements: ["id" => "\d+"])]
-    public function index(Sortie $sortie, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function index(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        SortieRepository $sortieRepository
+    ): Response
     {
+        $nbParticipants = $sortieRepository->countParticipants($sortie);
         $participant = $this->getUser();
         $idUser = $participant->getId();
         $userCo =  $userRepository->findOneBy(array('id'=> $idUser));
@@ -23,11 +29,17 @@ class ParticipationController extends AbstractController
         $entityManager->persist($sortie);
         $entityManager->flush();
         $this->addFlash('success', 'Votre participation a bien été prise en compte');
-        return $this->redirectToRoute('sortie_affichage');
+        return $this->redirectToRoute('sortie_affichage', compact('nbParticipants'));
     }
+
     #[Route('/annulerParticipation/{id}', name: 'participation_annuler', requirements: ["id" => "\d+"])]
-    public function annulerParticipation(Sortie $sortie, EntityManagerInterface $entityManager): Response
+    public function annulerParticipation(
+        Sortie $sortie,
+        EntityManagerInterface $entityManager,
+        SortieRepository $sortieRepository
+    ): Response
     {
+        $nbParticipants = $sortieRepository->countParticipants($sortie);
         $user = $this->getUser();
         $participants = $sortie->getParticipants();
         foreach ($participants as $item){
@@ -38,7 +50,7 @@ class ParticipationController extends AbstractController
 
         $entityManager->persist($sortie);
         $entityManager->flush();
-        return $this->redirectToRoute('sortie_affichage');
+        return $this->redirectToRoute('sortie_affichage', compact('nbParticipants'));
     }
 
 

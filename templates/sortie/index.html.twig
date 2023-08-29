@@ -52,6 +52,9 @@
                             <option value="{{ id }}">{{ nom }}</option>
                         {% endfor %}
                     </select>
+                    <a href="#" onclick="window.showModal()">
+                        <img id="plus" class="ml-2" style="height: 30px; width: 30px;" src="{{ asset('image/ajouter.png') }} ">
+                    </a>
                 </div>
                 <br>
                 <div class="justify-center ml-52 w-80">
@@ -62,31 +65,29 @@
                 {{ form_end(sortieForm, {render_rest: false}) }}
             </div>
         </div>
+    </div>
 
-        <div class="flex items-center space-x-4">
-            <div class="bg-white rounded px-8 pt-6 pb-8 mb-2 w-full">
-                <div class="flex items-center mb-2 max-w-3xl">
-                    <p class="flex">Pour créer un lieu, sélectionner une ville ou une adresse ensuite cliqué la carte à l'endroit de
-                        votre choix.</p>
-                    <select id="selectLocalisation" onclick="window.coordonnee">
-                        <option value="0">Choisir une ville</option>
-                    </select>
-                    <p class="mx-2 mr-4">ou</p>
-                    <div class="flex items-center">
-                        <label for="adresse" class="mr-2 text-al" style="width: 250px;">Saisissez une adresse</label>
-                        <input type="text" class="flex-grow" id="adresse" name="adresse"
-                               onchange="window.localisationLieu()"/>
-                    </div>
-                </div>
-
-                <div id="map" class="mt-8 z-10" style="height: 400px; width: 600px;"></div>
-            </div>
-        </div>
-
-        <div id="modal" class="fixed inset-0  items-center justify-center z-50 hidden">
-            <div class="fixed inset-0 bg-black opacity-50"></div>
-            <div class="z-50 bg-white rounded px-8 py-6">
+    <div id="modal" class="fixed inset-0 items-center justify-center z-50 hidden">
+        <div class="fixed inset-0 bg-black opacity-50"></div>
+        <div class="z-50 bg-white rounded px-8 py-6 flex">
+            <div class="flex-1 pr-4">
                 <h2 class="text-xl font-semibold mb-4">Créer un lieu</h2>
+                <p class="flex">Pour créer un lieu, sélectionner une ville ou une adresse ensuite cliqué la carte à
+                    l'endroit de
+                    votre choix.</p>
+                <select id="selectLocalisation" onclick="window.coordonnee">
+                    <option value="0">Choisir une ville</option>
+                </select>
+                <p class="mx-2 mr-4">ou</p>
+                <div class="flex items-center">
+                    <label for="adresse" class="mr-2 text-al" style="width: 250px;">Saisissez une adresse</label>
+                    <input type="text" class="flex-grow" id="adresse" name="adresse"
+                           onchange="window.localisationLieu()"/>
+                </div>
+                <div id="map" class="mt-8 z-auto" style="height: 400px; width: 600px;"></div>
+            </div>
+            <div class="flex-1 pl-4">
+
                 {{ form_start(lieuForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4', 'id': 'lieuForm'}}) }}
 
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

@@ -12,3 +12,4 @@ import 'leaflet/dist/leaflet.js';
 import './map.js';
 import './styles/app.scss';
 import 'bootstrap';
+import 'alpinejs';

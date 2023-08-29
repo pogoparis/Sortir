@@ -86,7 +86,7 @@
                          src="{{ asset('image/croix.png') }} ">
                 </a>
             <div class="flex-1 pr-4" id="aModifier">
-                <h2 class="text-xl font-semibold mb-4">Créer un lieu</h2>
+                <h2 class="text-3xl font-semibold mb-4">Créer un lieu</h2>
 
                     <p class="flex mb-4">Pour créer un lieu, sélectionner une ville ou une adresse ensuite cliqué la
                         carte à
@@ -113,27 +113,27 @@
                 {{ form_start(lieuForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4', 'id': 'lieuForm'}}) }}
 
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    {{ form_label(lieuForm.nom) }}
-                    {{ form_widget(lieuForm.nom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_nom'}}) }}
+                    {{ form_label(lieuForm.nom, null, {'label_attr': {'class': 'text-2xl'}}) }}
+                    {{ form_widget(lieuForm.nom, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_nom', 'style': 'width: 200px; height: 35px;'}}) }}
                 </div>
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    {{ form_label(lieuForm.rue) }}
-                    {{ form_widget(lieuForm.rue, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_rue'}}) }}
+                    {{ form_label(lieuForm.rue, null, {'label_attr': {'class': 'text-2xl'}}) }}
+                    {{ form_widget(lieuForm.rue, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_rue', 'style': 'width: 200px; height: 35px;'}}) }}
                 </div>
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    {{ form_label(lieuForm.latitude) }}
-                    {{ form_widget(lieuForm.latitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_latitude'}}) }}
+                    {{ form_label(lieuForm.latitude, null, {'label_attr': {'class': 'text-2xl'}}) }}
+                    {{ form_widget(lieuForm.latitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_latitude', 'style': 'width: 200px; height: 35px;'}}) }}
                 </div>
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    {{ form_label(lieuForm.longitude) }}
-                    {{ form_widget(lieuForm.longitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_longitude'}}) }}
+                    {{ form_label(lieuForm.longitude, null, {'label_attr': {'class': 'text-2xl'}}) }}
+                    {{ form_widget(lieuForm.longitude, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_longitude', 'style': 'width: 200px; height: 35px;'}}) }}
                 </div>
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    {{ form_label(lieuForm.ville) }}
-                    {{ form_widget(lieuForm.ville, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_ville'}}) }}
+                    {{ form_label(lieuForm.ville, null, {'label_attr': {'class': 'text-2xl'}}) }}
+                    {{ form_widget(lieuForm.ville, {'attr': {'class': 'input input-bordered input-sm w-full max-w-xs m-1', 'id': 'lieu_ville', 'style': 'width: 200px; height: 35px;'}}) }}
                 </div>
                 <button onclick="window.envoieFormulaire"
-                        class=" bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-6 text-2xl" id="boutonLieu"
+                        class=" bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-6 text-2xl ml-4" id="boutonLieu"
                         style="height: 50px; width: 200px;">
                     Ajouter le lieu
                 </button>

@@ -4,22 +4,21 @@ let marker;
 function init() {
     affichageVille();
     afficherLocalisation();
-    map = L.map('map').setView([48.85889, 2.320041], 12);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
-    }).addTo(map);
-    // L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}\'', {
-    //     maxZoom: 19,
-    //     attribution: '© OpenStreetMap'
-    // }).addTo(map);
-    map.on('click', onMapClick);
+
     document.getElementById("boutonLieu").addEventListener("click", function(event){
         event.preventDefault()
     });
     document.getElementById("boutonLieu").addEventListener("click", envoieFormulaire);
 }
 
+function affichageMap(){
+    map = L.map('map').setView([48.85889, 2.320041], 12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright"></a>'
+    }).addTo(map);
+    map.on('click', onMapClick);
+}
 function affichageVille() {
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
@@ -179,6 +178,7 @@ function coordonnee() {
 function showModal() {
     var modal = document.getElementById('modal');
     modal.style.display = 'flex';
+    affichageMap();
 }
 window.showModal = showModal;
 function hideModal() {

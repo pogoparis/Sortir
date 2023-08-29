@@ -3,26 +3,44 @@
 {% block body %}
 
     {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-    <div class="content-center">
+    <div class="container ">
         {{ form_start(form) }}
-        <div>
-            <div>
-                {{ form_widget(form.nom) }}
+        <div class="flex justify-center">
+            <div class="w-2/3 p-4">
+                <div class="flex">
+                    <div class="w-1/2 p-2">
+                        {{ form_widget(form.nom) }}
+                    </div>
+                    <div class="w-1/2 p-2 " id="test">
+                        <div>
+                            {{ form_widget(form.organisateur) }}
+                            {{ form_label(form.organisateur) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.inscrit) }}
+                            {{ form_label(form.inscrit) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="w-1/2 p-2 flex">
+                        <div class="w-1/2">
+                           <p>{{ form_label(form.site) }}</p>
+                            {{ form_widget(form.site) }}
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                                    type="submit">
+                                Filtrer
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-1/2  p-2 flex">
+                        {{ form_row(form.dateMin) }}
+                        {{ form_row(form.dateMax) }}
+                    </div>
+                </div>
             </div>
-            <div>
-                {{ form_row(form.dateMin) }}
-                {{ form_row(form.dateMax) }}
-            </div>
-        </div>
-        <div>
-            {{ form_row(form.site) }}
-            {{ form_row(form.organisateur) }}
-            {{ form_row(form.inscrit) }}
-        </div>
-        <div>
-            <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
-                Filtrer
-            </button>
         </div>
         {{ form_end(form) }}
     </div>

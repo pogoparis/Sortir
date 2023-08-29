@@ -8,63 +8,87 @@
     {% endfor %}
 
     <h1 class="text-2xl text-center">Inscription</h1>
-
+{{ form_start(registrationForm) }}
     {{ form_errors(registrationForm) }}
 
-    <div class="w-full max-w-xl">
-        {{ form_start(registrationForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4'}}) }}
+    <div class="flex justify-center">
+        <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
+            <div class="w-full m-2">
+                <div class="form-label">
+                    {{ form_label(registrationForm.pseudo) }}
+                </div>
+                <div class="form-row">
+                    {{ form_widget(registrationForm.pseudo) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.pseudo) }}
+                    </ul>
+                </div>
 
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.pseudo) }}
-            {{ form_errors(registrationForm.pseudo) }}
-            {{ form_widget(registrationForm.pseudo) }}
+                <div class="form-label">
+                    {{ form_label(registrationForm.nom) }}
+                </div>
+                <div class="form-row">
+                    {{ form_widget(registrationForm.nom) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.nom) }}
+                    </ul>
+                </div>
 
-        </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.nom) }}
-            {{ form_errors(registrationForm.nom) }}
-            {{ form_widget(registrationForm.nom) }}
-        </div>
-       
-       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.prenom) }}
-           {{ form_errors(registrationForm.prenom) }}
-            {{ form_widget(registrationForm.prenom) }}
-        </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.telephone) }}
-            {{ form_widget(registrationForm.telephone) }}
-            {{ form_errors(registrationForm.telephone) }}{#le form_errors permet d'afficher les messages d'erreurs après saise#}
-        </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.email) }}
-            {{ form_widget(registrationForm.email) }}
-            {{ form_errors(registrationForm.email) }}
-        </div>
+                <div class="form-label">
+                    {{ form_label(registrationForm.prenom) }}
+                </div>
+                <div class="form-row">
+                    {{ form_widget(registrationForm.prenom) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.prenom) }}
+                    </ul>
+                </div>
 
-        <br>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_label(registrationForm.siteEni) }}
-            {{ form_widget(registrationForm.siteEni) }}
-        </div>
-        <br>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_widget(registrationForm.plainPassword) }}
-            {{ form_errors(registrationForm.plainPassword) }}
-            {#._token permet de valider le token de l'enregistrement du mdp#}
-            {{ form_row(registrationForm._token) }}
-        </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            {{ form_widget(registrationForm.imageFile) }}
-        </div>
-        <label>
-            <input type="checkbox" name="_remember_me" checked>
-            Me garder connecter
-        </label>
+                <div class="form-label">
+                    {{ form_label(registrationForm.telephone) }}
+                </div>
+                <div class="form-row">
+                    {{ form_widget(registrationForm.telephone) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.telephone) }}
+                    </ul>
+                </div>
+                <div class="form-label">
+                    {{ form_label(registrationForm.email) }}
+                </div>
 
-
-        {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1 m-1'}}) }}
-
-        {{ form_end(registrationForm, {render_rest: false}) }}
+                <div class="form-row">
+                    {{ form_widget(registrationForm.email) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.email) }}
+                    </ul>
+                </div>
+            </div>
+            <div class="w-full pr-4">
+                <div class="form-label">
+                    {{ form_label(registrationForm.siteEni) }}
+                </div>
+                <div class="form-row pb-4">
+                    {{ form_widget(registrationForm.siteEni) }}
+                </div>
+                <div class="form-row pb-8">
+                    {{ form_widget(registrationForm.plainPassword) }}
+                    <ul class="error-message">
+                    {{ form_errors(registrationForm.plainPassword) }}
+                    </ul>
+                    {# ._token permet de valider le token de l'enregistrement du mdp #}
+                    {{ form_row(registrationForm._token) }}
+                </div>
+                <div class="form-row mb-8">
+                    {{ form_widget(registrationForm.imageFile) }}
+                </div>
+                <label class="form-label">
+                    <input type="checkbox" name="_remember_me" checked>
+                    Me garder connecté
+                </label>
+                {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+            </div>
+        </div>
     </div>
+    {{ form_end(registrationForm) }}
 {% endblock %}

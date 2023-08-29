@@ -75,24 +75,31 @@ class SortieController extends AbstractController
     #[Route('/sorties', name: 'sortie_affichage')]
     public function affichage(
         SortieRepository $sortieRepository,
-        UserRepository $userRepository,
-        Request $request
+        UserRepository   $userRepository,
+        Request          $request
     ): Response
     {
+
         $filtre = new Filtre();
         $now = new DateTime();
+
         $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
         $form = $this->createForm(FiltreFormType::class, $filtre);
         $form->handleRequest($request);
+        $compteurParticipants = [];
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findSearch($filtre);
         } else {
             $sorties = $sortieRepository->findAll();
         }
-
+        foreach ($sorties as $sortie) {
+            $nbParticipants = $sortieRepository->countParticipants($sortie);
+            $compteurParticipants[$sortie->getId()] = $nbParticipants;
+        }
         return $this->render('sortie/listeSorties.html.twig',
             [
                 'sorties' => $sorties,
+                'nbParticipants' => $compteurParticipants,
                 'form' => $form->createView(),
                 'now' => $now,
                 'user' => $user
@@ -102,7 +109,7 @@ class SortieController extends AbstractController
 //*********************************** DETAILS **************************************
     #[Route('/detail/{id}', name: 'sortie_detail', requirements: ["id" => "\d+"])]
     public function detail(
-        Sortie $sortie,
+        Sortie         $sortie,
         UserRepository $userRepository
     ): Response
     {
@@ -208,7 +215,8 @@ class SortieController extends AbstractController
         }
         return $this->render('sortie/creationLocalisation.html.twig', compact('lieuForm', 'ville'));
     }
-    #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods : ['POST'])]
+
+    #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods: ['POST'])]
     public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
     {
         $req = $request->toArray();
@@ -222,7 +230,7 @@ class SortieController extends AbstractController
         $entityManager->flush();
 
         return $this->json(
-            $villeRepository->findBy([], ['nom'=> 'ASC']),
+            $villeRepository->findBy([], ['nom' => 'ASC']),
             201,
             [],
             ['groups' => 'listeLieux']

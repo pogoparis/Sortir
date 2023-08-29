@@ -44,7 +44,7 @@
                         Publier
                     </a>
                 {% endif %}
-{#                ******************* AFFICHAGE BOUTON ANNULER PARTICIPATION ******************#}
+{#         ******************* AFFICHAGE BOUTON ANNULER PARTICIPATION ******************#}
                 {% for personne in sortie.participants %}
                     {% if personne == user and sortie.dateHeureDebut > now %}
                         <td><a class="btn btn-sm m-1" id="lien"

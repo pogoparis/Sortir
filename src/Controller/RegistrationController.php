@@ -31,7 +31,7 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $user ->setIsAdmin(false);//permet de config par défaut le isAdmin a false
+        $user->setIsAdmin(false);//permet de config par défaut le isAdmin a false
         $user->setIsActif(true);//permet de config par défaut le isActif a false
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -66,53 +66,37 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+   /*
+    * La méthode commence par extraire le paramètre "id" de la requête GET.
+    * Ce paramètre est utilisé pour identifier l'utilisateur dont l'adresse e-mail doit être vérifiée
+    */
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $id = $request->query->get('id');
+
+        if (null === $id) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $user = $userRepository->find($id);
+
+        if (null === $user) {
+            return $this->redirectToRoute('app_register');
+        }
+
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-            if($this->getUser()->isVerified()){
-                return $this->redirectToRoute('app_login');
-            }else{
-                $this->addFlash('Vérification du mail en erreur', 'Vous devez vérifier votre email avant de vous connecter.');
-                return $this->redirectToRoute('app_login');
-            }
-
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('Vérification du mail en erreur', $exception->getReason());
+            $this->addFlash('verify_email_error', $exception->getReason());
 
             return $this->redirectToRoute('app_register');
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Votre mail a bien été validé.');
+        $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
 
         return $this->redirectToRoute('app_login');
     }
-
-/*    #[Route(path: '/verify/email', name: 'app_verify_email')]
-    public function verifyEmail(Request $request, VerifyEmailHelperInterface $verifyEmailHelper, UserRepository $userRepository, EntityManagerInterface $entityManager, UserInterface $user): Response
-    {
-        $user1 = $userRepository->find($request->query->get('id'));
-        if (!$user1) {
-            throw $this->createNotFoundException();
-        }
-        try {
-            $verifyEmailHelper->validateEmailConfirmation(
-                $request->getUri(),
-                $user->getId(),
-                $user->getEmail(),
-            );
-        } catch (VerifyEmailExceptionInterface $e) {
-            $this->addFlash('error', $e->getReason());
-            return $this->redirectToRoute('app_register');
-        }
-        $user->setIsVerified(true);
-        $entityManager->flush($user);
-
-        $this->addFlash('success', 'Compte vérifié ! Vous pouvez maintenant vous connecter.');
-        return $this->redirectToRoute('app_login');
-    }*/
 }

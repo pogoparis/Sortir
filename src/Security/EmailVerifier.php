@@ -19,12 +19,17 @@ class EmailVerifier
     ) {
     }
 
+    /*
+     * Ici la signature avec les infos de lutilisateur est envoyé dans le liens de confirmation
+     * ['id' => $user->getId()] Cette ligne crée une paire clé-valeur dans un tableau associatif, où la clé est 'id' et la valeur est l'ID de l'utilisateur.
+     */
     public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            ['id' => $user->getId()]
         );
 
         $context = $email->getContext();

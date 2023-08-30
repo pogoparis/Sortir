@@ -3,31 +3,62 @@
 {% block body %}
 
     {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-    <div class="FormSearch m-2">
+
+    <div class="container ">
         {{ form_start(form) }}
-        <div class="grid grid-cols-4 gap-4">
-            <div>
-                {{ form_widget(form.nom) }}
-            </div>
-            <div>
-                {{ form_row(form.dateMin) }}
-            </div>
-            <div>
-                {{ form_row(form.dateMax) }}
-            </div>
-            <div>
-                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
-                    Filtrer
-                </button>
+        <div class="flex justify-center">
+            <div class="w-2/3 p-4">
+                <div class="flex">
+                    <div class="w-1/2 p-2">
+                        {{ form_widget(form.nom) }}
+                    </div>
+                    <div class="w-1/2 p-2 " id="test">
+                        <div>
+                            {{ form_widget(form.organisateur) }}
+                            {{ form_label(form.organisateur) }}
+                        </div>
+                        <div>
+                            {{ form_widget(form.inscrit) }}
+                            {{ form_label(form.inscrit) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="w-1/2 p-2 flex">
+                        <div class="w-1/2">
+                            <p>{{ form_label(form.site) }}</p>
+                            {{ form_widget(form.site) }}
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                                    type="submit">
+                                Filtrer
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-1/2  p-2 flex">
+                        {{ form_row(form.dateMin) }}
+                        {{ form_row(form.dateMax) }}
+                    </div>
+                </div>
             </div>
         </div>
         {{ form_end(form) }}
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+    {#    ******************************** Affichage liste des Sorties ****************************** #}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
         {% for event in sorties %}
             <div class="card card-side bg-base-100 shadow-xl">
+                {% if event.imageName %}
+                    <figure><img alt="sortie" style="max-width: 150px"
+                                 src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
+                {% else %}
+                    <figure><img alt="sortie" src="{{ asset('/images/amis2.jpg') }}"/></figure>
+                {% endif %}
                 <div class="card-body">
-                    {% if event.etat.id != 1 %}
+{#                    {% if event.etat.id != 1 %}#}
                         <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
                         <span>{{ event.infosSortie }} {% if event in user.sortiesParticipants %}
                                 ✅Vous y participez !
@@ -35,12 +66,8 @@
 
                         <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
                             : {{ event.dateHeureFin |date('d-m-Y') }}</p>
-                        <p>
-                            <a class="link link-success"
-                               href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
-                        </p>
                         <p> {{ nbParticipants[event.id] }} / {{ event.nbInscriptionsMax }} Participants</p>
-                        <p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p>
+                        {# <p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p> #}
                         <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                                 detail
                             </a></td>
@@ -53,7 +80,7 @@
                                 and user != event.organisateur %}
 
                                 {% if  event not in user.sortiesParticipants %}
-                                    <a class="btn btn-neutral m-1" id="lien"
+                                    <a class="btn btn-sm bg-blue-900 text-white m-1" id="lien"
                                        href="{{ path('participation_inscription', {'id' : event.id}) }}">
                                         participer
                                     </a>
@@ -68,12 +95,16 @@
                                     </a></td>
                             {% endif %}
                         {% endfor %}
-                        {% if event.etat.id == 5 or event.etat.id == 6 or event.etat.id == 3 %}
+                        {# {% if event.etat.id == 5 or event.etat.id == 6 or event.etat.id == 3 %}
                             <div class="text-red-500">{{ event.etat.libelle }}</div>
                         {% else %}
                             <div class="text-green-500">{{ event.etat.libelle }}</div>
-                        {% endif %}
-                    {% endif %}
+                        {% endif %} #}
+
+                        {#                            <a class="link link-success" #}
+                        {#                               href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a> #}
+
+{#                    {% endif %}#}
                 </div>
             </div>
         {% endfor %}

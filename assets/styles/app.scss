@@ -1,6 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed&family=Mukta&display=swap');
+
+/*body {
+    height: 100vh;
+    width: 100%;
+    display: block;
+    background-image: url("/public/images/fond.jpg");
+    background-size: cover;
+}*/
+
+body{
+    //font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Mukta', sans-serif;
+}
+
 
 #map { height: 350px;
     width: 500px;
@@ -10,13 +25,16 @@
     margin-right: auto;
 }
 
-input[type=text], input[type=password] {
-    @apply input input-bordered input-sm w-full max-w-xs m-1;
+input[type=text], input[type=password], input[type=email], input[type=datetime-local], input[type=number] {
+    @apply input rounded input-bordered input-sm w-full max-w-xs m-1;
 }
 
+/*
 button {
     @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
 }
+*/
+
 
 .error-message {
     color: #ff0000;
@@ -28,7 +46,6 @@ button {
     width: 100%;
 }
 .imageProfil {
-    height: 400px;
-    width: 200px;
+   max-width: 150px
 }
 

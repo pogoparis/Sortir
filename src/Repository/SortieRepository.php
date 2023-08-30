@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -127,6 +128,15 @@ class SortieRepository extends ServiceEntityRepository
     public function countParticipants(Sortie $sortie): int
     {
         return count($sortie->getParticipants());
+    }
+
+    public function findAllPerso(): Paginator
+    {
+        $query = $this->createQueryBuilder('w')
+
+            ->setMaxResults(50)
+            ->getQuery();
+        return  new Paginator($query);
     }
 
 }

@@ -1,7 +1,9 @@
-window.onload = init;
+window.onload = init2
 
 let marker;
-function init() {
+function init2() {
+    console.log('je passe dans map.js');
+    init();
     affichageVille();
     afficherLocalisation();
 
@@ -11,7 +13,7 @@ function init() {
     document.getElementById("boutonLieu").addEventListener("click", envoieFormulaire);
 }
 
-function affichageMap(){
+function affichageMapLieu(){
     map = L.map('map').setView([48.85889, 2.320041], 12);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -19,6 +21,7 @@ function affichageMap(){
     }).addTo(map);
     map.on('click', onMapClick);
 }
+
 function affichageVille() {
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
@@ -66,12 +69,12 @@ function afficherLieu(){
 }
 window.afficherLieu = afficherLieu;
 function afficherLocalisation() {
-    fetch('http://127.0.0.1:8000/apiLocalisation')
+    fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
         .then(
             json => {
                 let select = document.getElementById("selectLocalisation");
-
+                select.innerText="";
                 for (const js of json){
 
                     let nouvelElement = document.createElement("option");
@@ -84,7 +87,7 @@ function afficherLocalisation() {
             }
         )
 }
-
+window.afficherLocalisation = afficherLocalisation;
 function allLieux() {
 
     $id = document.getElementById("villeListe").value;
@@ -109,11 +112,12 @@ function allLieux() {
 function coordonnee() {
 
     $id = document.getElementById("selectLocalisation").value;
-    console.log($id);
+    console.log('l id est =' + $id);
     fetch('http://127.0.0.1:8000/apiLocalisation')
         .then(res => res.json())
         .then(
             json => {
+                console.log('json0');
                 console.log(json[0]);
 
                 for (const js of json){
@@ -131,7 +135,8 @@ function coordonnee() {
             }
         )
 }
-    // window.coordonnee = coordonnee;
+window.coordonnee = coordonnee;
+
     let popup = L.popup();
 
     function onMapClick(e) {
@@ -170,17 +175,6 @@ function coordonnee() {
     }
     window.localisationLieu = localisationLieu;
 
-function showModal() {
-    var modal = document.getElementById('modal');
-    modal.style.display = 'flex';
-    affichageMap();
-}
-window.showModal = showModal;
-function hideModal() {
-    var modal = document.getElementById('modal');
-    modal.style.display = 'none';
-}
-window.hideModal = hideModal;
 function envoieFormulaire(event){
 
     event.preventDefault();
@@ -207,5 +201,18 @@ function envoieFormulaire(event){
         },body: JSON.stringify(data)
     }).then(reponse => reponse.json())
 
-    hideModal();
+    hideModalLieu();
 }
+function showModalLieu() {
+    var modal = document.getElementById('modalLieu');
+    modal.style.display = 'flex';
+    affichageMapLieu();
+    afficherLocalisation();
+}
+window.showModalLieu = showModalLieu;
+function hideModalLieu() {
+    var modal = document.getElementById('modalLieu');
+    modal.style.display = 'none';
+}
+window.hideModalLieu = hideModalLieu;
+

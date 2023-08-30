@@ -5,11 +5,12 @@ namespace App\Entity;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use PhpParser\Node\Stmt\Expression;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
 {
@@ -66,6 +67,17 @@ class Sortie
     #[ORM\ManyToOne(inversedBy: 'sortie')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Lieu $lieu = null;
+
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
 
 
     public function getId(): ?int
@@ -213,6 +225,55 @@ class Sortie
     {
         $this->lieu = $lieu;
 
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+        if(null !== $imageFile){
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
+
+    public function setImageSize(?int $imageSize): static
+    {
+        $this->imageSize = $imageSize;
+
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
 
         return $this;
     }

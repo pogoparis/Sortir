@@ -163,7 +163,7 @@ class SortieController extends AbstractController
             $serializer->serialize(
                 $villes,
                 'json',
-                ['groups' => 'wishes:read']),
+                ['groups' => 'sorties:ville']),
             200,
             [],
             true);
@@ -178,7 +178,7 @@ class SortieController extends AbstractController
             $serializer->serialize(
                 $lieu,
                 'json',
-                ['groups' => 'wishes:read']),
+                ['groups' => 'sorties:lieux']),
             200,
             [],
             true);
@@ -253,11 +253,15 @@ class SortieController extends AbstractController
         $entityManager->persist($ville);
         $entityManager->flush();
 
-        return $this->json(
-            $villeRepository->findBy([], ['nom' => 'ASC']),
-            201,
+        $allVille = $villeRepository->findAll();
+
+        return new JsonResponse(
+            $serializer->serialize(
+                $allVille,
+                'json',
+                ['groups' => 'sorties:ville']),
+            200,
             [],
-            ['groups' => 'listeLieux']
-        );
+            true);
     }
 }

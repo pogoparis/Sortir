@@ -2,9 +2,6 @@
 let marker;
 function init() {
     console.log('je suis dans ville.js');
-    document.getElementById("boutonVille").addEventListener("click", function(event){
-        event.preventDefault()
-    });
     document.getElementById("boutonVille").addEventListener("click", envoieFormulaireVille);
 }
 window.init = init;
@@ -72,6 +69,7 @@ window.showModalVille = showModalVille;
 function hideModalVille() {
     var modalVille = document.getElementById('modalVille');
     modalVille.style.display = 'none';
+    afficherLocalisation();
 }
 window.hideModalVille = hideModalVille;
 function envoieFormulaireVille(event){
@@ -90,8 +88,7 @@ function envoieFormulaireVille(event){
         latitude: latitude,
         longitude: longitude
     }
-    console.log('je suis dans l envoie du formulaire');
-    console.log(data);
+
     fetch('http://127.0.0.1:8000/creationVilleVide', {
         method: 'POST',
         headers: {
@@ -99,6 +96,20 @@ function envoieFormulaireVille(event){
             'Accept': 'application/json'
         },body: JSON.stringify(data)
     }).then(reponse => reponse.json())
+        .then(jsonData => {
+            let select = document.getElementById("villeListe");
+            select.innerText ="";
+            for (const js of jsonData){
 
+                let nouvelElement = document.createElement("option");
+
+                nouvelElement.setAttribute("value", js['id'])
+                nouvelElement.innerText = js['nom'];
+                select.appendChild(nouvelElement);
+
+            }
+        })
     hideModalVille();
+
 }
+

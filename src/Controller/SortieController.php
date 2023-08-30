@@ -103,6 +103,7 @@ class SortieController extends AbstractController
         foreach ($sorties as $sortie) {
             $nbParticipants = $sortieRepository->countParticipants($sortie);
             $compteurParticipants[$sortie->getId()] = $nbParticipants;
+
         }
         return $this->render('sortie/listeSorties.html.twig',
             [

@@ -1,84 +1,126 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <div class="flex justify-center mt-10">
-        <div class="sous_container p-4 border rounded shadow-lg">
-            {#            /************************* DETAIL SORTIE *****************************/ #}
-            <ul>
-                <li>nom de la sortie : {{ sortie.nom }}</li>
-                <li>date du début : {{ sortie.dateHeureDebut |date('d-m-Y H:i') }}</li>
-                <li>date de fin : {{ sortie.dateHeureFin |date('d-m-Y H:i') }}</li>
-                <li>fin de l'inscription : {{ sortie.dateLimiteInscription |date('d-m-Y H:i') }}</li>
-                <li>nombre de participants max : {{ sortie.nbInscriptionsMax }}</li>
-                <li>description : {{ sortie.infosSortie }}</li>
-            </ul>
-        </div>
-        <div class="flex justify-center mt-4">
-            {% if app.user %}
-                {#       ************************* BOUTON ANNULER/MODIFIER *********************************** #}
-                {% if sortie.dateHeureDebut > now and sortie.organisateur == app.user and sortie.etat.id != 6 %}
-                    <a class="btn btn-neutral m-1" id="lien"
-                       href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
-                        Annuler
-                    </a>
-                    <a class="btn btn-neutral m-1" id="lien" href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
-                        modifier
-                    </a>
-                {% endif %}
-                {#    /****************** CONDITIONS AFFICHAGE BOUTON PARTICIPER ***************************/ #}
-                {% if sortie.etat.id == 2
-                    and sortie.dateLimiteInscription > now
-                    and sortie.participants.count < sortie.nbInscriptionsMax
-                    and now < sortie.dateHeureDebut
-                    and user != sortie.organisateur
-                    and user not in sortie.participants %}
-                    <a class="btn btn-neutral m-1" id="lien"
-                       href="{{ path('participation_inscription', {'id' : sortie.id}) }}">
-                        participer
-                    </a>
-                {% endif %}
-                {#  ************* AFFICHAGE DU BOUTON PUBLIER **************** #}
-                {% if (sortie.etat.id == 1 or sortie.etat.id == 6) and sortie.organisateur == app.user %}
-                    <a class="btn btn-sm m-1" href="{{ path('participation_publier', {'id' : sortie.id}) }}">
-                        Publier
-                    </a>
-                {% endif %}
-{#         ******************* AFFICHAGE BOUTON ANNULER PARTICIPATION ******************#}
-                {% for personne in sortie.participants %}
-                    {% if personne == user and sortie.dateHeureDebut > now %}
-                        <td><a class="btn btn-sm m-1" id="lien"
-                               href="{{ path('participation_annuler', {'id' : sortie.id}) }}">
-                                Annuler la participation
-                            </a></td>
-                    {% endif %}
-                {% endfor %}
+    <h2 class="text-lg font-bold mb-2 text-center mr-96 mt-10">Détails de la sortie</h2>
+    <div class="flex justify-center ">
+        <div class="card lg:card-side bg-gray-50 shadow-xl w-2/5">
+            {% if sortie.imageName %}
+                <figure><img alt="sortie" style="max-width: 200px" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                             src="{{ asset('images/products/' ~ sortie.imageName) }}"/></figure>
+            {% else %}
+                <figure><img alt="sortie" style="max-width: 200px" class="rounded-lg overflow-hidden shadow-md mx-2 my-2"
+                             src="{{ asset('/images/amis2.jpg') }}"/></figure>
             {% endif %}
+            <div class="card-body">
+                <h2 class="card-title">{{ sortie.nom }}</h2>
+                <ul class="list-disc pl-6">
+
+                    <li>
+                        <span class="font-semibold">Date du début:</span> {{ sortie.dateHeureDebut | date('d-m-Y H:i') }}
+                    </li>
+                    <li><span class="font-semibold">Date de fin:</span> {{ sortie.dateHeureFin | date('d-m-Y H:i') }}
+                    </li>
+                    <li>
+                        <span class="font-semibold">Fin de l'inscription:</span> {{ sortie.dateLimiteInscription | date('d-m-Y H:i') }}
+                    </li>
+                    <li><span class="font-semibold">Nombre de participants max:</span> {{ sortie.nbInscriptionsMax }}
+                    </li>
+                    <li><span class="font-semibold">Description:</span> {{ sortie.infosSortie }}</li>
+                </ul>
+                <div class="card-actions justify-end">
+                    {% if app.user %}
+                        {#       ************************* BOUTON ANNULER/MODIFIER *********************************** #}
+                        {% if sortie.dateHeureDebut > now and sortie.organisateur == app.user and sortie.etat.id != 6 %}
+                            <a class="btn btn-neutral m-1" id="lien"
+                               href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">
+                                Annuler
+                            </a>
+                            <a class="btn btn-neutral m-1" id="lien"
+                               href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">
+                                modifier
+                            </a>
+                        {% endif %}
+                        {#    /****************** CONDITIONS AFFICHAGE BOUTON PARTICIPER ***************************/ #}
+                        {% if sortie.etat.id == 2
+                            and sortie.dateLimiteInscription > now
+                            and sortie.participants.count < sortie.nbInscriptionsMax
+                            and now < sortie.dateHeureDebut
+                            and user != sortie.organisateur
+                            and user not in sortie.participants %}
+                            <a class="btn btn-neutral m-1" id="lien"
+                               href="{{ path('participation_inscription', {'id' : sortie.id}) }}">
+                                participer
+                            </a>
+                        {% endif %}
+                        {#  ************* AFFICHAGE DU BOUTON PUBLIER **************** #}
+                        {% if (sortie.etat.id == 1 or sortie.etat.id == 6) and sortie.organisateur == app.user %}
+                            <a class="btn btn-neutral m-1" href="{{ path('participation_publier', {'id' : sortie.id}) }}">
+                                Publier
+                            </a>
+                        {% endif %}
+                        {#         ******************* AFFICHAGE BOUTON ANNULER PARTICIPATION ****************** #}
+                        {% for personne in sortie.participants %}
+                            {% if personne   == user and sortie.dateHeureDebut > now %}
+                                <td><a class="btn btn-neutral m-1" id="lien"
+                                       href="{{ path('participation_annuler', {'id' : sortie.id}) }}">
+                                        Annuler la participation
+                                    </a></td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 
 
+    {#    {% if event.imageName %}
+        <figure><img alt="sortie" style="max-width: 150px"
+                     src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
+    {% else %}
+        <figure><img alt="sortie" src="{{ asset('/images/amis2.jpg') }}"/></figure>
+    {% endif %}
+    <img style="max-width: 150px"
+         src="{{ asset('images/products/' ~ sortie.imageName) }}" class="w-16 h-16 object-cover rounded" alt="Image de la sortie">
+    <div class="flex-1">
+
+        <ul class="list-disc pl-6">
+            <li><span class="font-semibold">Nom de la sortie:</span> {{ sortie.nom }}</li>
+            <li><span class="font-semibold">Date du début:</span> {{ sortie.dateHeureDebut | date('d-m-Y H:i') }}</li>
+            <li><span class="font-semibold">Date de fin:</span> {{ sortie.dateHeureFin | date('d-m-Y H:i') }}</li>
+            <li><span class="font-semibold">Fin de l'inscription:</span> {{ sortie.dateLimiteInscription | date('d-m-Y H:i') }}</li>
+            <li><span class="font-semibold">Nombre de participants max:</span> {{ sortie.nbInscriptionsMax }}</li>
+            <li><span class="font-semibold">Description:</span> {{ sortie.infosSortie }}</li>
+        </ul>
+    </div> #}
+
+
+
+
+
     {#    ********************************* AFFICHAGE DES PARTICIPANTS ****************************** #}
     <h2 class="mt-8 text-center">Participants</h2>
-    <table class="mx-auto w-full max-w-md mt-4">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for participant in sortie.participants %}
+    <div class="flex justify-center">
+        <table class="w-1/2 table border border-gray-300">
+            <thead>
             <tr>
-                <td><a href="{{ path('profil_participant_detail',{'id' : participant.id}) }}">{{ participant.nom }}</a>
-                </td>
-                <td>{{ participant.prenom }}</td>
-                <td>{{ participant.email }}</td>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+            {% for participant in sortie.participants %}
+                <tr>
+                    <td>
+                        <a href="{{ path('profil_participant_detail',{'id' : participant.id}) }}">{{ participant.nom }}</a>
+                    </td>
+                    <td>{{ participant.prenom }}</td>
+                    <td>{{ participant.email }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 

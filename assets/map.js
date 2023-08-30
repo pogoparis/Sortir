@@ -160,7 +160,8 @@ window.coordonnee = coordonnee;
     }
     function localisationLieu() {
         var adresse = document.getElementById("adresse").value;
-
+        const mots = adresse.split(" ");
+        const premierMot = mots[0];
         let adresseFinal = adresse.replaceAll(" ", "+");
         fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
             .then(res => res.json())
@@ -168,9 +169,15 @@ window.coordonnee = coordonnee;
                 json => {
 
                     let coordonnees = json['features'][0]['geometry']['coordinates'];
+                    let rue = json['features'][0]['properties']['name'];
+                    console.log(rue);
                             let longitude =  coordonnees[0];
                             let latitude =  coordonnees[1];
                             map.flyTo([latitude, longitude], 16);
+                    document.getElementById("lieu_rue").value = premierMot +" " + rue;
+                    document.getElementById("lieu_latitude").value = latitude;
+                    document.getElementById("lieu_longitude").value = longitude;
+                    apiNomVille(longitude,latitude);
                 } )
     }
     window.localisationLieu = localisationLieu;
@@ -216,3 +223,32 @@ function hideModalLieu() {
 }
 window.hideModalLieu = hideModalLieu;
 
+function apiNomVille(longitude, latitude){
+    console.log('je suis dans apiVille');
+    console.log(longitude);
+    console.log(latitude);
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`)
+        .then(res => res.text())
+        .then(xmlData => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+            const municipalityElement = xmlDoc.querySelector("municipality");
+
+            const ville = municipalityElement.textContent;
+            console.log('la ville ' + ville);
+//             const villeSel = document.getElementById("lieu_ville").options[document.getElementById("lieu_ville").selectedIndex];
+//            villeSel.value = ville;
+//         });
+// }
+            const lieuVilleSelect = document.getElementById("lieu_ville");
+
+            for (let i = 0; i < lieuVilleSelect.options.length; i++) {
+                const option = lieuVilleSelect.options[i];
+                if (option.textContent.trim() === ville) {
+                    console.log('Option value =' + option.value);
+                    option.selected = true;
+                }
+            }
+        });
+}

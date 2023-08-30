@@ -25,7 +25,7 @@ body{
     margin-right: auto;
 }
 
-input[type=text], input[type=password], input[type=email] {
+input[type=text], input[type=password], input[type=email], input[type=datetime-local], input[type=number] {
     @apply input rounded input-bordered input-sm w-full max-w-xs m-1;
 }
 

@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SortieType extends AbstractType
 {
@@ -43,7 +45,22 @@ class SortieType extends AbstractType
                     'attr' => [
                         'class' => 'btn btn-neutral m-1',
                     ],
-                    ]);
+                    ])
+            ->add('imageFile', VichImageType::class,[
+                'label' => 'Image Sortie',
+                'required' => false,
+                'download_label' => true,
+                'constraints' => [
+                    new File ([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG)',
+                    ])
+                ]
+            ]);
 
     }
 

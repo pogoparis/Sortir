@@ -4,11 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\SortiesArchivees;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArchiveDashboardController extends AbstractDashboardController
@@ -33,6 +35,45 @@ class ArchiveDashboardController extends AbstractDashboardController
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
              return $this->render('admin/sortiesArchivees.html.twig');
+    }
+
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if ($entityInstance instanceof User) {
+            $this->updateAdminRole($entityInstance);
+        }
+
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if ($entityInstance instanceof User) {
+            $this->updateAdminRole($entityInstance);
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    private function updateAdminRole(User $user): void
+    {
+        if ($user->isIsAdmin()) {
+            $user->setRoles(array_merge($user->getRoles(), ['ROLE_ADMIN']));
+        } else {
+            $user->setRoles(array_diff($user->getRoles(), ['ROLE_ADMIN']));
+        }
+
+        // Hasher le mot de passe si nécessaire
+        if ($user->getPlainPassword()) {
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
+            $user->setPassword($hashedPassword);
+        }
     }
 
     public function configureDashboard(): Dashboard

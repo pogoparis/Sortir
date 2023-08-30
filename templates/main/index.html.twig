@@ -52,7 +52,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
             {% for event in sorties %}
-                <div class="card card-side bg-base-100 shadow-xl">
+                <div class="relative card card-side bg-base-100 shadow-xl">
+                    {#      *********** IMAGE CANCEL ********* #}
+                    {% if event.etat.id == 6 %}
+                        <img src="{{ asset('images/cancel.png') }}" alt="cancel"
+                             class="absolute inset-x-28  opacity-50 w-64 h-64 z-20">
+                    {% endif %}
+                    {#     *********** IMAGE SORTIE ******** #}
                     {% if event.imageName %}
                         <figure><img alt="sortie" style="max-width: 150px"
                                      class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
@@ -61,7 +67,8 @@
                         <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
                                      src="{{ asset('/images/amis2.jpg') }}"/></figure>
                     {% endif %}
-                    <div class="card-body">
+                    {#     *************** CORPS DE LA CARTE ****************** #}
+                    <div class="card-body w-64 h-64">
                         <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
                         <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
                             : {{ event.dateHeureFin |date('d-m-Y') }}</p>

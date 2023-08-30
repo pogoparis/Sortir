@@ -132,11 +132,14 @@ class SortieRepository extends ServiceEntityRepository
 
     public function findAllPerso(): Paginator
     {
-        $query = $this->createQueryBuilder('w')
-
+        $query = $this->createQueryBuilder('s')
+            ->where('s.etat != :etatId')
+            ->setParameter('etatId', 5)
+            ->orderBy('s.dateHeureDebut', 'ASC')
             ->setMaxResults(50)
             ->getQuery();
-        return  new Paginator($query);
+
+        return new Paginator($query);
     }
 
 }

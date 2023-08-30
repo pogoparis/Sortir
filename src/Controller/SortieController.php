@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Filtre;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\FiltreFormType;
 use App\Form\LieuType;
 use App\Form\SortieType;
+use App\Form\VilleType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
@@ -34,12 +36,12 @@ class SortieController extends AbstractController
         Request $requete, EtatRepository $etatRepository, SiteRepository $siteRepository, EntityManagerInterface $entityManager
     ): Response
     {
-
+        //Nouvelle Sortie / Lieu / Ville
         $now = new DateTime();
-        //Nouvelle Sortie / Lieu
-        $lieu = new Lieu();
 
+        $lieu = new Lieu();
         $sortie = new Sortie();
+        $ville = new Ville();
         //Etat de la sortie -> "créée" par défaut
         $etat = $etatRepository->findOneBy(array('id' => 1));
         $sortie->setEtat($etat);
@@ -55,10 +57,18 @@ class SortieController extends AbstractController
         // création du formulaire
         $lieuForm = $this->createForm(LieuType::class, $lieu);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $villeForm = $this->createForm(VilleType::class, $ville);
+        // récupération des données
         $sortieForm->handleRequest($requete);
         $lieuForm->handleRequest($requete);
+        $villeForm->handleRequest($requete);
+
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
             $entityManager->persist($lieu);
+            $entityManager->flush();
+        }
+        if ($villeForm->isSubmitted() && $villeForm->isValid()) {
+            $entityManager->persist($ville);
             $entityManager->flush();
         }
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
@@ -68,7 +78,7 @@ class SortieController extends AbstractController
             $this->addFlash('success', 'Sortie créée , Publiez la si les informations sont correctes');
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
-        return $this->render('sortie/index.html.twig', compact("sortieForm", 'lieuForm'));
+        return $this->render('sortie/index.html.twig', compact("sortieForm", 'lieuForm', 'villeForm'));
     }
 
 //    ********************************* LISTE SORTIES ****************************************
@@ -147,7 +157,7 @@ class SortieController extends AbstractController
         }
         return $this->render('sortie/modifier.html.twig', compact('sortieForm'));
     }
-
+    // *********************************** API *********************************************************
     #[Route('/api', name: 'api_villes')]
     public function apiVille(
         VilleRepository $villeRepository, SerializerInterface $serializer): Response
@@ -193,7 +203,7 @@ class SortieController extends AbstractController
             [],
             true);
     }
-
+// *********************************** LIEU *********************************************************
     #[Route('/creationLocalisation/{latitude}/{longitude}', name: 'sortie_creationLocalisation', requirements: ["latitude" => "-?\d+\.\d+", "longitude" => "-?\d+\.\d+"])]
     public function creationLieu(VilleRepository $villeRepository, EntityManagerInterface $entityManager, Request $request, string $latitude, string $longitude): Response
     {
@@ -227,6 +237,25 @@ class SortieController extends AbstractController
             ->setLongitude($req['longitude'])
             ->setVille($villeRepository->find($req["ville"]));
         $entityManager->persist($lieu);
+        $entityManager->flush();
+
+        return $this->json(
+            $villeRepository->findBy([], ['nom' => 'ASC']),
+            201,
+            [],
+            ['groups' => 'listeLieux']
+        );
+    }
+    #[Route('/creationVilleVide', name: 'sortie_creationVilleVide', methods: ['POST'])]
+    public function creationVilleVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $req = $request->toArray();
+        $ville = (new Ville())
+            ->setNom($req['nom'])
+            ->setCodePostal($req['codePostal'])
+            ->setLatitude($req['latitude'])
+            ->setLongitude($req['longitude']);
+        $entityManager->persist($ville);
         $entityManager->flush();
 
         return $this->json(

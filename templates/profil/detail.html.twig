@@ -1,35 +1,47 @@
 {% extends 'base.html.twig' %}
 
 
-{% block body %}
-    <div>
+    {% block body %}
+        <div>
         <h1> Modification du profil </h1>
-        {#<img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil">#}
+        {# <img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil"> #}
         {{ form_errors(profilForm) }}
+        <div class="flex justify-center">
+            <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
+                <div class="w-full m-2">
+                    {{ form_start(profilForm) }}
+                    {{ form_row(profilForm.pseudo) }}
+                    {{ form_errors(profilForm.pseudo) }}
 
-        {{ form_start(profilForm) }}
-        {{ form_row(profilForm.pseudo) }}
-        {{ form_errors(profilForm.pseudo) }}
+                    {{ form_row(profilForm.nom) }}
+                    {{ form_row(profilForm.prenom) }}
 
-        {{ form_row(profilForm.nom) }}
-        {{ form_row(profilForm.prenom) }}
+                    {{ form_row(profilForm.telephone) }}
+                    {{ form_errors(profilForm.telephone) }}
 
-        {{ form_row(profilForm.telephone) }}
-        {{ form_errors(profilForm.telephone) }}
 
-        {{ form_row(profilForm.email) }}
-        {{ form_row(profilForm.siteEni) }}
-        {{ form_row(profilForm._token) }}
+                    {{ form_row(profilForm.email) }}
+                </div>
+                <div class="w-full pr-4">
+                    <div class="form-label">
+                        {{ form_label(profilForm.siteEni) }}
+                        {{ form_widget(profilForm.siteEni, {'attr': {'class': 'border border-gray-300 rounded'}}) }}
+                    </div>
+                    {{ form_row(profilForm._token) }}
 
-        <div class="imageProfil">
-        {{ form_widget(profilForm.imageFile) }}
+                    <div class="imageProfil">
+                        {{ form_widget(profilForm.imageFile, {'attr': {'class': 'mt-4 mb-4'}}) }}
+                    </div>
+                    <div class="flex justify-center">
+                        <div >
+                            <a class="ml" href="{{ path('app_forgot_password_request') }}">
+                                Changer mot de passe ?
+                            </a>
+                            {{ form_widget(profilForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="{{ path('app_forgot_password_request')}}">
-            Changer de mots de passe ?
-        </a>
 
-            {{ form_widget(profilForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
-
-
-    </div>
-{% endblock %}
+    {% endblock %}

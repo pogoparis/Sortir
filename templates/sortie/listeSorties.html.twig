@@ -52,10 +52,12 @@
         {% for event in sorties %}
             <div class="card card-side bg-base-100 shadow-xl">
                 {% if event.imageName %}
-                    <figure><img alt="sortie" style="max-width: 150px"
+                    <figure><img alt="sortie" style="max-width: 150px" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
                                  src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
                 {% else %}
-                    <figure><img alt="sortie" src="{{ asset('/images/amis2.jpg') }}"/></figure>
+                    <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                                 src="{{ asset('/images/amis2.jpg') }}"/></figure>
+
                 {% endif %}
                 <div class="card-body">
 {#                    {% if event.etat.id != 1 %}#}

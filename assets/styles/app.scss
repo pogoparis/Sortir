@@ -29,11 +29,11 @@ input[type=text], input[type=password], input[type=email], input[type=datetime-l
     @apply input rounded input-bordered input-sm w-full max-w-xs m-1;
 }
 
-/*
+
 button {
-    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+    @apply btn btn-neutral m-1 rounded-2xl;
 }
-*/
+
 
 
 .error-message {

@@ -47,17 +47,39 @@ function localisationVille() {
             json => {
 
                 let coordonnees = json['features'][0]['geometry']['coordinates'];
+
                 console.log('dans le json');
-                console.log(coordonnees[0]);
                  longitude =  coordonnees[0];
                  latitude =  coordonnees[1];
+                 console.log(latitude);
+                 console.log(longitude);
                 mapVille.flyTo([latitude, longitude], 16)
                 let longitudeText = document.getElementById('ville_longitude');
                 longitudeText.value = longitude;
                 let latitudeText =document.getElementById('ville_latitude')
                 latitudeText.value = latitude;
+                document.getElementById("ville_nom").value = adresse;
+                apiCodePostal(longitude,latitude);
             } )
 
+}
+function apiCodePostal(longitude, latitude){
+   console.log('je suis dans apiCodePostal');
+    console.log(longitude);
+    console.log(latitude);
+    console.log(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`);
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`)
+        .then(res => res.text())
+        .then(xmlData => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+            const postcodeElement = xmlDoc.querySelector("postcode");
+
+                const codePostal = postcodeElement.textContent;
+                console.log('le code postal' + codePostal)
+            document.getElementById("ville_codePostal").value = codePostal;
+        });
 }
 window.localisationVille = localisationVille;
 function showModalVille() {

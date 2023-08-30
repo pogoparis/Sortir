@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Sortie;
 use App\Entity\SortiesArchivees;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -87,6 +88,7 @@ class ArchiveDashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Sorties Archivées', 'fas fa-list', SortiesArchivees::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Sorties en cours', 'fas fa-user', Sortie::class);
 
     }
 }

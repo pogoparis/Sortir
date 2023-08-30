@@ -6,6 +6,7 @@ function init2() {
     init();
     affichageVille();
     afficherLocalisation();
+    affichageLieuxVide();
 
     document.getElementById("boutonLieu").addEventListener("click", function(event){
         event.preventDefault()
@@ -21,7 +22,24 @@ function affichageMapLieu(){
     }).addTo(map);
     map.on('click', onMapClick);
 }
+function resetFormulaireLieux(){
+    console.log("resetLieux");
+    document.getElementById("adresse").value="";
+    document.getElementById("lieu_nom").value="";
+    document.getElementById("lieu_rue").value="";
+    document.getElementById("lieu_latitude").value="";
+    document.getElementById("lieu_longitude").value="";
+}
+function affichageLieuxVide(){
+    let select = document.getElementById("selectLieux");
+    select.innerText = '';
 
+        let option0 = document.createElement("option");
+        option0.setAttribute("value", '0')
+        option0.innerText = 'Choisir un lieu';
+        select.appendChild(option0);
+
+}
 function affichageVille() {
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
@@ -95,6 +113,11 @@ function allLieux() {
         select.innerText = '';
 
     if($id !== 0){
+        let option0 = document.createElement("option");
+        option0.setAttribute("value", '0')
+        option0.innerText = 'Choisir un lieu';
+        select.appendChild(option0);
+
         fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
         .then(res => res.json())
         .then(
@@ -191,28 +214,34 @@ function envoieFormulaire(event){
     const latitude = document.getElementById("lieu_latitude").value;
     const longitude = document.getElementById("lieu_longitude").value;
     const ville = document.getElementById("lieu_ville").options[document.getElementById("lieu_ville").selectedIndex].value;
+    var regex = /^[a-zA-Z0-9]+$/u;
 
-    let data = {
-        nom: nom,
-        rue: rue,
-        latitude: latitude,
-        longitude: longitude,
-        ville : ville
+    if (!regex.test(nom)) {
+        document.getElementById("erreurNom").textContent = "Le nom doit être composé de lettres et/ou de chiffres.";
+    } else {
+        let data = {
+            nom: nom,
+            rue: rue,
+            latitude: latitude,
+            longitude: longitude,
+            ville: ville
+        }
+        console.log(data);
+        fetch('http://127.0.0.1:8000/creationLieuVide', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }, body: JSON.stringify(data)
+        }).then(reponse => reponse.json())
+
+        hideModalLieu();
     }
-    console.log(data);
-    fetch('http://127.0.0.1:8000/creationLieuVide', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },body: JSON.stringify(data)
-    }).then(reponse => reponse.json())
-
-    hideModalLieu();
 }
 function showModalLieu() {
     var modal = document.getElementById('modalLieu');
     modal.style.display = 'flex';
+    resetFormulaireLieux();
     affichageMapLieu();
     afficherLocalisation();
 }
@@ -237,10 +266,7 @@ function apiNomVille(longitude, latitude){
 
             const ville = municipalityElement.textContent;
             console.log('la ville ' + ville);
-//             const villeSel = document.getElementById("lieu_ville").options[document.getElementById("lieu_ville").selectedIndex];
-//            villeSel.value = ville;
-//         });
-// }
+
             const lieuVilleSelect = document.getElementById("lieu_ville");
 
             for (let i = 0; i < lieuVilleSelect.options.length; i++) {

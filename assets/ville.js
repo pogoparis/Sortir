@@ -14,33 +14,20 @@ function affichageMapVille(){
     }).addTo(mapVille);
     mapVille.on('click', onMapClick);
 }
-// let popup = L.popup();
-//
-// function onMapVilleClick(e) {
-//     let str = "Ville sélectionné"
-//     let latitude = e.latlng.lat;
-//     let longitude = e.latlng.lng;
-//     let balise  = document.createElement("a");
-//     balise.setAttribute("id", 'boutonCreaVilleMap');
-//     let createAText = document.createTextNode(str);
-//     balise.appendChild(createAText);
-//     popup
-//
-//         .setLatLng(e.latlng)
-//         .setContent(balise)
-//         .openOn(mapVille)
-//
-//     let longitudeText = document.getElementById('ville_longitude');
-//     longitudeText.value = longitude;
-//     let latitudeText =document.getElementById('ville_latitude')
-//     latitudeText.value = latitude;
-// }
+function resetFormulaireVille(){
+    console.log("reset");
+    document.getElementById("adresseVille").value="";
+    document.getElementById("ville_nom").value="";
+    document.getElementById("ville_codePostal").value="";
+    document.getElementById("ville_latitude").value="";
+    document.getElementById("ville_longitude").value="";
+}
 function localisationVille() {
+
+
     var adresse = document.getElementById("adresseVille").value;
-    let longitude;
-    let latitude;
-    console.log(adresse);
     let adresseFinal = adresse.replaceAll(" ", "+");
+
     fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
         .then(res => res.json())
         .then(
@@ -49,8 +36,8 @@ function localisationVille() {
                 let coordonnees = json['features'][0]['geometry']['coordinates'];
 
                 console.log('dans le json');
-                 longitude =  coordonnees[0];
-                 latitude =  coordonnees[1];
+                let longitude =  coordonnees[0];
+                 let latitude =  coordonnees[1];
                  console.log(latitude);
                  console.log(longitude);
                 mapVille.flyTo([latitude, longitude], 16)
@@ -63,11 +50,9 @@ function localisationVille() {
             } )
 
 }
+window.localisationVille = localisationVille;
 function apiCodePostal(longitude, latitude){
-   console.log('je suis dans apiCodePostal');
-    console.log(longitude);
-    console.log(latitude);
-    console.log(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`);
+
     fetch(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`)
         .then(res => res.text())
         .then(xmlData => {
@@ -81,10 +66,11 @@ function apiCodePostal(longitude, latitude){
             document.getElementById("ville_codePostal").value = codePostal;
         });
 }
-window.localisationVille = localisationVille;
+
 function showModalVille() {
     var modalVille = document.getElementById('modalVille');
     modalVille.style.display = 'flex';
+    resetFormulaireVille();
     affichageMapVille();
 }
 window.showModalVille = showModalVille;

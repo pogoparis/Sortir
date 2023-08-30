@@ -74,7 +74,7 @@ function afficherLocalisation() {
         .then(
             json => {
                 let select = document.getElementById("selectLocalisation");
-
+                select.innerText="";
                 for (const js of json){
 
                     let nouvelElement = document.createElement("option");
@@ -87,7 +87,7 @@ function afficherLocalisation() {
             }
         )
 }
-
+window.afficherLocalisation = afficherLocalisation;
 function allLieux() {
 
     $id = document.getElementById("villeListe").value;
@@ -112,11 +112,12 @@ function allLieux() {
 function coordonnee() {
 
     $id = document.getElementById("selectLocalisation").value;
-    console.log($id);
+    console.log('l id est =' + $id);
     fetch('http://127.0.0.1:8000/apiLocalisation')
         .then(res => res.json())
         .then(
             json => {
+                console.log('json0');
                 console.log(json[0]);
 
                 for (const js of json){
@@ -134,7 +135,8 @@ function coordonnee() {
             }
         )
 }
-    // window.coordonnee = coordonnee;
+window.coordonnee = coordonnee;
+
     let popup = L.popup();
 
     function onMapClick(e) {
@@ -205,6 +207,7 @@ function showModalLieu() {
     var modal = document.getElementById('modalLieu');
     modal.style.display = 'flex';
     affichageMapLieu();
+    afficherLocalisation();
 }
 window.showModalLieu = showModalLieu;
 function hideModalLieu() {

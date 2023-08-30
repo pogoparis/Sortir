@@ -15,11 +15,11 @@ class Lieu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('wishes:read')]
+    #[Groups('sorties:lieux')]
     private ?int $id = null;
 
     #[ORM\Column(length: 80)]
-    #[Groups('wishes:read')]
+    #[Groups('sorties:lieux')]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     private ?string $nom = null;
@@ -44,7 +44,7 @@ class Lieu
 
     #[ORM\ManyToOne(inversedBy: 'lieu')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('wishes:read')]
+    #[Groups('sorties:lieux')]
     private ?Ville $ville = null;
 
     public function __construct()

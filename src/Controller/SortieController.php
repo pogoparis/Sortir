@@ -126,7 +126,11 @@ class SortieController extends AbstractController
     ): Response
     {
         $now = new DateTime();
-        $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
+        if ($this->getUser()){
+            $user = $userRepository->findOneBy(array('id' => $this->getUser()->getId()));
+        } else {
+            $user = null;
+        }
         return $this->render('sortie/detail.html.twig', compact('sortie', 'now', 'user'));
     }
 

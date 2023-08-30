@@ -57,7 +57,6 @@
                 {% else %}
                     <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
                                  src="{{ asset('/images/amis2.jpg') }}"/></figure>
-
                 {% endif %}
                 <div class="card-body">
 {#                    {% if event.etat.id != 1 %}#}
@@ -97,16 +96,6 @@
                                     </a></td>
                             {% endif %}
                         {% endfor %}
-                        {# {% if event.etat.id == 5 or event.etat.id == 6 or event.etat.id == 3 %}
-                            <div class="text-red-500">{{ event.etat.libelle }}</div>
-                        {% else %}
-                            <div class="text-green-500">{{ event.etat.libelle }}</div>
-                        {% endif %} #}
-
-                        {#                            <a class="link link-success" #}
-                        {#                               href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a> #}
-
-{#                    {% endif %}#}
                 </div>
             </div>
         {% endfor %}

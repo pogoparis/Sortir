@@ -215,8 +215,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isIsAdmin(): ?bool
     {
-        $role =$this->getRoles();
-
         if ($this->isAdmin ===true){
             $this->setRoles([]);
         }else {

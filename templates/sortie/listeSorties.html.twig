@@ -3,7 +3,6 @@
 {% block body %}
 
     {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-
     <div class="container ">
         {{ form_start(form) }}
         <div class="flex justify-center">
@@ -62,7 +61,7 @@
 {#                    {% if event.etat.id != 1 %}#}
                         <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
                         <span>{{ event.infosSortie }} {% if event in user.sortiesParticipants %}
-                                ✅Vous y participez !
+                             <p class="mt-2"> ✅Vous y participez !</p>
                             {% endif %}</span>
 
                         <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
@@ -96,6 +95,7 @@
                                     </a></td>
                             {% endif %}
                         {% endfor %}
+                    {{ event.etat.libelle }}
                 </div>
             </div>
         {% endfor %}

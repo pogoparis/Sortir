@@ -2,65 +2,75 @@
 
 {% block title %}Liste des sorties{% endblock %}
 
-{% block body %}
+    {% block body %}
 
-    {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-    <div class="FormSearch m-2">
-        {{ form_start(form) }}
-        <div class="grid grid-cols-4 gap-4">
-            <div>
-                {{ form_widget(form.nom) }}
+        {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
+
+        <div class="container ">
+            {{ form_start(form) }}
+            <div class="flex justify-center">
+                <div class="w-2/3 p-4">
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            {{ form_widget(form.nom) }}
+                        </div>
+                        <div class="w-1/2 p-2 " id="test">
+                            <div>
+                                {{ form_widget(form.organisateur) }}
+                                {{ form_label(form.organisateur) }}
+                            </div>
+                            <div>
+                                {{ form_widget(form.inscrit) }}
+                                {{ form_label(form.inscrit) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="w-1/2 p-2 flex">
+                            <div class="w-1/2">
+                                <p>{{ form_label(form.site) }}</p>
+                                {{ form_widget(form.site) }}
+                            </div>
+                            <div class="w-1/2 p-2">
+                                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                                        type="submit">
+                                    Filtrer
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-1/2  p-2 flex">
+                            {{ form_row(form.dateMin) }}
+                            {{ form_row(form.dateMax) }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                {{ form_row(form.dateMin) }}
-            </div>
-            <div>
-                {{ form_row(form.dateMax) }}
-            </div>
-            <div>
-                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded" type="submit">
-                    Filtrer
-                </button>
-            </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
-    </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nom de la sortie</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Nombre de participants</th>
-            <th>Description</th>
-            <th>Limite Inscription</th>
-            <th>Site</th>
-            <th>Etat</th>
-            <th>Organisateur</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for event in sorties %}
-            {% if event.etat.id != 1 %}
-                <tr>
-                    <td>{{ event.nom }}</td>
-                    <td>{{ event.dateHeureDebut |date('d-m-Y') }}</td>
-                    <td>{{ event.dateHeureFin |date('d-m-Y') }}</td>
-                    <td>{{ event.nbInscriptionsMax }}</td>
-                    <td>{{ event.infosSortie }}</td>
-                    <td>{{ event.dateLimiteInscription |date('d-m-Y') }}</td>
-                    <td>{{ event.site.nom }}</td>
-                    <td>{{ event.etat.libelle }}</td>
-                    <td>
-                        <a href="{{ path('profil_participant_detail',{'id' : event.organisateur.id}) }}">{{ event.organisateur.pseudo }} </a>
-                    </td>
-                    <td><a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">detail</a>
-                    </td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
+        {#    ******************************** Affichage liste des Sorties ****************************** #}
 
-{% endblock %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
+            {% for event in sorties %}
+                <div class="card card-side bg-base-100 shadow-xl">
+                    {% if event.imageName %}
+                        <figure><img alt="sortie" style="max-width: 150px"
+                                     class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                                     src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
+                    {% else %}
+                        <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                                     src="{{ asset('/images/amis2.jpg') }}"/></figure>
+                    {% endif %}
+                    <div class="card-body">
+                        <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
+                        <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
+                            : {{ event.dateHeureFin |date('d-m-Y') }}</p>
+                        <a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
+                            detail
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endblock %}

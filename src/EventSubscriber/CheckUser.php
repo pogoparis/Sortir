@@ -19,6 +19,12 @@ class CheckUser implements EventSubscriberInterface
                 'Email non vérifié'
             );
         }
+
+        elseif (!$event->getPassport()->getUser()->isIsActif()) {
+            throw new CustomUserMessageAuthenticationException(
+                'Compte non actif'
+            );
+        }
     }
 /*
 *  Le nombre -1 indique la priorité de l'écouteur lorsqu'il y a plusieurs écouteurs pour le même événement.

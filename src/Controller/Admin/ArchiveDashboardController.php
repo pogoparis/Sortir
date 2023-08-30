@@ -87,8 +87,7 @@ class ArchiveDashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Sorties Archivées', 'fas fa-list', SortiesArchivees::class);
+        yield MenuItem::linkToCrud('Sorties en cours', 'fas fa-list', Sortie::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Sorties en cours', 'fas fa-user', Sortie::class);
-
     }
 }

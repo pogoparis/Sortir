@@ -51,6 +51,7 @@
                     {{ form_widget(sortieForm.infosSortie) }}
                 </div>
                 <br>
+                <div class="flex items-center mt-2">
                 <label for="villeListe">Choisir une ville : </label>
                 <select required id="villeListe" onclick="window.afficherLieu"> Ville
                     <option value="0">Choisir une ville</option>
@@ -60,6 +61,7 @@
                     <img class="ml-2" style="height: 30px; width: 30px;"
                          src="{{ asset('image/ajouter.png') }} ">
                 </a>
+                </div>
                 <br>
                 <div class="flex items-center mt-2">
                     <label for="selectLieux" class="mr-2">Choisir un lieu:</label>
@@ -150,7 +152,7 @@
                         class=" bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-6 text-2xl ml-4"
                         id="boutonLieu"
                         style="height: 50px; width: 200px;">
-                    Ajouter le lieu
+                    Ajouter
                 </button>
                 {{ form_row(lieuForm._token) }}
                 {{ form_end(lieuForm, {render_rest: false}) }}
@@ -160,6 +162,7 @@
     <div id="modalVille" class="fixed inset-0 items-center justify-center z-50 hidden">
         <div class="fixed inset-0 bg-black opacity-50"></div>
         <div class="z-50 bg-white rounded px-8 py-6 flex relative">
+
             <a href="#" onclick="window.hideModalVille()">
                 <img id="plus" class="absolute top-0 right-0 p-2 ml-2" style="height: 40px; width: 40px;"
                      src="{{ asset('image/croix.png') }} ">
@@ -170,14 +173,12 @@
                 <p class="flex mb-4">Sélectionner le nom d'une ville.</p>
                 <div>
                     <label for="adresseVille" class="mr-2 text-al">Saisissez une ville</label>
-                </div>
-                <div>
                     <input type="text" style="width: 250px;" class="flex-grow" id="adresseVille" name="adresse"
                            onchange="window.localisationVille()"/>
                 </div>
-            </div>
-            <div id="mapVille" class="mt-8 z-auto" style="height: 400px; width: 600px;"></div>
 
+            <div id="mapVille" class="mt-8 z-auto" style="height: 400px; width: 600px;"></div>
+        </div>
             <div class="flex-1 pl-4 flex items-center justify-center">
                 {{ form_start(villeForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4', 'id': 'villeForm'}}) }}
 
@@ -201,7 +202,7 @@
                         class=" bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-6 text-2xl ml-4"
                         id="boutonVille"
                         style="height: 50px; width: 200px;">
-                    Ajouter la ville
+                    Ajouter
                 </button>
                 {{ form_row(villeForm._token) }}
                 {{ form_end(villeForm, {render_rest: false}) }}

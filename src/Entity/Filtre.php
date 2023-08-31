@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Filtre
 {
+    /**
+     * @var bool|null
+     */
+    private ?bool $sortiesPassees = null;
+
     /**
      * @var User|null
      */
@@ -154,6 +160,23 @@ class Filtre
     {
         $this->site = $site;
     }
+
+    /**
+     * @return bool|null
+     */
+    public function getSortiesPassees(): ?bool
+    {
+        return $this->sortiesPassees;
+    }
+
+    /**
+     * @param bool|null $sortiesPassees
+     */
+    public function setSortiesPassees(?bool $sortiesPassees): void
+    {
+        $this->sortiesPassees = $sortiesPassees;
+    }
+
 
 
 

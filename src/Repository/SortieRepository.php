@@ -35,6 +35,7 @@ class SortieRepository extends ServiceEntityRepository
         $query = $this
             ->createQueryBuilder('p');
 
+
         if (!empty($filtre->getNom())) {
             $query = $query
                 ->andWhere('p.nom LIKE :nom')
@@ -69,6 +70,14 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
+        //Filtre sorties passées
+        if ($filtre->getSortiesPassees() !== false) {
+            $query = $query
+                ->andWhere('p.dateHeureFin < :now')
+                ->setParameter('now', new \DateTime());
+        }
+
+
         // Filtre pour les sorties auxquelles l'utilisateur est inscrit
         if ($filtre->getInscrit() !== false) {
             $user = $this->security->getUser();
@@ -78,6 +87,9 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere('u = :user');
         }
 
+           /* // Tri par date
+            $query = $query
+                ->orderBy('s.dateHeureDebut', 'ASC');*/
         return $query->getQuery()->getResult();
     }
 

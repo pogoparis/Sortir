@@ -46,7 +46,13 @@ button {
     color: #ff0000;
 }
 
-.alert{
+.alert-danger {
+    margin: auto;
+    background-color: red;
+    width: 100%;
+}
+
+.alert_success{
     margin: auto;
     background-color: green;
     width: 100%;

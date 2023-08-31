@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -66,7 +66,9 @@
         <div class="dropdown dropdown-end m-auto">
             <div class="flex justify-center content-center">
                 <div class="flex items-center">
+                    {% if app.user %}
                    {{ app.user.pseudo }}
+                    {%  endif %}
                 </div>
                 <div>
                     <label tabindex="0" class="btn btn-ghost btn-circle avatar">
@@ -78,7 +80,9 @@
                 </div>
             </div>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
+            {% if app.user %}
                 <li><a href="{{ path('profil_detail') }}">Profil de {{ app.user.pseudo }}</a></li>
+            {% endif %}
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
             </ul>
             {% endif %}
@@ -90,7 +94,7 @@
     {% for message in messages %}
         <div>
             <div>
-                <div class="alert" style="background-color:green; padding:20px; text-align: center">
+                <div class="alert_success" style="background-color:green; padding:20px; text-align: center">
                     {{ message }}
                 </div>
             </div>

@@ -64,6 +64,9 @@
                     {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'style': 'width : 250px'}}) }}
                     </div>
                 </div>
+                <ul class="error-message text-right mr-4">
+                    {{ form_errors(sortieForm.nbInscriptionsMax, {'attr': {'class': 'text-right'}}) }}
+                </ul>
                 <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
                     <div >
                     {{ form_label(sortieForm.infosSortie) }}</div>
@@ -134,7 +137,7 @@
                     votre choix.</p>
                 <div class="inline-flex items-center my-auto">
                     <div>
-                        <select id="selectLocalisation" onclick="window.coo">
+                        <select id="selectLocalisation" onclick="window.coordonnee">
                             <option value="0">Choisir une ville</option>
                         </select>
                     </div>
@@ -202,7 +205,7 @@
                     <label for="adresseVille" class="mr-2 text-al">Saisissez une ville</label>
                     <input type="text" style="width: 250px;" class="flex-grow" id="adresseVille" name="adresse"
                            onchange="window.localisationVille()"/>
-                </div>
+                </div> <span id="erreurMot" class="text-red-600"></span><span id="erreurVille" class="text-red-600"></span>
 
             <div id="mapVille" class="mt-8 z-auto" style="height: 400px; width: 600px;"></div>
         </div>

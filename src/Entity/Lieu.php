@@ -27,16 +27,19 @@ class Lieu
     #[ORM\Column(length: 150)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
+    #[Groups('sorties:lieux')]
     private ?string $rue = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
+    #[Groups('sorties:lieux')]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
+    #[Groups('sorties:lieux')]
     private ?float $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Sortie::class, orphanRemoval: true)]
@@ -153,6 +156,11 @@ class Lieu
         return [
             'id'=>$this->id,
             'nom'=>$this->nom,
+            'latitude'=>$this->latitude,
+            'longitude'=>$this->longitude,
+            'rue'=>$this->rue,
+            'ville'=>$this->ville,
+
         ];
     }
 
@@ -160,5 +168,9 @@ class Lieu
     {
         $this->id=$data['id'];
         $this->nom=$data['nom'];
+        $this->latitude=$data['latitude'];
+        $this->longitude=$data['longitude'];
+        $this->rue=$data['rue'];
+        $this->ville=$data['ville'];
     }
 }

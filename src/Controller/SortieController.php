@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
@@ -149,6 +150,11 @@ class SortieController extends AbstractController
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
     public function modifier(Sortie $sortie, Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier si l'utilisateur connecté est l'organisateur de la sortie
+        $user = $this->getUser();
+        if ($user !== $sortie->getOrganisateur()) {
+            throw new AccessDeniedException('Vous n\'avez pas la permission de modifier cette sortie.');
+        }
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
@@ -229,7 +235,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods: ['POST'])]
-    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, LieuRepository $lieuRepository, EntityManagerInterface $entityManager): Response
     {
         $req = $request->toArray();
         $lieu = (new Lieu())
@@ -241,12 +247,16 @@ class SortieController extends AbstractController
         $entityManager->persist($lieu);
         $entityManager->flush();
 
-        return $this->json(
-            $villeRepository->findBy([], ['nom' => 'ASC']),
-            201,
+        $alllieux = $lieuRepository->findAll();
+        return new JsonResponse(
+            $serializer->serialize(
+                $alllieux,
+                'json',
+                ['groups' => 'sorties:lieux']),
+            200,
             [],
-            ['groups' => 'listeLieux']
-        );
+            true);
+
     }
     #[Route('/creationVilleVide', name: 'sortie_creationVilleVide', methods: ['POST'])]
     public function creationVilleVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response

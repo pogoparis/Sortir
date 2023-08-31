@@ -19,7 +19,6 @@
                         <div>
                             {{ form_widget(form.dateMax) }}
                         </div>
-
                     </div>
                 </div>
                 <div class="flex">
@@ -56,68 +55,73 @@
     </div>
 
     {#    ******************************** Affichage liste des Sorties ****************************** #}
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
-        {% for event in sorties %}
-            <div class="relative card card-side bg-base-100 shadow-xl">
-                {#      *********** IMAGE CANCEL ********* #}
-                {% if event.etat.id == 6 %}
-                    <img src="{{ asset('images/cancel.png') }}" alt="cancel"
-                         class="absolute inset-x-28  opacity-50 w-72 h-72 z-20">
-                {% endif %}
-                {#     *********** IMAGE SORTIE ******** #}
-                {% if event.imageName %}
-                    <figure><img alt="sortie" style="max-width: 150px"
-                                 class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
-                                 src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
-                {% else %}
-                    <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
-                                 src="{{ asset('/images/amis2.jpg') }}"/></figure>
-                {% endif %}
-                {#     *************** CORPS DE LA CARTE ****************** #}
-                <div class="card-body w-72 h-72">
-                    <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
-
-                    <span>{{ event.infosSortie }}
-                        {% if event in user.sortiesParticipants %}
-                            <p class="mt-2"> ✅Vous y participez !</p>
+    <div class="mx-auto">
+        {% if sorties is empty %}
+            <p>Aucune sortie disponible pour les critères de recherche spécifiés.</p>
+        {% else %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
+                {% for event in sorties %}
+                    <div class="relative card card-side bg-base-100 shadow-xl">
+                        {#      *********** IMAGE CANCEL ********* #}
+                        {% if event.etat.id == 6 %}
+                            <img src="{{ asset('images/cancel.png') }}" alt="cancel"
+                                 class="absolute inset-x-28  opacity-50 w-72 h-72 z-20">
                         {% endif %}
+                        {#     *********** IMAGE SORTIE ******** #}
+                        {% if event.imageName %}
+                            <figure><img alt="sortie" style="max-width: 150px"
+                                         class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                                         src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
+                        {% else %}
+                            <figure><img alt="sortie" class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                                         src="{{ asset('/images/amis2.jpg') }}"/></figure>
+                        {% endif %}
+                        {#     *************** CORPS DE LA CARTE ****************** #}
+                        <div class="card-body w-72 h-72">
+                            <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
+
+                            <span>{{ event.infosSortie }}
+                                {% if event in user.sortiesParticipants %}
+                                    <p class="mt-2"> ✅Vous y participez !</p>
+                                {% endif %}
                     </span>
 
-                    <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
-                        : {{ event.dateHeureFin |date('d-m-Y') }}</p>
-                    <p> {{ nbParticipants[event.id] }} / {{ event.nbInscriptionsMax }} Participants</p>
+                            <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
+                                : {{ event.dateHeureFin |date('d-m-Y') }}</p>
+                            <p> {{ nbParticipants[event.id] }} / {{ event.nbInscriptionsMax }} Participants</p>
 
-                    {# <p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p> #}
-                    <a class="btn btn-sm m-1" id="lien"
-                       href="{{ path('sortie_detail', {'id' : event.id}) }}">detail</a>
+                            {# <p>Vous pouvez vous inscrir jusqu'au {{ event.dateLimiteInscription |date('d-m-Y') }}</p> #}
+                            <a class="btn btn-sm m-1" id="lien"
+                               href="{{ path('sortie_detail', {'id' : event.id}) }}">detail</a>
 
-                    {% if event.etat.id == 2
-                        and event.dateLimiteInscription > now
-                        and event.participants.count < event.nbInscriptionsMax
-                        and now < event.dateHeureDebut
-                        and user != event.organisateur %}
+                            {% if event.etat.id == 2
+                                and event.dateLimiteInscription > now
+                                and event.participants.count < event.nbInscriptionsMax
+                                and now < event.dateHeureDebut
+                                and user != event.organisateur %}
 
-                        {% if  event not in user.sortiesParticipants %}
-                            <a class="btn btn-sm bg-blue-900 text-white m-1" id="lien"
-                               href="{{ path('participation_inscription', {'id' : event.id}) }}">
-                                participer
-                            </a>
-                        {% endif %}
-                    {% endif %}
+                                {% if  event not in user.sortiesParticipants %}
+                                    <a class="btn btn-sm bg-blue-900 text-white m-1" id="lien"
+                                       href="{{ path('participation_inscription', {'id' : event.id}) }}">
+                                        participer
+                                    </a>
+                                {% endif %}
+                            {% endif %}
 
-                    {% for personne in event.participants %}
-                        {% if personne == user and event.dateHeureDebut > now %}
-                            <td><a class="btn btn-sm m-1" id="lien"
-                                   href="{{ path('participation_annuler', {'id' : event.id}) }}">
-                                    Annuler la participation
-                                </a></td>
-                        {% endif %}
-                    {% endfor %}
-                    {{ event.etat.libelle }}
-                </div>
+                            {% for personne in event.participants %}
+                                {% if personne == user and event.dateHeureDebut > now %}
+                                    <td><a class="btn btn-sm m-1" id="lien"
+                                           href="{{ path('participation_annuler', {'id' : event.id}) }}">
+                                            Annuler la participation
+                                        </a></td>
+                                {% endif %}
+                            {% endfor %}
+                            {{ event.etat.libelle }}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        {% endif %}
     </div>
 
 {% endblock %}

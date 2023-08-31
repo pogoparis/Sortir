@@ -34,19 +34,20 @@ function affichageLieuxVide(){
     let select = document.getElementById("selectLieux");
     select.innerText = '';
 
-        let option0 = document.createElement("option");
-        option0.setAttribute("value", '0')
-        option0.innerText = 'Choisir un lieu';
-        select.appendChild(option0);
+    let option0 = document.createElement("option");
+    option0.setAttribute("value", '0')
+    option0.innerText = 'Choisir un lieu';
+    select.appendChild(option0);
 
 }
 function affichageVille() {
+    // lancer à l'init, elle affiche la  liste des villes dans le select du formulaire de sortie (pas les modal)
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
         .then(
             json => {
                 let select = document.getElementById("villeListe");
-                let select2 = document.getElementById("selectVille2");
+                // let select2 = document.getElementById("selectVille2");
                 for (const js of json){
 
                     let nouvelElement = document.createElement("option");
@@ -63,9 +64,7 @@ function affichageVille() {
 function afficherLieu(){
     $id = document.getElementById("selectVille").value;
 
-    console.log($id);
     if($id !== 0){
-
         fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
             .then(res => res.json())
             .then(
@@ -87,6 +86,8 @@ function afficherLieu(){
 }
 window.afficherLieu = afficherLieu;
 function afficherLocalisation() {
+    // lancé à l'init, donne au select de la modal Lieu, tout les noms de ville/id en value
+
     fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
         .then(
@@ -107,10 +108,10 @@ function afficherLocalisation() {
 }
 window.afficherLocalisation = afficherLocalisation;
 function allLieux() {
-
+// affiche les lieux associés au clic du select ville, fonction du dessus
     $id = document.getElementById("villeListe").value;
     let select = document.getElementById("selectLieux");
-        select.innerText = '';
+    select.innerText = '';
 
     if($id !== 0){
         let option0 = document.createElement("option");
@@ -119,91 +120,85 @@ function allLieux() {
         select.appendChild(option0);
 
         fetch(`http://127.0.0.1:8000/apiLieux/${$id}`)
-        .then(res => res.json())
-        .then(
-            json => {
+            .then(res => res.json())
+            .then(
+                json => {
 
-                for (const js of json){
-                    let nouvelElement = document.createElement("option");
-                    nouvelElement.setAttribute("value", js['id'])
-                    nouvelElement.innerText = js['nom'];
-                    select.appendChild(nouvelElement);
+                    for (const js of json){
+                        let nouvelElement = document.createElement("option");
+                        nouvelElement.setAttribute("value", js['id'])
+                        nouvelElement.innerText = js['nom'];
+                        select.appendChild(nouvelElement);
+                    }
                 }
-            }
-        )}
+            )}
 }
 function coordonnee() {
-
+// en fonction du clic sur le select contenant le nom des villes déjà créée
     $id = document.getElementById("selectLocalisation").value;
-    console.log('l id est =' + $id);
     fetch('http://127.0.0.1:8000/apiLocalisation')
         .then(res => res.json())
         .then(
             json => {
-                console.log('json0');
-                console.log(json[0]);
 
                 for (const js of json){
                     $idVilleInt = parseInt($id);
                     $idSelect = parseInt(js['id']);
 
                     if($idSelect === $idVilleInt){
+                        let longitude = js['longitude'];
+                        let latitude = js['latitude'];
 
-                 let longitude = js['longitude'];
-                 let latitude = js['latitude'];
-
-                map.flyTo([latitude, longitude], 16);
-            }
+                        map.flyTo([latitude, longitude], 16);
+                    }
                 }
             }
         )
 }
 window.coordonnee = coordonnee;
 
-    let popup = L.popup();
+let popup = L.popup();
 
-    function onMapClick(e) {
-        let str = "Lieu sélectionné"
-        let latitude = e.latlng.lat;
-        let longitude = e.latlng.lng;
-        let balise  = document.createElement("a");
-        balise.setAttribute("id", 'boutonCreaMap');
-        let createAText = document.createTextNode(str);
-        balise.appendChild(createAText);
-        popup
+function onMapClick(e) {
+    let str = "Lieu sélectionné"
+    let latitude = e.latlng.lat;
+    let longitude = e.latlng.lng;
+    let balise  = document.createElement("a");
+    balise.setAttribute("id", 'boutonCreaMap');
+    let createAText = document.createTextNode(str);
+    balise.appendChild(createAText);
+    popup
 
-            .setLatLng(e.latlng)
-            .setContent(balise)
-            .openOn(map)
+        .setLatLng(e.latlng)
+        .setContent(balise)
+        .openOn(map)
 
-        let longitudeText = document.getElementById('lieu_longitude');
-        longitudeText.value = longitude;
-        let latitudeText =document.getElementById('lieu_latitude')
-        latitudeText.value = latitude;
-    }
-    function localisationLieu() {
-        var adresse = document.getElementById("adresse").value;
-        const mots = adresse.split(" ");
-        const premierMot = mots[0];
-        let adresseFinal = adresse.replaceAll(" ", "+");
-        fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
-            .then(res => res.json())
-            .then(
-                json => {
+    let longitudeText = document.getElementById('lieu_longitude');
+    longitudeText.value = longitude;
+    let latitudeText =document.getElementById('lieu_latitude')
+    latitudeText.value = latitude;
+}
+function localisationLieu() {
+    // en fonction de l'adresse dans l'input
+    var adresse = document.getElementById("adresse").value;
+    let adresseFinal = adresse.replaceAll(" ", "+");
+    fetch(`https://nominatim.openstreetmap.org/search?q=${adresseFinal}&format=geojson`)
+        .then(res => res.json())
+        .then(
+            json => {
 
-                    let coordonnees = json['features'][0]['geometry']['coordinates'];
-                    let rue = json['features'][0]['properties']['name'];
-                    console.log(rue);
-                            let longitude =  coordonnees[0];
-                            let latitude =  coordonnees[1];
-                            map.flyTo([latitude, longitude], 16);
-                    document.getElementById("lieu_rue").value = premierMot +" " + rue;
-                    document.getElementById("lieu_latitude").value = latitude;
-                    document.getElementById("lieu_longitude").value = longitude;
-                    apiNomVille(longitude,latitude);
-                } )
-    }
-    window.localisationLieu = localisationLieu;
+                let coordonnees = json['features'][0]['geometry']['coordinates'];
+                let rue = json['features'][0]['properties']['name'];
+                let longitude =  coordonnees[0];
+                let latitude =  coordonnees[1];
+                map.flyTo([latitude, longitude], 16);
+                document.getElementById("lieu_rue").value =  rue;
+                document.getElementById("lieu_latitude").value = latitude;
+                document.getElementById("lieu_longitude").value = longitude;
+                apiNomVille(longitude,latitude);
+            } )
+}
+window.localisationLieu = localisationLieu;
 
 function envoieFormulaire(event){
 
@@ -226,18 +221,33 @@ function envoieFormulaire(event){
             longitude: longitude,
             ville: ville
         }
-        console.log(data);
+
         fetch('http://127.0.0.1:8000/creationLieuVide', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }, body: JSON.stringify(data)
-        }).then(reponse => reponse.json())
+        }).then(reponse => reponse.json()) // RAJOUT CE MATIN
+            .then(jsonData => {
 
+                const lastItem = jsonData[jsonData.length - 1];
+                const idSelectVille = document.getElementById("villeListe").options[document.getElementById("villeListe").selectedIndex].value;
+                let idSelectForm = document.getElementById("lieu_ville").options[document.getElementById("lieu_ville").selectedIndex].value;
+                let select = document.getElementById("selectLieux");
+
+                if(idSelectVille === idSelectForm){
+                    let nouvelElement = document.createElement("option");
+                    nouvelElement.setAttribute("value", lastItem['id'])
+                    nouvelElement.innerText = lastItem['nom'];
+                    select.appendChild(nouvelElement);
+                }
+
+            })
         hideModalLieu();
     }
 }
+
 function showModalLieu() {
     var modal = document.getElementById('modalLieu');
     modal.style.display = 'flex';
@@ -253,20 +263,14 @@ function hideModalLieu() {
 window.hideModalLieu = hideModalLieu;
 
 function apiNomVille(longitude, latitude){
-    console.log('je suis dans apiVille');
-    console.log(longitude);
-    console.log(latitude);
+    // Récupérer le nom de la ville en fonction de ce que l'utilisateur a input grâce a l'api et retourne la valeur dans le formulaire
     fetch(`https://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=`)
         .then(res => res.text())
         .then(xmlData => {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlData, "text/xml");
-
             const municipalityElement = xmlDoc.querySelector("municipality");
-
             const ville = municipalityElement.textContent;
-            console.log('la ville ' + ville);
-
             const lieuVilleSelect = document.getElementById("lieu_ville");
 
             for (let i = 0; i < lieuVilleSelect.options.length; i++) {

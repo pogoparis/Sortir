@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -23,21 +24,22 @@ class Sortie
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\LessThan(propertyPath:"dateHeureFin", message:"La date de début doit être antérieure à la date de fin.")]
-    #[Assert\GreaterThan("now", message:"La date/heure de début doit être ultèrieure à la date/heure actuelle")]
+    #[Assert\LessThanOrEqual(propertyPath: "dateHeureFin")]
+    #[Assert\GreaterThanOrEqual("now", message: "La date/heure de début doit être ultèrieure à la date/heure actuelle")]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThan(propertyPath:"dateHeureDebut", message:"La date de fin doit être supèrieure à la date de début.")]
+    #[Assert\GreaterThanOrEqual(propertyPath: "dateHeureDebut", message: "La date de fin doit être supèrieure à la date de début.")]
     private ?\DateTimeInterface $dateHeureFin = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\LessThan(propertyPath:"dateHeureDebut", message:"La date limite d'inscription doit être antérieure ou égale à la date de début.")]
-    #[Assert\GreaterThan("now", message:"La date de limite d'inscription doit être ultèrieure à la date/heure actuelle")]
+    #[Assert\LessThanOrEqual(propertyPath: "dateHeureDebut", message: "La date limite d'inscription doit être antérieure ou égale à la date de début.")]
+    #[Assert\GreaterThanOrEqual("now")]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
     #[Assert\NotNull]
+    #[Assert\GreaterThan(value: 0, message: "Minimum de 1 participant")]
     private ?int $nbInscriptionsMax = null;
 
     #[ORM\Column(length: 255)]
@@ -217,6 +219,7 @@ class Sortie
         $this->site = $site;
         return $this;
     }
+
     public function getLieu(): ?Lieu
     {
         return $this->lieu;
@@ -238,7 +241,7 @@ class Sortie
     public function setImageFile(?File $imageFile): void
     {
         $this->imageFile = $imageFile;
-        if(null !== $imageFile){
+        if (null !== $imageFile) {
             $this->updatedAt = new \DateTimeImmutable();
         }
     }

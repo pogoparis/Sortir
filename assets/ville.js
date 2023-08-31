@@ -37,9 +37,9 @@ function localisationVille() {
 
                 console.log('dans le json');
                 let longitude =  coordonnees[0];
-                 let latitude =  coordonnees[1];
-                 console.log(latitude);
-                 console.log(longitude);
+                let latitude =  coordonnees[1];
+                console.log(latitude);
+                console.log(longitude);
                 mapVille.flyTo([latitude, longitude], 16)
                 let longitudeText = document.getElementById('ville_longitude');
                 longitudeText.value = longitude;
@@ -61,8 +61,8 @@ function apiCodePostal(longitude, latitude){
 
             const postcodeElement = xmlDoc.querySelector("postcode");
 
-                const codePostal = postcodeElement.textContent;
-                console.log('le code postal' + codePostal)
+            const codePostal = postcodeElement.textContent;
+            console.log('le code postal' + codePostal)
             document.getElementById("ville_codePostal").value = codePostal;
         });
 }
@@ -80,7 +80,21 @@ function hideModalVille() {
     afficherLocalisation();
 }
 window.hideModalVille = hideModalVille;
-function envoieFormulaireVille(event){
+function verifVille(nom) {
+
+    return fetch('http://127.0.0.1:8000/api')
+        .then(res => res.json())
+        .then(json => {
+
+            for (const js of json) {
+                if (js['nom'] === nom) {
+                    return 1;
+                }
+            }
+            return 0;
+        });
+}
+function envoieFormulaireVille(event) {
 
     event.preventDefault();
 
@@ -89,35 +103,41 @@ function envoieFormulaireVille(event){
     const latitude = document.getElementById("ville_latitude").value;
     const longitude = document.getElementById("ville_longitude").value;
 
+    const un = 1;
 
-    let data = {
-        nom: nom,
-        codePostal: codePostal,
-        latitude: latitude,
-        longitude: longitude
-    }
+    verifVille(nom).then(resultat => {
+        if (resultat === un) {
+            document.getElementById("erreurVille").innerText = "La ville existe déjà, saisissez une autre ville";
+        }
+        if (resultat !== un) {
+            let data = {
+                nom: nom,
+                codePostal: codePostal,
+                latitude: latitude,
+                longitude: longitude
+            };
 
-    fetch('http://127.0.0.1:8000/creationVilleVide', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },body: JSON.stringify(data)
-    }).then(reponse => reponse.json())
-        .then(jsonData => {
-            let select = document.getElementById("villeListe");
-            select.innerText ="";
-            for (const js of jsonData){
+            fetch('http://127.0.0.1:8000/creationVilleVide', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }, body: JSON.stringify(data)
+            }).then(reponse => reponse.json())
+                .then(jsonData => {
+                    let select = document.getElementById("villeListe");
+                    select.innerText = "";
+                    for (const js of jsonData) {
 
-                let nouvelElement = document.createElement("option");
+                        let nouvelElement = document.createElement("option");
 
-                nouvelElement.setAttribute("value", js['id'])
-                nouvelElement.innerText = js['nom'];
-                select.appendChild(nouvelElement);
+                        nouvelElement.setAttribute("value", js['id'])
+                        nouvelElement.innerText = js['nom'];
+                        select.appendChild(nouvelElement);
 
-            }
-        })
-    hideModalVille();
-
+                    }
+                })
+            hideModalVille();
+        }
+    })
 }
-

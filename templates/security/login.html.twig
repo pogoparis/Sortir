@@ -5,7 +5,7 @@
 {% block body %}
 {#    ********************* MESSAGES ERROR ***********************#}
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
     {% if is_verified_error %}
         <div class="alert alert-danger">{{ is_verified_error }}</div>

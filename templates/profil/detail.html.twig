@@ -2,46 +2,131 @@
 
 
     {% block body %}
-        <div>
-        <h1> Modification du profil </h1>
-        {# <img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil"> #}
+
+        <h1 class="text-2xl font-bold text-center mt-6">Modification du profil</h1>
+        {{ form_start(profilForm) }}
         {{ form_errors(profilForm) }}
+
         <div class="flex justify-center">
-            <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
-                <div class="w-full m-2">
-                    {{ form_start(profilForm) }}
-                    {{ form_row(profilForm.pseudo) }}
-                    {{ form_errors(profilForm.pseudo) }}
+            <div class="bg-white rounded w-1/2 shadow-md p-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-8 ml-4">
+                <div class="w-full">
+                    <div class="form-label">
+                        {{ form_label(profilForm.pseudo) }}
 
-                    {{ form_row(profilForm.nom) }}
-                    {{ form_row(profilForm.prenom) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_widget(profilForm.pseudo) }}
+                        <ul class="error-message">
+                            {{ form_errors(profilForm.pseudo) }}
+                        </ul>
+                    </div>
 
-                    {{ form_row(profilForm.telephone) }}
-                    {{ form_errors(profilForm.telephone) }}
+                    <div class="form-label">
+                        {{ form_label(profilForm.nom) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_widget(profilForm.nom) }}
+                        <ul class="error-message">
+                            {{ form_errors(profilForm.nom) }}
+                        </ul>
+                    </div>
 
+                    <div class="form-label">
+                        {{ form_label(profilForm.prenom) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_widget(profilForm.prenom) }}
+                        <ul class="error-message">
+                            {{ form_errors(profilForm.prenom) }}
+                        </ul>
+                    </div>
 
-                    {{ form_row(profilForm.email) }}
+                    <div class="form-label">
+                        {{ form_label(profilForm.telephone) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_widget(profilForm.telephone) }}
+                        <ul class="error-message">
+                            {{ form_errors(profilForm.telephone) }}
+                        </ul>
+                    </div>
+                    <div class="form-label">
+                        {{ form_label(profilForm.email) }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_widget(profilForm.email) }}
+                        <ul class="error-message">
+                            {{ form_errors(profilForm.email) }}
+                        </ul>
+                    </div>
                 </div>
-                <div class="w-full pr-4">
+                {#                ***************************** diviser en 2 ************************** #}
+                <div class="w-full">
                     <div class="form-label">
                         {{ form_label(profilForm.siteEni) }}
-                        {{ form_widget(profilForm.siteEni, {'attr': {'class': 'border border-gray-300 rounded'}}) }}
                     </div>
-                    {{ form_row(profilForm._token) }}
+                    <div class="form-row pb-4">
+                        {{ form_widget(profilForm.siteEni) }}
+                    </div>
 
                     <div class="imageProfil">
                         {{ form_widget(profilForm.imageFile, {'attr': {'class': 'mt-4 mb-4'}}) }}
+                        {{ form_label(profilForm.imageFile) }}
                     </div>
-                    <div class="flex justify-center">
-                        <div >
-                            <a class="ml" href="{{ path('app_forgot_password_request') }}">
-                                Changer mot de passe ?
-                            </a>
+
+                    <div class="flex justify-items-center content-center ">
+                        <div class="">
+                            <a class="ml" href="{{ path('app_forgot_password_request') }}">Changer mot de passe ?</a>
+                        </div>
+                        <div>
                             {{ form_widget(profilForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {{ form_end(profilForm) }}
+
+
+
+        {#
+        <div>
+        <h1> Modification du profil </h1>
+        #}{# <img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil"> #}{#
+    {{ form_errors(profilForm) }}
+    <div class="flex justify-center">
+        <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
+            <div class="w-full m-2">
+                {{ form_start(profilForm) }}
+                {{ form_row(profilForm.pseudo) }}
+                {{ form_errors(profilForm.pseudo) }}
+                {{ form_row(profilForm.nom) }}
+                {{ form_row(profilForm.prenom) }}
+                {{ form_row(profilForm.telephone) }}
+                {{ form_errors(profilForm.telephone) }}
+                {{ form_row(profilForm.email) }}
+            </div>
+            <div class="w-full pr-4">
+                <div class="form-label">
+                    {{ form_label(profilForm.siteEni) }}
+                    {{ form_widget(profilForm.siteEni, {'attr': {'class': 'border border-gray-300 rounded'}}) }}
+                </div>
+                {{ form_row(profilForm._token) }}
+
+                <div class="imageProfil">
+                    {{ form_widget(profilForm.imageFile, {'attr': {'class': 'mt-4 mb-4'}}) }}
+                </div>
+                <div class="flex justify-center">
+                    <div >
+                        <a class="ml" href="{{ path('app_forgot_password_request') }}">
+                            Changer mot de passe ?
+                        </a>
+                        {{ form_widget(profilForm.Modifier, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> #}
 
     {% endblock %}

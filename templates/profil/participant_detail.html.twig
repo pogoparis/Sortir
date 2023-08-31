@@ -2,18 +2,41 @@
 
 
 {% block body %}
-    <h1> Info Organisateur </h1>
-    <br>
-    <div>
-    <ul>
-        <div class="imageProfil"><img src="{{ asset('/images/products/'~user.imageName) }}" alt="Image de profil"></div>
-        <li>Prénom : {{user.prenom}}</li>
-        <li>Nom : {{user.nom}}</li>
-        <li>Téléphone : {{user.telephone  }}</li>
-        <li>Email : {{ user.email }}</li>
-        <li>Site de rattachement : {{ user.siteEni.nom }}</li>
-    </ul>
-    </div>
 
+    <h2 class="text-lg font-bold mb-2 text-center mt-10">Info Organisateur</h2>
+    <div class="flex justify-center ">
+        <div class="card lg:card-side bg-gray-50 shadow-xl w-2/5">
+            {% if user.imageName %}
+                <figure><img alt="sortie" style="max-width: 200px"
+                             class="rounded-lg overflow-hidden shadow-md ml-4 my-2"
+                             src="{{ asset('images/products/' ~ user.imageName) }}"/></figure>
+            {% else %}
+                <figure><img alt="sortie" style="max-width: 200px"
+                             class="rounded-lg overflow-hidden shadow-md mx-2 my-2"
+                             src="{{ asset('/images/amis2.jpg') }}"/></figure>
+            {% endif %}
+
+            <div class="card-body">
+                <h2 class="card-title">{{ user.pseudo }}</h2>
+                <ul class="list-disc pl-6">
+                    <li>
+                        <span class="font-semibold">Prénom : </span> {{ user.prenom }}
+                    </li>
+                    <li><span class="font-semibold">Nom : </span> {{ user.nom }}
+                    </li>
+                    {# <li>
+                        <span class="font-semibold">Téléphone : </span> {{user.telephone  }}
+                    </li>
+                    <li><span class="font-semibold">Email : </span> {{ user.email }}
+                    </li> #}
+                    <li><span class="font-semibold">Site de rattachement : </span>{{ user.siteEni.nom }}
+                    </li>
+                </ul>
+                <div class="card-actions justify-end">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

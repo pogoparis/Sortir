@@ -2,18 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed&family=Mukta&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Mulish:wght@500&display=swap');
 
-/*body {
+body {
     height: 100vh;
     width: 100%;
     display: block;
-    background-image: url("/public/images/fond.jpg");
+    background-image: url("/public/images/fond.png");
     background-size: cover;
-}*/
+}
+
+
+
 
 body{
     font-family: 'Barlow Semi Condensed', sans-serif;
-    font-family: 'Mukta', sans-serif;
 }
 
 
@@ -31,7 +34,7 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
-input[type=text], input[type=password], input[type=email], input[type=datetime-local], input[type=number] {
+input[type=text], input[type=password], input[type=email], input[type=datetime-local], input[type=number], select {
     @apply input rounded input-bordered input-sm w-full max-w-xs m-1;
 }
 
@@ -40,7 +43,9 @@ button {
     @apply btn btn-neutral m-1 rounded-2xl bg-gray-500;
 }
 
-
+h2{
+    font-family: 'Mulish', sans-serif;
+}
 
 .error-message {
     color: #ff0000;

@@ -41,11 +41,14 @@
                             <p>{{ form_label(form.site) }}</p>
                             {{ form_widget(form.site) }}
                         </div>
-                        <div class="w-1/2 ">
-                            <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
-                                    type="submit">
-                                Filtrer
-                            </button>
+                        {#           ***************************************    A FAIRE    ************************************** #}
+                        <div class="w-1/2 align-content-center">
+                            <div class="content-center">
+                                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                                        type="submit">
+                                    Filtrer
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,15 +60,24 @@
     {#    ******************************** Affichage liste des Sorties ****************************** #}
     <div class="mx-auto">
         {% if sorties is empty %}
-            <p>Aucune sortie disponible pour les critères de recherche spécifiés.</p>
+            <div class="text-center">
+                <div class="card-side text-red-900 mt-12"> Aucune sortie disponible pour les critères de recherche
+                    spécifiés.
+                </div>
+            </div>
         {% else %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
                 {% for event in sorties %}
                     <div class="relative card card-side bg-base-100 shadow-xl">
+                        {#      *********** IMAGE NEW ********* #}
+                    {% if event.etat.id == 4 %}
+                        <img src="{{ asset('images/new.png') }}" alt="new"
+                             class="absolute inset-x-96 opacity-50 w-16 h-16 z-20">
+                    {% endif %}
                         {#      *********** IMAGE CANCEL ********* #}
                         {% if event.etat.id == 6 %}
                             <img src="{{ asset('images/cancel.png') }}" alt="cancel"
-                                 class="absolute inset-x-28  opacity-50 w-72 h-72 z-20">
+                                 class="absolute inset-x-28  opacity-50 w-16 h-16 z-20">
                         {% endif %}
                         {#     *********** IMAGE SORTIE ******** #}
                         {% if event.imageName %}

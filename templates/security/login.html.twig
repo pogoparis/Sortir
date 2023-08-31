@@ -41,7 +41,7 @@
                         </div>
                         <button type="submit" class="w-full text-white bg-neutral hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Se connecter</button>
                         <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500"> Pas de compte ? Inscription</a>
+                            <a href="{{ path('app_register') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500"> Pas de compte ? Inscription</a>
                         </p>
                         <input type="hidden" name="_csrf_token"
                                value="{{ csrf_token('authenticate') }}">
@@ -50,43 +50,4 @@
             </div>
         </div>
     </section>
-
-
-{#    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if is_verified_error %}
-            <div class="alert alert-danger">{{ is_verified_error }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
-            </div>
-        {% endif %}
-        <div class="flex justify-center">
-            <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
-                <div class="w-full m-2">
-                    <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
-                    <label for="inputEmail">Email : </label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                           class="form-control input input-bordered input-xs w-full max-w-xs" autocomplete="email"
-                           required autofocus>
-                    <label for="inputPassword">Mots de passe : </label>
-                    <input type="password" name="password" id="inputPassword"
-                           class="form-control input input-bordered input-xs w-full max-w-xs"
-                           autocomplete="current-password" required>
-                    <a href="{{ path('app_forgot_password_request') }}">
-                        Mots de passe oublié ?
-                    </a>
-
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-neutral mt-2" type="submit">
-            Connexion
-        </button>
-    </form>#}
 {% endblock %}

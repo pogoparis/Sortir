@@ -98,6 +98,7 @@
                             <option value="{{ id }}">{{ nom }}</option>
                         {% endfor %}
                     </select>
+                        <ul class="error-message">{{ form_errors(sortieForm.lieu) }}</ul>
                     </div>
                     <div>
                     <a href="#" onclick="window.showModalLieu()">

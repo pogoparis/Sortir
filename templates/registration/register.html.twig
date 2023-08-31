@@ -12,8 +12,8 @@
     {{ form_errors(registrationForm) }}
 
     <div class="flex justify-center">
-        <div class="bg-white rounded w-1/2 shadow-md p-4 flex">
-            <div class="w-full m-2">
+        <div class="bg-white rounded w-1/2 shadow-md p-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-8 ml-4">
+            <div class="w-full">
                 <div class="form-label">
                     {{ form_label(registrationForm.pseudo) }}
                 </div>
@@ -64,7 +64,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="w-full pr-4">
+            <div class="w-full">
                 <div class="form-label">
                     {{ form_label(registrationForm.siteEni) }}
                 </div>
@@ -82,10 +82,10 @@
                 <div class="form-row mb-8">
                     {{ form_widget(registrationForm.imageFile) }}
                 </div>
-                <label class="form-label">
+               {# <label class="form-label">
                     <input type="checkbox" name="_remember_me" checked>
                     Rester connecté
-                </label>
+                </label>#}
                 {{ form_widget(registrationForm.Valider, {'attr': {'class': 'btn btn-neutral m-1'}}) }}
             </div>
         </div>

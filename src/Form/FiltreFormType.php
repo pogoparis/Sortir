@@ -89,7 +89,13 @@ class FiltreFormType extends AbstractType
                         'label' => false,
                         'required' => false,
                         'data' => false,
-                    ]);
+                    ])
+                    ->add('sortiesPassees', CheckboxType::class, [
+                        'attr' => [
+                            'style' => 'display: none;',
+                        ],
+                        'label' => false, // Cacher également le label
+                        'required' => false,]);
             }
     }
 

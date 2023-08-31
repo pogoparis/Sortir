@@ -64,6 +64,9 @@
                     {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'style': 'width : 250px'}}) }}
                     </div>
                 </div>
+                <ul class="error-message text-right mr-4">
+                    {{ form_errors(sortieForm.nbInscriptionsMax, {'attr': {'class': 'text-right'}}) }}
+                </ul>
                 <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
                     <div >
                     {{ form_label(sortieForm.infosSortie) }}</div>

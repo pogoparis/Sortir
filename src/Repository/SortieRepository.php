@@ -87,9 +87,9 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere('u = :user');
         }
 
-           /* // Tri par date
+            // Tri par date
             $query = $query
-                ->orderBy('s.dateHeureDebut', 'ASC');*/
+                ->orderBy('p.dateHeureDebut', 'ASC');
         return $query->getQuery()->getResult();
     }
 
@@ -152,6 +152,11 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery();
 
         return new Paginator($query);
+    }
+
+    public function findSearchNonLog(Filtre $filtre)
+    {
+
     }
 
 }

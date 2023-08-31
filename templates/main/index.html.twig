@@ -45,6 +45,9 @@
         {#    ******************************** Affichage liste des Sorties ****************************** #}
 
         <div class="mx-12">
+        {% if sorties is empty %}
+            <p>Aucune sortie disponible pour les critères de recherche spécifiés.</p>
+        {% else %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
                 {% for event in sorties %}
                     <div class="relative card card-side bg-base-100 shadow-xl">
@@ -75,5 +78,6 @@
                     </div>
                 {% endfor %}
             </div>
-        </div>
+            </div>
+        {% endif %}
     {% endblock %}

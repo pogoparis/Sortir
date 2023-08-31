@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
@@ -149,6 +150,11 @@ class SortieController extends AbstractController
     #[Route('/modifier/{id}', name: 'sortie_modifier', requirements: ["id" => "\d+"])]
     public function modifier(Sortie $sortie, Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier si l'utilisateur connecté est l'organisateur de la sortie
+        $user = $this->getUser();
+        if ($user !== $sortie->getOrganisateur()) {
+            throw new AccessDeniedException('Vous n\'avez pas la permission de modifier cette sortie.');
+        }
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 

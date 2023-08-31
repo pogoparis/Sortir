@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
     {
 
         if ($this->getUser()) {
-                return $this->redirectToRoute('main_index'); // Redirect back to the login page
+                return $this->redirectToRoute('sortie_affichage'); // Redirect back to the login page
             }
 
             $error = $authenticationUtils->getLastAuthenticationError();
@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
      #[Route("/logout_message", name:"logout_message")]
      public function logoutMessage()
     {
-        //$this->addFlash('success', "Vous êtes bien déconnecté !");
+        $this->addFlash('success', "Vous êtes bien déconnecté !");
         return $this->redirectToRoute('main_index');
     }
 }

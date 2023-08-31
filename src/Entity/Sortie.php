@@ -66,6 +66,7 @@ class Sortie
 
     #[ORM\ManyToOne(inversedBy: 'sortie')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Merci de selectionner un lieu')]
     private ?Lieu $lieu = null;
 
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]

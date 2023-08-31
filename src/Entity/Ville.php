@@ -18,6 +18,7 @@ class Ville
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'Merci de selectionner un ville')]
     #[Groups('sorties:ville')]
     private ?string $nom = null;
 
@@ -142,6 +143,11 @@ class Ville
         $this->latitude = $latitude;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom;
     }
 
 }

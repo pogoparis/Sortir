@@ -2,9 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Lieu;
+use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\SortiesArchivees;
 use App\Entity\User;
+use App\Entity\Ville;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -86,8 +89,14 @@ class ArchiveDashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+
         yield MenuItem::linkToCrud('Sorties Archivées', 'fas fa-list', SortiesArchivees::class);
         yield MenuItem::linkToCrud('Sorties en cours', 'fas fa-list', Sortie::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+
+        yield MenuItem::linkToCrud('Sites','fas fa-list',Site::class);
+        yield MenuItem::linkToCrud('Ville','fas fa-list',Ville::class);
+        yield MenuItem::linkToCrud('Lieu','fas fa-list',Lieu::class);
+
     }
 }

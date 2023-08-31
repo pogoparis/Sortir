@@ -66,7 +66,11 @@ class FiltreFormType extends AbstractType
                     ->add('inscrit', CheckboxType::class, [
                         'label' => "Sorties auxquelles je suis inscrit",
                         'required' => false,
-                    ]);
+                    ])
+                ->add('sortiesPassees', CheckboxType::class, [
+                    'label' => "Sorties déjà passées",
+                    'required' => false,
+                ]);
             }  else {
                 // si l'utilisateur n'est pas connecté les checkbox ne s'affichent pas.
                 $builder

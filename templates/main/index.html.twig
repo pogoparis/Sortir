@@ -5,7 +5,6 @@
     {% block body %}
 
         {# /*********************** FORMULAIRE DE RECHERCHE *******************************/ #}
-
         <div class="container ">
             {{ form_start(form) }}
             <div class="flex justify-center">
@@ -14,38 +13,41 @@
                         <div class="w-1/2 p-2">
                             {{ form_widget(form.nom) }}
                         </div>
-                        <div class="w-1/2 p-2 " id="test">
-                            <div>
-                                {{ form_widget(form.organisateur) }}
-                                {{ form_label(form.organisateur) }}
+                        <div class="w-1/2 p-2 inline-flex" id="test">
+                            <div class="">
+                                {{ form_widget(form.dateMin) }}
                             </div>
+
                             <div>
-                                {{ form_widget(form.inscrit) }}
-                                {{ form_label(form.inscrit) }}
+                                {{ form_widget(form.dateMax) }}
                             </div>
+
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="w-1/2 p-2 flex">
-                            <div class="w-1/2">
+                        <div class="w-1/2 p-2 " id="test">
+
+                            <div>
+                                {{ form_widget(form.sortiesPassees) }}
+                                {{ form_label(form.sortiesPassees) }}
+                            </div>
+                        </div>
+                        <div class="w-1/2 p-2 flex" id="test">
+                            <div class="w-1/2 ">
                                 <p>{{ form_label(form.site) }}</p>
                                 {{ form_widget(form.site) }}
                             </div>
-                            <div class="w-1/2 p-2">
+                            <div class="w-1/2 ">
                                 <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
                                         type="submit">
                                     Filtrer
                                 </button>
                             </div>
                         </div>
-                        <div class="w-1/2  p-2 flex">
-                            {{ form_row(form.dateMin) }}
-                            {{ form_row(form.dateMax) }}
-                        </div>
                     </div>
                 </div>
             </div>
-            {{ form_end(form) }}
+            {{ form_end(form, {render_rest: false}) }}
         </div>
 
         {#    ******************************** Affichage liste des Sorties ****************************** #}
@@ -72,6 +74,7 @@
                         <h2 class="text-center card-title font-bold">{{ event.nom }}</h2>
                         <p>Début : {{ event.dateHeureDebut |date('d-m-Y') }} - Fin
                             : {{ event.dateHeureFin |date('d-m-Y') }}</p>
+                        <p>{{ event.infosSortie }}</p>
                         <a class="btn btn-sm m-1" id="lien" href="{{ path('sortie_detail', {'id' : event.id}) }}">
                             detail
                         </a>

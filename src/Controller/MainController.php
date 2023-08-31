@@ -24,6 +24,7 @@ class MainController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $sorties = $sortieRepository->findSearch($filtre);
+//            dd($filtre);
         } else {
             $sorties = $sortieRepository->findAll();
         }

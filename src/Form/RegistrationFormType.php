@@ -51,17 +51,17 @@ class RegistrationFormType extends AbstractType
             ])
         ->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
-            'invalid_message' => 'Le mots de passe doit être le même.',
+            'invalid_message' => 'Le mot de passe doit être le même.',
             'options' => ['attr' => ['class' => 'password-field input input-bordered input-sm w-full max-w-xs m-1']],
             'required' => true,
             'first_options' => ['label' => 'Mots de passe '],
-            'second_options' => ['label' => 'Répeter le mots de passe '],
+            'second_options' => ['label' => 'Répeter MDP '],
             'mapped' => false,
             'attr' => ['autocomplete' => 'new-password',
             ],
             'constraints' => [
                 new NotBlank([
-                    'message' => 'Merci d\'entrer le mots de passe',
+                    'message' => 'Merci d\'entrer le mot de passe',
                 ]),
                 new Length([
                     'min' => 6,

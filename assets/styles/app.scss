@@ -5,10 +5,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Mulish:wght@500&display=swap');
 
 body {
-    background-color: lightgray;
+
     display: block;
     background-image: url("/public/images/fond.png");
     background-size: cover;
+    background-repeat: repeat-y ;
+    height : 2000px;
 }
 
 body{

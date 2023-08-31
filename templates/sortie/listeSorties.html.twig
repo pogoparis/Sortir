@@ -55,7 +55,7 @@
     </div>
 
     {#    ******************************** Affichage liste des Sorties ****************************** #}
-    <div class="mx-auto">
+    <div class="mx-12">
         {% if sorties is empty %}
         <div class="text-center">
             <div class="card-side text-red-900 mt-12"> Aucune sortie disponible pour les critères de recherche
@@ -69,7 +69,7 @@
             {% if event.etat.id == 4 %}
             <div class="relative card card-side bg-base-100 shadow-xl" style="border-top-right-radius: 40px;">
                 <img src="{{ asset('images/new2.png') }}" alt="new"
-                     class="absolute top-0 right-0 opacity-70 w-16 h-16 z-20">
+                     class="absolute top-0 right-0 opacity-80 w-16 h-16 z-20">
                 {% else %}
                 <div class="relative card card-side bg-base-100 shadow-xl">
                     {% endif %}
@@ -127,7 +127,6 @@
                                     </a></td>
                             {% endif %}
                         {% endfor %}
-                        {{ event.etat.libelle }}
                     </div>
                 </div>
                 {% endfor %}

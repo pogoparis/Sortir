@@ -2,44 +2,97 @@
 
 {% block body %}
 
-<div class="flex items-center justify-center">
-        <div class="card-body">
-    {{ form_start(sortieForm) }}
+    <h1 class="text-2xl text-center mt-2.5">Modifier une sortie</h1>
 
-            {{ form_label(sortieForm.nom) }}
-            {{ form_widget(sortieForm.nom) }}
+    <div class="flex justify-center">
+        <div class="flex items-center justify-end space-x-4">
+            <div class="flex  bg-white rounded px-8 pt-6 pb-8 mb-4">
+                {{ form_start(sortieForm, {'attr': {'class': 'bg-white rounded px-8 pt-6 pb-8 mb-4'}}) }}
 
-            {{ form_label(sortieForm.dateHeureDebut) }}
-            {{ form_widget(sortieForm.dateHeureDebut) }}
-            <ul class="error-message">
-                {{ form_errors(sortieForm.dateHeureDebut) }}
-            </ul>
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.nom) }}
+                    </div>
+                    <div>
+                        {{ form_widget(sortieForm.nom, {'attr': {'style': 'width : 250px'}}) }}
+                    </div>
+                </div>
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.dateHeureDebut) }}
+                    </div>
+                    <div>
+                        {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'style': 'width : 250px'}}) }}
+                    </div>
+                </div>
+                <ul class="error-message">
+                    {{ form_errors(sortieForm.dateHeureDebut) }}
+                </ul>
 
-            {{ form_label(sortieForm.dateHeureFin) }}
-            {{ form_widget(sortieForm.dateHeureFin) }}
-            <ul class="error-message">
-                {{ form_errors(sortieForm.dateHeureFin) }}
-            </ul>
+                <div class="w-full px-3 mb-6 md:mb-0 flex  items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.dateHeureFin) }}</div>
+                    <div>
+                        {{ form_widget(sortieForm.dateHeureFin, {'attr': {'style': 'width : 250px'}}) }}</div>
+                </div>
+                <ul class="error-message">
+                    {{ form_errors(sortieForm.dateHeureFin) }}
+                </ul>
 
-            {{ form_label(sortieForm.dateLimiteInscription) }}
-            {{ form_widget(sortieForm.dateLimiteInscription) }}
-            <ul class="error-message">
-                {{ form_errors(sortieForm.dateLimiteInscription) }}
-            </ul>
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.dateLimiteInscription) }}
+                    </div>
+                    <div>
+                        {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'style': 'width : 250px'}}) }}
+                    </div>
+                </div>
+                <ul class="error-message">
+                    {{ form_errors(sortieForm.dateLimiteInscription) }}
+                </ul>
 
-            {{ form_label(sortieForm.nbInscriptionsMax) }}
-            {{ form_widget(sortieForm.nbInscriptionsMax) }}
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.nbInscriptionsMax) }}
+                    </div>
+                    <div>
+                        {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'style': 'width : 250px'}}) }}
+                    </div>
+                </div>
+                <ul class="error-message text-right mr-4">
+                    {{ form_errors(sortieForm.nbInscriptionsMax, {'attr': {'class': 'text-right'}}) }}
+                </ul>
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.infosSortie) }}
+                    </div>
+                    <div>
+                        {{ form_widget(sortieForm.infosSortie, {'attr': {'style': 'width : 250px'}}, {'class': 'bg-blue'}) }}
+                    </div>
+                </div>
+                <div class="w-full px-3 mb-6 md:mb-0 flex items-center justify-between">
+                    <div>
+                        {{ form_label(sortieForm.lieu) }}
+                    </div>
+                    <div>
 
-            {{ form_label(sortieForm.infosSortie) }}
-            {{ form_widget(sortieForm.infosSortie) }}
+                        {{ form_widget(sortieForm.lieu, {'attr': {'class': 'w-[250px]'}}) }}
+                    </div>
+                </div>
 
-            <div class="imageProfil">
-                {{ form_widget(sortieForm.imageFile) }}
+                {# ***************************** IMAGE ***************************** #}
+                <div class="form-row mb-8 mt-6 imageProfil">
+                    {{ form_widget(sortieForm.imageFile) }}
+                </div>
+
+                <div class="justify-center content-center ml-52 w-80 mr-36">
+                    {{ form_widget(sortieForm.ajouter, {'attr': {'class': 'btn btn-neutral m-1 w-64 '}}) }}
+                </div>
+                {{ form_row(sortieForm._token) }}
+                {{ form_end(sortieForm) }}
             </div>
-
-    {{ form_end(sortieForm) }}
         </div>
-</div>
+    </div>
 
 {% endblock %}
 

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2 class="text-lg font-bold mb-2 text-center mr-96 mt-10">Détails de la sortie</h2>
+    <h2 class="text-lg font-bold mb-2 text-center mt-10">Détails de la sortie</h2>
     <div class="flex justify-center ">
         <div class="card lg:card-side bg-gray-50 shadow-xl w-2/5">
             {% if sortie.imageName %}
@@ -88,7 +88,7 @@
             {% for participant in sortie.participants %}
                 <tr>
                     <td>
-                        <a href="{{ path('profil_participant_detail',{'id' : participant.id}) }}">{{ participant.nom }}</a>
+                        <a class="underline" href="{{ path('profil_participant_detail',{'id' : participant.id}) }}">{{ participant.nom }}</a>
                     </td>
                     <td>{{ participant.prenom }}</td>
                     <td>{{ participant.email }}</td>

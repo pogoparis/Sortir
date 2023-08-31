@@ -48,8 +48,10 @@ class SortieType extends AbstractType
                     ],
                     ])
             ->add('imageFile', VichImageType::class,[
-                'label' => 'Image Sortie',
+                'label' => 'Image de profil',
                 'required' => false,
+                'allow_delete' => true,
+                'delete_label' => 'Supprimer l\'image',
                 'download_label' => true,
                 'constraints' => [
                     new File ([

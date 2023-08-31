@@ -50,7 +50,8 @@ class ProfilFormType extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
                 'delete_label' => 'Supprimer l\'image',
-                'download_label' => true,
+                /*'download_label' => true,*/
+                'download_uri'=>false,
                 'constraints' => [
                     new File ([
                         'maxSize' => '2M',

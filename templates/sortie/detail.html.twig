@@ -73,31 +73,6 @@
         </div>
     </div>
 
-
-    {#    {% if event.imageName %}
-        <figure><img alt="sortie" style="max-width: 150px"
-                     src="{{ asset('images/products/' ~ event.imageName) }}"/></figure>
-    {% else %}
-        <figure><img alt="sortie" src="{{ asset('/images/amis2.jpg') }}"/></figure>
-    {% endif %}
-    <img style="max-width: 150px"
-         src="{{ asset('images/products/' ~ sortie.imageName) }}" class="w-16 h-16 object-cover rounded" alt="Image de la sortie">
-    <div class="flex-1">
-
-        <ul class="list-disc pl-6">
-            <li><span class="font-semibold">Nom de la sortie:</span> {{ sortie.nom }}</li>
-            <li><span class="font-semibold">Date du début:</span> {{ sortie.dateHeureDebut | date('d-m-Y H:i') }}</li>
-            <li><span class="font-semibold">Date de fin:</span> {{ sortie.dateHeureFin | date('d-m-Y H:i') }}</li>
-            <li><span class="font-semibold">Fin de l'inscription:</span> {{ sortie.dateLimiteInscription | date('d-m-Y H:i') }}</li>
-            <li><span class="font-semibold">Nombre de participants max:</span> {{ sortie.nbInscriptionsMax }}</li>
-            <li><span class="font-semibold">Description:</span> {{ sortie.infosSortie }}</li>
-        </ul>
-    </div> #}
-
-
-
-
-
     {#    ********************************* AFFICHAGE DES PARTICIPANTS ****************************** #}
     <h2 class="mt-8 text-center">Participants</h2>
     <div class="flex justify-center">

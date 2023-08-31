@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArchiveDashboardController extends AbstractDashboardController
+class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin')]
     public function index(): Response
@@ -88,7 +88,8 @@ class ArchiveDashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToRoute('Retour au site','fa fa-home','sortie_affichage');
+        /*yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');*/
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
 
         yield MenuItem::linkToCrud('Sorties Archivées', 'fas fa-list', SortiesArchivees::class);

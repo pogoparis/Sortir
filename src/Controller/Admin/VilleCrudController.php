@@ -25,7 +25,7 @@ class VilleCrudController extends AbstractCrudController
             TextField::new('code_postal'),
             IntegerField::new('longitude'),
             IntegerField::new('latitude'),
-            AssociationField::new('lieu')
+            AssociationField::new('lieu')->autocomplete()
         ];
     }
 

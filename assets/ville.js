@@ -126,15 +126,20 @@ function envoieFormulaireVille(event) {
             }).then(reponse => reponse.json())
                 .then(jsonData => {
                     let select = document.getElementById("villeListe");
+                    let selectVilleLieux = document.getElementById("lieu_ville");
                     select.innerText = "";
+                    selectVilleLieux.innerText="";
                     for (const js of jsonData) {
 
                         let nouvelElement = document.createElement("option");
+                        let nouvelElement2 = document.createElement("option");
 
                         nouvelElement.setAttribute("value", js['id'])
                         nouvelElement.innerText = js['nom'];
+                        nouvelElement2.setAttribute("value", js['id'])
+                        nouvelElement2.innerText = js['nom'];
                         select.appendChild(nouvelElement);
-
+                        selectVilleLieux.appendChild(nouvelElement2);
                     }
                 })
             hideModalVille();

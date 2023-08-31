@@ -23,6 +23,7 @@ class SortieCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            IdField::new('id')->setDisabled(true),
             TextField::new('nom'),
             DateTimeField::new('dateHeureDebut'),
             DateTimeField::new('dateHeureFin'),
@@ -30,6 +31,7 @@ class SortieCrudController extends AbstractCrudController
             IntegerField::new('nbInscriptionsMax'),
             AssociationField::new('etat'),
             TextField::new('infosSortie'),
+            /*AssociationField::new('sorties_organisateur')->autocomplete()*/
         ];
     }
 

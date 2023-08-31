@@ -92,10 +92,11 @@
                         <select required name="{{ field_name(sortieForm.lieu) }}" class="form-control" id="selectLieux">
                             <option value="">{{ field_label(sortieForm.lieu) }}</option>
 
-                            {% for id, nom in field_choices(sortieForm.lieu) %}
-                                <option value="{{ id }}">{{ nom }}</option>
-                            {% endfor %}
-                        </select>
+                        {% for id, nom in field_choices(sortieForm.lieu) %}
+                            <option value="{{ id }}">{{ nom }}</option>
+                        {% endfor %}
+                    </select>
+                        <ul class="error-message">{{ form_errors(sortieForm.lieu) }}</ul>
                     </div>
                     <div>
                         <a href="#" onclick="window.showModalLieu()">

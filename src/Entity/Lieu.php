@@ -47,6 +47,7 @@ class Lieu
 
     #[ORM\ManyToOne(inversedBy: 'lieu')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Merci de selectionner une ville')]
     #[Groups('sorties:lieux')]
     private ?Ville $ville = null;
 

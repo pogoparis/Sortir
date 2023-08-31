@@ -25,7 +25,7 @@ function coordonnee() {
 // en fonction du clic sur le select contenant le nom des villes déjà créée
     $id = document.getElementById("selectLocalisation").value;
 
-    fetch('http://127.0.0.1:8000/apiLocalisation')
+    fetch('http://127.0.0.1:8000/api')
         .then(res => res.json())
         .then(
             json => {

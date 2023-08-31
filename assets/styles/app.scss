@@ -12,7 +12,7 @@
 }*/
 
 body{
-    //font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Barlow Semi Condensed', sans-serif;
     font-family: 'Mukta', sans-serif;
 }
 
@@ -37,7 +37,7 @@ input[type=text], input[type=password], input[type=email], input[type=datetime-l
 
 
 button {
-    @apply btn btn-neutral m-1 rounded-2xl;
+    @apply btn btn-neutral m-1 rounded-2xl bg-gray-500;
 }
 
 

@@ -33,7 +33,7 @@ class Sortie
     private ?\DateTimeInterface $dateHeureFin = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\LessThanOrEqual(propertyPath: "dateHeureDebut", message: "La date limite d'inscription doit être antérieure ou égale à la date de début.")]
+    #[Assert\LessThanOrEqual(propertyPath: "dateHeureFin", message: "La date limite d'inscription doit être antérieure ou égale à la date de fin.")]
     #[Assert\GreaterThanOrEqual("now")]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 

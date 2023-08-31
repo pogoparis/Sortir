@@ -70,10 +70,10 @@
                 {% for event in sorties %}
                     <div class="relative card card-side bg-base-100 shadow-xl">
                         {#      *********** IMAGE NEW ********* #}
-                    {% if event.etat.id == 4 %}
+                           {% if event.etat.id == 4 %}
                         <img src="{{ asset('images/new.png') }}" alt="new"
-                             class="absolute inset-x-96 opacity-50 w-16 h-16 z-20">
-                    {% endif %}
+                             class="absolute inset-x-28  opacity-50 w-16 h-16 z-20">
+                         {% endif %}
                         {#      *********** IMAGE CANCEL ********* #}
                         {% if event.etat.id == 6 %}
                             <img src="{{ asset('images/cancel.png') }}" alt="cancel"

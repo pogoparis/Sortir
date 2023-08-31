@@ -229,7 +229,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/creationLieuVide', name: 'sortie_creationlieuVide', methods: ['POST'])]
-    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    public function creationLieuVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, LieuRepository $lieuRepository, EntityManagerInterface $entityManager): Response
     {
         $req = $request->toArray();
         $lieu = (new Lieu())
@@ -241,12 +241,16 @@ class SortieController extends AbstractController
         $entityManager->persist($lieu);
         $entityManager->flush();
 
-        return $this->json(
-            $villeRepository->findBy([], ['nom' => 'ASC']),
-            201,
+        $alllieux = $lieuRepository->findAll();
+        return new JsonResponse(
+            $serializer->serialize(
+                $alllieux,
+                'json',
+                ['groups' => 'sorties:lieux']),
+            200,
             [],
-            ['groups' => 'listeLieux']
-        );
+            true);
+
     }
     #[Route('/creationVilleVide', name: 'sortie_creationVilleVide', methods: ['POST'])]
     public function creationVilleVide(Request $request, SerializerInterface $serializer, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response

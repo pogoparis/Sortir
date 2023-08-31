@@ -10,7 +10,7 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/dist/leaflet.js';
 import './ville.js';
-import './map.js';
+import './lieu.js';
 import './styles/app.scss';
 import 'bootstrap';
 import 'alpinejs';

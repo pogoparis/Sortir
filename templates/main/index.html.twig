@@ -13,31 +13,29 @@
                             {{ form_widget(form.nom) }}
                         </div>
                         <div class="w-1/2 p-2 inline-flex" id="test">
-                            <div class="">
+                            <div class="m-2">
                                 {{ form_widget(form.dateMin) }}
                             </div>
-                            <div>
+
+                            <div class="m-2">
                                 {{ form_widget(form.dateMax) }}
                             </div>
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="w-1/2 p-2 " id="test">
-
-                        </div>
                         <div class="w-1/2 p-2 flex" id="test">
-                            <div class="w-1/2 ">
+                            <div class="w-full ">
                                 <p>{{ form_label(form.site) }}</p>
                                 {{ form_widget(form.site) }}
                             </div>
-                            <div class="w-1/2 ">
-                                <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
-                                        type="submit">
-                                    Filtrer
-                                </button>
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="flex flex-col items-end mt-20">
+                    <button class="bg-blue-600 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                            type="submit">
+                        Filtrer
+                    </button>
                 </div>
             </div>
             {{ form_end(form, {render_rest: false}) }}

@@ -44,16 +44,23 @@
         {#    ******************************** Affichage liste des Sorties ****************************** #}
 
         <div class="mx-12">
-        {% if sorties is empty %}
+            {% if sorties is empty %}
             <p>Aucune sortie disponible pour les critères de recherche spécifiés.</p>
-        {% else %}
+            {% else %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 ml-4">
                 {% for event in sorties %}
+                {#      *********** IMAGE NEW ********* #}
+                {% if event.etat.id == 4 %}
+                <div class="relative card card-side bg-base-100 shadow-xl" style="border-top-right-radius: 40px;">
+                    <img src="{{ asset('images/new2.png') }}" alt="new"
+                         class="absolute top-0 right-0 opacity-80 w-16 h-16 z-20">
+                    {% else %}
                     <div class="relative card card-side bg-base-100 shadow-xl">
+                        {% endif %}
                         {#      *********** IMAGE CANCEL ********* #}
                         {% if event.etat.id == 6 %}
                             <img src="{{ asset('images/cancel.png') }}" alt="cancel"
-                                 class="absolute inset-x-28  opacity-50 w-64 h-64 z-20">
+                                 class="absolute top-0 right-0 mr-2 mt-2 opacity-70 w-16 h-16 z-20">
                         {% endif %}
                         {#     *********** IMAGE SORTIE ******** #}
                         {% if event.imageName %}
@@ -75,8 +82,9 @@
                             </a>
                         </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
-            </div>
-        {% endif %}
+        </div>
     {% endblock %}
